@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@font-face {
+  font-family: satoshiR;
+  src: url("../../fonts/Satoshi-Regular.ttf") format("ttf");
+  src: url("../../fonts/Satoshi-Regular.woff") format("woff");
+  src: url("../../fonts/Satoshi-Regular.eot") format("eot");
+  src: url("../../fonts/Satoshi-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: satoshiB;
+  src: url("../../fonts/Satoshi-Bold.ttf") format("ttf");
+  src: url("../../fonts/Satoshi-Bold.woff") format("woff");
+  src: url("../../fonts/Satoshi-Bold.eot") format("eot");
+  src: url("../../fonts/Satoshi-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: satoshiM;
+  src: url("../../fonts/Satoshi-Medium.ttf") format("ttf");
+  src: url("../../fonts/Satoshi-Medium.woff") format("woff");
+  src: url("../../fonts/Satoshi-Medium.eot") format("eot");
+  src: url("../../fonts/Satoshi-Medium.woff2") format("woff2");
+}
+
+
+html {
+  background-color: #151212 !important;
+}
+body {
+  font-family: satoshiR;
+}
+
+/* Utilities */
+
+.satoshiB {
+  font-family: satoshiB !important;
+}
+.satoshiR {
+  font-family: satoshiR !important;
+}
+.satoshiM {
+  font-family: satoshiM !important;
+}
+.center {
+  @apply flex flex-row justify-center items-center;
+}
+
+.navigation-circle {
+  width: max-content;
+}
+
+.swal-button {
+  padding: 7px 19px;
+  border-radius: 2px;
+  background-color: #8b6914;
+  font-size: 12px;
+  border: 1px solid #c09745;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+
+.swal-button:hover {
+  background-color: #cfb159 !important;
+  border: 1px solid #c09745 !important;
+}
+
+.AltLoader::before {
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-color: rgb(5, 5, 1);
+  opacity: 0.4;
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+}
+.about {
+  background-image: url("../../images/UIElements/about.png") !important;
+  height: 450px;
+}
+
+.skill-wrapper {
+  width: fit-content;
+  position: relative;
+  margin-bottom: 8rem;
+}
+.skill {
+  will-change: transform;
+  animation: scroll 20s linear infinite;
+}
+/* Infinite scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.table_adjustment {
+  @apply w-[90%] xxl:w-full !important;
+}
+
+.gradient-background {
+  background: linear-gradient(66.86deg, #EFBF87 5.8%, #C09742 14.98%, #CFB159 46.4%, #E2CE72 83.31%, #AD7A22 94.28%);
+}
+
+.dark-gradient-background {
+  background: linear-gradient(66.86deg, rgba(239, 191, 135, 0.43) 5.8%, rgba(192, 151, 66, 0.43) 14.98%, rgba(207, 177, 89, 0.43) 46.4%, rgba(226, 206, 114, 0.43) 83.31%, rgba(173, 122, 34, 0.43) 94.28%);
+}
+
+.dark-btn-gradient {
+  border-width: 1px;  
+  border-color: rgba(192, 151, 66, 0.43);
+  background: linear-gradient(90deg, rgba(15, 14, 14, 0.79) 0%, rgba(26, 23, 23, 0.79) 100%);
+}
+
+.gradient-text-1 {
+  background: linear-gradient(66.86deg, #C09742 5.8%, #AC7729 8.79%, #AC7729 9.67%, #CFB159 20.74%, #AD7A22 29.58%, #AD7A22 74.27%, #C09742 94.28%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.select-gradient {
+  background: linear-gradient(66.86deg, #C09742 5.8%, #AC7729 8.79%, #AC7729 9.67%, #CFB159 20.74%, #AD7A22 29.58%, #AD7A22 74.27%, #C09742 94.28%);
+
+}
+
+
+.font-app-primary {
+  font-family: "Poppins";
+}
+
+
+
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
