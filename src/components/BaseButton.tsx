@@ -30,19 +30,29 @@ const BaseButton: React.FC<BaseButtonProps> = ({
     border: outline && color ? `1.5px solid ${color}` : undefined,
   }
 
-  const baseClasses = `
-    flex items-center justify-center gap-2 px-4 py-3 rounded-md font-semibold text-base transition w-full
+  const baseClass = `
+    btn flex items-center justify-center gap-2 px-4 py-3 rounded-md font-semibold text-base satoshiB transition w-full
   `
+  const variantClass = outline ? 'btn_outline' : 'bg_btn'
 
   return (
     <button
       disabled={loading}
       onClick={onClick}
       style={style}
-      className={`${baseClasses} ${className}`}
+      className={`${baseClass} ${className} ${variantClass}`}
     >
-      {src && <img src={src} alt={alt} className="w-5 h-5" />}
-      {loading ? 'Loading...' : title}
+      {/* {src && <img src={src} alt={alt} className="w-5 h-5" />}
+      {loading ? 'Loading...' : title} */}
+
+      {loading ? (
+        <span className="loading loading-spinner loading-md" />
+      ) : (
+        <>
+          {title && <span>{title}</span>}
+          {alt && src && <img src={src} alt={alt} className="ms-1" />}
+        </>
+      )}
     </button>
   )
 }

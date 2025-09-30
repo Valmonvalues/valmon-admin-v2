@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GetstartedRouteImport } from './routes/getstarted'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
   path: '/getstarted',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,34 @@ const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace/': typeof MarketplaceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/getstarted' | '/marketplace'
+  fullPaths: '/' | '/dashboard' | '/getstarted' | '/marketplace'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/getstarted' | '/marketplace'
-  id: '__root__' | '/' | '/getstarted' | '/marketplace/'
+  to: '/' | '/dashboard' | '/getstarted' | '/marketplace'
+  id: '__root__' | '/' | '/dashboard' | '/getstarted' | '/marketplace/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
   GetstartedRoute: typeof GetstartedRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/getstarted'
       fullPath: '/getstarted'
       preLoaderRoute: typeof GetstartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
   GetstartedRoute: GetstartedRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
 }
