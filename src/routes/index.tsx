@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 
 import React, { useState, type ChangeEvent } from 'react'
 import googleIcon from '@/assets/icons/google.svg'
 import AuthLayout from '@/layout/AuthLayout'
 import BaseButton from '@/components/BaseButton'
+import { useAuth } from '@/services/auth.service'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -50,6 +51,28 @@ const BaseInput: React.FC<BaseInputProps> = ({
   </div>
 )
 
+// const handleSignIn = async () => {
+//   setLoading(true)
+//   try {
+//     // TODO: Replace with actual login endpoint
+//     // const res = await post('auth/login', userData)
+
+//     // Simulate login success
+//     const fakeToken = {
+//       type: 'Admin',
+//       token: 'mocked-token-value',
+//     }
+
+//     localStorage.setItem('token', JSON.stringify(fakeToken))
+//     // navigate to dashboard
+//     window.location.href = '/dashboard'
+//   } catch (err) {
+//     console.error('Login failed:', err)
+//   } finally {
+//     setLoading(false)
+//   }
+// }
+
 function App() {
   const [userData, setUserData] = useState<UserData>({
     email: '',
@@ -57,6 +80,8 @@ function App() {
   })
 
   const [loading, setLoading] = useState<boolean>(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -64,9 +89,15 @@ function App() {
   }
 
   const handleSignIn = () => {
-    setLoading(true)
-    // Simulate loading
-    setTimeout(() => setLoading(false), 2000)
+    login.mutate(userData, {
+      onSuccess: (data) => {
+        console.log('succes', data)
+        navigate({ to: '/summary' })
+      },
+      onError(error) {
+        console.log(error)
+      },
+    })
   }
   return (
     <AuthLayout>

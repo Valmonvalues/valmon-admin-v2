@@ -1,6 +1,25 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+:root {
+  --color-layout: #232222;
+}
+
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --color-primary: #0d6efd;
+  --color-secondary: #0d6efd;
+  --color-base: #000;
+  --color-layout: var(--color-layout);
+
+  --radius-appRadius: 10px;
+
+  /* Shadows */
+  --shadow-3xl: -15px 15px 24px rgba(22, 51, 102, 0.25);
+  --shadow-4xl: 15px 15px 24px rgba(22, 51, 102, 0.25);
+  --shadow-linkpreview: 0px 1px 4px #0c0c0d0d;
+}
+
 body {
   @apply m-0;
   font-family:
@@ -13,4 +32,17 @@ body {
 code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.activeMenu {
+  background: linear-gradient(
+    66.86deg,
+    #efe687 5.8%,
+    #c09742 34.83%,
+    #ac7729 59.61%,
+    #cfb159 71.4%,
+    #e2ce72 83.31%,
+    #ad7a22 94.28%
+  );
+  color: black;
 }

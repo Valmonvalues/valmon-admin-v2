@@ -10,18 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GetstartedRouteImport } from './routes/getstarted'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index'
+import { Route as dashboardWalletIndexRouteImport } from './routes/(dashboard)/wallet/index'
+import { Route as dashboardUsersIndexRouteImport } from './routes/(dashboard)/users/index'
+import { Route as dashboardSummaryIndexRouteImport } from './routes/(dashboard)/summary/index'
+import { Route as dashboardSkillsIndexRouteImport } from './routes/(dashboard)/skills/index'
+import { Route as dashboardSettingsIndexRouteImport } from './routes/(dashboard)/settings/index'
+import { Route as dashboardResolutionIndexRouteImport } from './routes/(dashboard)/resolution/index'
+import { Route as dashboardMarketPlaceIndexRouteImport } from './routes/(dashboard)/marketPlace/index'
+import { Route as dashboardAccountIndexRouteImport } from './routes/(dashboard)/account/index'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
   path: '/getstarted',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,39 +36,143 @@ const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
   path: '/marketplace/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardWalletIndexRoute = dashboardWalletIndexRouteImport.update({
+  id: '/(dashboard)/wallet/',
+  path: '/wallet/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardUsersIndexRoute = dashboardUsersIndexRouteImport.update({
+  id: '/(dashboard)/users/',
+  path: '/users/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardSummaryIndexRoute = dashboardSummaryIndexRouteImport.update({
+  id: '/(dashboard)/summary/',
+  path: '/summary/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardSkillsIndexRoute = dashboardSkillsIndexRouteImport.update({
+  id: '/(dashboard)/skills/',
+  path: '/skills/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardSettingsIndexRoute = dashboardSettingsIndexRouteImport.update({
+  id: '/(dashboard)/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardResolutionIndexRoute =
+  dashboardResolutionIndexRouteImport.update({
+    id: '/(dashboard)/resolution/',
+    path: '/resolution/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardMarketPlaceIndexRoute =
+  dashboardMarketPlaceIndexRouteImport.update({
+    id: '/(dashboard)/marketPlace/',
+    path: '/marketPlace/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardAccountIndexRoute = dashboardAccountIndexRouteImport.update({
+  id: '/(dashboard)/account/',
+  path: '/account/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
+  '/account': typeof dashboardAccountIndexRoute
+  '/marketPlace': typeof dashboardMarketPlaceIndexRoute
+  '/resolution': typeof dashboardResolutionIndexRoute
+  '/settings': typeof dashboardSettingsIndexRoute
+  '/skills': typeof dashboardSkillsIndexRoute
+  '/summary': typeof dashboardSummaryIndexRoute
+  '/users': typeof dashboardUsersIndexRoute
+  '/wallet': typeof dashboardWalletIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
+  '/account': typeof dashboardAccountIndexRoute
+  '/marketPlace': typeof dashboardMarketPlaceIndexRoute
+  '/resolution': typeof dashboardResolutionIndexRoute
+  '/settings': typeof dashboardSettingsIndexRoute
+  '/skills': typeof dashboardSkillsIndexRoute
+  '/summary': typeof dashboardSummaryIndexRoute
+  '/users': typeof dashboardUsersIndexRoute
+  '/wallet': typeof dashboardWalletIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace/': typeof MarketplaceIndexRoute
+  '/(dashboard)/account/': typeof dashboardAccountIndexRoute
+  '/(dashboard)/marketPlace/': typeof dashboardMarketPlaceIndexRoute
+  '/(dashboard)/resolution/': typeof dashboardResolutionIndexRoute
+  '/(dashboard)/settings/': typeof dashboardSettingsIndexRoute
+  '/(dashboard)/skills/': typeof dashboardSkillsIndexRoute
+  '/(dashboard)/summary/': typeof dashboardSummaryIndexRoute
+  '/(dashboard)/users/': typeof dashboardUsersIndexRoute
+  '/(dashboard)/wallet/': typeof dashboardWalletIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/getstarted' | '/marketplace'
+  fullPaths:
+    | '/'
+    | '/getstarted'
+    | '/marketplace'
+    | '/account'
+    | '/marketPlace'
+    | '/resolution'
+    | '/settings'
+    | '/skills'
+    | '/summary'
+    | '/users'
+    | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/getstarted' | '/marketplace'
-  id: '__root__' | '/' | '/dashboard' | '/getstarted' | '/marketplace/'
+  to:
+    | '/'
+    | '/getstarted'
+    | '/marketplace'
+    | '/account'
+    | '/marketPlace'
+    | '/resolution'
+    | '/settings'
+    | '/skills'
+    | '/summary'
+    | '/users'
+    | '/wallet'
+  id:
+    | '__root__'
+    | '/'
+    | '/getstarted'
+    | '/marketplace/'
+    | '/(dashboard)/account/'
+    | '/(dashboard)/marketPlace/'
+    | '/(dashboard)/resolution/'
+    | '/(dashboard)/settings/'
+    | '/(dashboard)/skills/'
+    | '/(dashboard)/summary/'
+    | '/(dashboard)/users/'
+    | '/(dashboard)/wallet/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
   GetstartedRoute: typeof GetstartedRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
+  dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
+  dashboardMarketPlaceIndexRoute: typeof dashboardMarketPlaceIndexRoute
+  dashboardResolutionIndexRoute: typeof dashboardResolutionIndexRoute
+  dashboardSettingsIndexRoute: typeof dashboardSettingsIndexRoute
+  dashboardSkillsIndexRoute: typeof dashboardSkillsIndexRoute
+  dashboardSummaryIndexRoute: typeof dashboardSummaryIndexRoute
+  dashboardUsersIndexRoute: typeof dashboardUsersIndexRoute
+  dashboardWalletIndexRoute: typeof dashboardWalletIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,13 +182,6 @@ declare module '@tanstack/react-router' {
       path: '/getstarted'
       fullPath: '/getstarted'
       preLoaderRoute: typeof GetstartedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +198,77 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketplaceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)/wallet/': {
+      id: '/(dashboard)/wallet/'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof dashboardWalletIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/users/': {
+      id: '/(dashboard)/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof dashboardUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/summary/': {
+      id: '/(dashboard)/summary/'
+      path: '/summary'
+      fullPath: '/summary'
+      preLoaderRoute: typeof dashboardSummaryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/skills/': {
+      id: '/(dashboard)/skills/'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof dashboardSkillsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/settings/': {
+      id: '/(dashboard)/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof dashboardSettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/resolution/': {
+      id: '/(dashboard)/resolution/'
+      path: '/resolution'
+      fullPath: '/resolution'
+      preLoaderRoute: typeof dashboardResolutionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/marketPlace/': {
+      id: '/(dashboard)/marketPlace/'
+      path: '/marketPlace'
+      fullPath: '/marketPlace'
+      preLoaderRoute: typeof dashboardMarketPlaceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/account/': {
+      id: '/(dashboard)/account/'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof dashboardAccountIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
   GetstartedRoute: GetstartedRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
+  dashboardAccountIndexRoute: dashboardAccountIndexRoute,
+  dashboardMarketPlaceIndexRoute: dashboardMarketPlaceIndexRoute,
+  dashboardResolutionIndexRoute: dashboardResolutionIndexRoute,
+  dashboardSettingsIndexRoute: dashboardSettingsIndexRoute,
+  dashboardSkillsIndexRoute: dashboardSkillsIndexRoute,
+  dashboardSummaryIndexRoute: dashboardSummaryIndexRoute,
+  dashboardUsersIndexRoute: dashboardUsersIndexRoute,
+  dashboardWalletIndexRoute: dashboardWalletIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
