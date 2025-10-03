@@ -3,6 +3,7 @@
 
 :root {
   --color-layout: #232222;
+  --color-bg-primary: #f5f1f1;
 }
 
 @theme {
@@ -11,7 +12,7 @@
   --color-secondary: #0d6efd;
   --color-base: #000;
   --color-layout: var(--color-layout);
-
+  /* --color-bg-primary: var(--color-bg-primary); */
   --radius-appRadius: 10px;
 
   /* Shadows */
@@ -45,4 +46,8 @@ code {
     #ad7a22 94.28%
   );
   color: black;
+}
+
+.bg-custom-primary {
+  background-color: var(--color-bg-primary);
 }

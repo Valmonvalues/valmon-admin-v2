@@ -50,6 +50,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
         breakpoint: 'sm',
         collapsed: { mobile: !opened },
       }}
+      bg="var(--color-bg-primary)"
     >
       <AppShell.Header>
         <nav

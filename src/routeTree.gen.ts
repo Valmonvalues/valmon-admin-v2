@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GetstartedRouteImport } from './routes/getstarted'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index'
 import { Route as dashboardWalletIndexRouteImport } from './routes/(dashboard)/wallet/index'
 import { Route as dashboardUsersIndexRouteImport } from './routes/(dashboard)/users/index'
@@ -29,6 +30,11 @@ const GetstartedRoute = GetstartedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace/': typeof MarketplaceIndexRoute
+  '/profile/': typeof ProfileIndexRoute
   '/(dashboard)/account/': typeof dashboardAccountIndexRoute
   '/(dashboard)/marketPlace/': typeof dashboardMarketPlaceIndexRoute
   '/(dashboard)/resolution/': typeof dashboardResolutionIndexRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace'
+    | '/profile'
     | '/account'
     | '/marketPlace'
     | '/resolution'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace'
+    | '/profile'
     | '/account'
     | '/marketPlace'
     | '/resolution'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace/'
+    | '/profile/'
     | '/(dashboard)/account/'
     | '/(dashboard)/marketPlace/'
     | '/(dashboard)/resolution/'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GetstartedRoute: typeof GetstartedRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
   dashboardMarketPlaceIndexRoute: typeof dashboardMarketPlaceIndexRoute
   dashboardResolutionIndexRoute: typeof dashboardResolutionIndexRoute
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketplace/': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GetstartedRoute: GetstartedRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   dashboardAccountIndexRoute: dashboardAccountIndexRoute,
   dashboardMarketPlaceIndexRoute: dashboardMarketPlaceIndexRoute,
   dashboardResolutionIndexRoute: dashboardResolutionIndexRoute,

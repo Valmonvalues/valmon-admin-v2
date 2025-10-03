@@ -12,6 +12,12 @@ export interface User {
   status: string
 }
 
+export interface StatCardProps {
+  title: string
+  value: number
+  color: string
+}
+
 export interface UserResponseType {
   data: {
     users: User[]
