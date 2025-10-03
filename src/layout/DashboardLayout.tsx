@@ -154,9 +154,10 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       </AppShell.Header>
       <AppShell.Navbar px="md" py="xl" bg="var(--color-layout)">
         <AppShell.Section grow component={ScrollArea} scrollbarSize={1}>
-          {navLinks.map((navlink) => {
+          {navLinks.map((navlink, idx) => {
             return (
               <Link
+                key={idx}
                 to={navlink.route}
                 className="flex items-center gap-4 font-medium p-4 mb-6 text-white"
                 activeProps={{

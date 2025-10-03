@@ -34,14 +34,19 @@ export const Route = createFileRoute('/(dashboard)/users/')({
 
 function Users() {
   const [search, setSearch] = useState('')
-  const { listUsers } = useUser()
+  const [page, setPage] = useState(1)
+  const perpage = 14
+  const { listUsers, getUsersSummary } = useUser()
   // const { data: users, isLoading } = listUsers
-  const { data, isLoading } = listUsers
+  const { data, isLoading } = listUsers({ page, perpage })
+  const { data: usersSummary, isLoading: userSummaryLoader } = getUsersSummary
 
   const users: User[] = data?.data.users ?? []
+  const summary = usersSummary?.data ?? []
 
   console.log('users', users)
   console.log('data', data)
+  // console.log('getUsersSummary', summary)
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '-'
@@ -50,17 +55,25 @@ function Users() {
   }
   return (
     <DashboardLayout>
-      <div>Hello "/dashboard/users/"!</div>
       <div className="">
         <SimpleGrid cols={3} spacing="lg" className="mb-6 max-w-[900px]">
-          <StatCard title="All Users" value={72} color="bg-pink-100" />
+          <StatCard
+            title="All Users"
+            value={summary.total_users}
+            color="bg-pink-100"
+          />
           <StatCard
             title="Service Providers"
-            value={40}
+            value={summary.service_providers}
             color="bg-purple-100"
           />
-          <StatCard title="Normal Users" value={32} color="bg-green-100" />
+          <StatCard
+            title="Normal Users"
+            value={summary.employers}
+            color="bg-green-100"
+          />
         </SimpleGrid>
+
         <Paper
           shadow="xs"
           radius="md"
@@ -226,6 +239,26 @@ function Users() {
             </ScrollArea>
           )}
         </Paper>
+
+        <div className="pagination-controls">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+
+          <span>Page {page}</span>
+
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={
+              page >= Math.ceil((data?.data.pagination.total || 0) / perpage)
+            }
+          >
+            Next
+          </button>
+        </div>
       </div>
     </DashboardLayout>
   )

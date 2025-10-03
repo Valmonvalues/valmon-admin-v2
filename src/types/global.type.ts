@@ -6,3 +6,8 @@ export interface Pagination {
   next_page_url: string | null
   prev_page_url: string | null
 }
+
+export interface Params {
+  page: number
+  perpage: number
+}
