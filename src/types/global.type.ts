@@ -11,3 +11,5 @@ export interface Params {
   page: number
   perpage: number
 }
+
+export type Id = number | string

@@ -1,6 +1,7 @@
-import type { Pagination } from './global.type'
+import type { Id, Pagination } from './global.type'
 
 export interface User {
+  id: Id
   image: string
   name: string
   email: string

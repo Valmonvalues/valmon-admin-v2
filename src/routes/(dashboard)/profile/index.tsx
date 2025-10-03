@@ -1,7 +1,8 @@
+import { useUser } from '@/services/user.service'
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/profile/')({
+export const Route = createFileRoute('/(dashboard)/profile/')({
   component: Profile,
 })
 
@@ -14,6 +15,10 @@ function Profile() {
   const [isOnline, setIsOnline] = useState(false)
 
   const role = 'Admin'
+
+  const { getUser } = useUser()
+
+  //   const { data: user, isLoading: userLoader } = getUser()
 
   return (
     <div className="">
@@ -407,218 +412,3 @@ function Profile() {
     </div>
   )
 }
-
-// import React, { useEffect, useState, useMemo } from 'react'
-
-// // Import child components
-// import MarketPlaceEmployerBriefProfile from '@/components/MarketPlaceEmployerBriefProfile'
-// import MarketPlaceEmployerWorkGallery from '@/components/MarketPlaceEmployerWorkGallery'
-// import MarketPlaceEmployerServices from '@/components/MarketPlaceEmployerServices'
-// import MarketPlaceEmployerReviews from '@/components/MarketPlaceEmployerReviews'
-// import MarketPlaceEmployerMarketListing from '@/components/MarketPlaceEmployerMarketListing'
-// import BaseBackButton from '@/components/BaseBackButton'
-// import BaseButton from '@/components/BaseButton'
-
-// // Import services and store (you’ll adapt these to React context or whatever you use)
-// import { accountController } from '@/services/modules/account'
-// import { UsersController } from '@/services/modules/Admin/users'
-// import { MiscController } from '@/services/modules/misc'
-// import { useGlobalStore } from '@/store'
-// import { useNavigate } from '@tanstack/react-router'  // or your router hook
-
-// interface Review { rating: number; /* etc */ }
-// interface UserInfo { /* fill based on your data shape */ }
-// interface AdminUser { /* fill as needed */ }
-// // etc.
-
-// const MarketPlaceEmployerWork: React.FC = () => {
-//   const { users, deleteUser, suspendUser, restoreUser } = UsersController()
-//   const { addToFavorites } = MiscController()
-//   const { SingleUserAccount, singleGallery } = accountController()
-
-//   const store = useGlobalStore()
-//   const navigate = useNavigate()
-
-//   // Tabs
-//   const [workerTab, setWorkerTab] = useState<'profile' | 'gallery' | 'service' | 'review' | 'marketplace'>('profile')
-
-//   // Data
-//   const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
-//   const [adminUsers, setAdminUsers] = useState<AdminUser | null>(null)
-//   const [gigs, setGigs] = useState<any[]>([])
-//   const [reviews, setReviews] = useState<Review[]>([])
-//   const [MPListing, setMPListing] = useState<any[]>([])
-//   const [allGallery, setAllGallery] = useState<any[]>([])
-
-//   const [loading, setLoading] = useState(false)
-//   const [galleryLoader, setGalleryLoader] = useState(false)
-
-//   const [isOnline, setIsOnline] = useState<boolean>(false)
-
-//   // Derived/Computed reviews (average, ratings count)
-//   const computedReviews = useMemo(() => {
-//     if (!reviews || reviews.length === 0) {
-//       return { average: 0, ratings: {}, total: 0, data: [] as Review[] }
-//     }
-//     const totalRatings = reviews.reduce((acc, rv) => acc + rv.rating, 0)
-//     const average = totalRatings / reviews.length
-//     const Ratings: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
-//     reviews.forEach((rv) => {
-//       Ratings[rv.rating] = (Ratings[rv.rating] || 0) + 1
-//     })
-//     return {
-//       average: parseFloat(average.toFixed(1)),
-//       ratings: Ratings,
-//       total: reviews.length,
-//       data: reviews,
-//     }
-//   }, [reviews])
-
-//   // Effect: on mount, decide which user data to fetch
-//   useEffect(() => {
-//     const isAdmin =
-//       store.UserAccount?.role === 'Admin' ||
-//       store.UserAccount?.role === 'super_admin'
-
-//     async function fetchUsersData() {
-//       if (isAdmin) {
-//         const resp = await users(store.adminUserId)
-//         if (resp.status === 'success') {
-//           const data = resp.data.data
-//           setAdminUsers(data)
-//           setAllGallery(data.gallery || [])
-//           setGigs(data.profile.gigs || [])
-//           setReviews(data.reviews || [])
-//           setMPListing(data.listings || [])
-//         } else {
-//           console.error('Error fetching admin users:', resp.error)
-//         }
-//       } else {
-//         // Non-admin
-//         fetchSingleUser()
-//         fetchGallery()
-//       }
-//     }
-
-//     async function fetchSingleUser() {
-//       setLoading(true)
-//       const resp = await SingleUserAccount(store.userIdForProfileCheck)
-//       setLoading(false)
-//       if (resp.status === 'success') {
-//         const d = resp.data.data
-//         setUserInfo(d)
-//         setGigs(d.profile?.gigs || [])
-//         setReviews(d.reviews || [])
-//       } else {
-//         console.error('Error fetching single user:', resp.error)
-//       }
-//     }
-
-//     async function fetchGallery() {
-//       setGalleryLoader(true)
-//       const resp = await singleGallery(store.userIdForProfileCheck)
-//       setGalleryLoader(false)
-//       if (resp.status === 'success') {
-//         setAllGallery(resp.data.data)
-//       } else {
-//         console.error('Error gallery:', resp.error)
-//       }
-//     }
-
-//     fetchUsersData()
-//   }, [store.UserAccount, store.adminUserId, store.userIdForProfileCheck])
-
-//   // Effect: compute online presence
-//   useEffect(() => {
-//     // This logic from Vue watch([...]) equivalent
-//     const lastSeen = adminUsers?.last_seen_at ?? userInfo?.last_seen_at
-//     if (lastSeen) {
-//       const lastDate = new Date(lastSeen)
-//       const now = new Date()
-//       const diffMin = (now.getTime() - lastDate.getTime()) / (1000 * 60)
-//       setIsOnline(diffMin < 30) // or your logic (note: Vue had >=30, but check)
-//     }
-//   }, [adminUsers, userInfo])
-
-//   // Handlers
-//   const backToAdmin = () => {
-//     if (store.profileChoice === 'listing') {
-//       navigate({ to: '/admin/market' })
-//     } else {
-//       navigate({ to: '/admin/user' })
-//     }
-//   }
-
-//   const toggleTab = (tab: typeof workerTab) => {
-//     setWorkerTab(tab)
-//   }
-
-//   const viewAll = (tab: typeof workerTab) => {
-//     console.log(tab)
-//     setWorkerTab(tab)
-//   }
-
-//   const removeUser = async (id: string) => {
-//     const resp = await deleteUser(id)
-//     if (resp.status === 'success') {
-//       // handle alert (you may have your alert utility)
-//       navigate({ to: '/admin/user' })
-//     } else {
-//       console.error('Delete User failed:', resp.error)
-//     }
-//   }
-
-//   const manageUser = async (id: string, status: string) => {
-//     if (status === 'ACTIVE') {
-//       await suspend(id)
-//     } else {
-//       await restore(id)
-//     }
-//   }
-
-//   const suspend = async (id: string) => {
-//     const resp = await suspendUser(id)
-//     if (resp.status === 'success') {
-//       // show alert
-//       // optionally refetch
-//     } else {
-//       console.error('Suspend failed:', resp.error)
-//     }
-//   }
-
-//   const restore = async (id: string) => {
-//     const resp = await restoreUser(id)
-//     if (resp.status === 'success') {
-//       // show alert
-//       // optionally refetch
-//     } else {
-//       console.error('Restore failed:', resp.error)
-//     }
-//   }
-
-//   const openChat = () => {
-//     store.updateNewConversationDetails(
-//       store.userIdForProfileCheck,
-//       /* you’d track selectedServiceId in state too */
-//       null
-//     )
-//     store.newConversationDetails.gig = null
-//     navigate({ to: '/chat' })
-//   }
-
-//   const addToFavorite = async (id: string) => {
-//     const resp = await addToFavorites({ type: 'user', id })
-//     if (resp.status === 'success') {
-//       // alert success
-//       setTimeout(() => {
-//         navigate({ to: '/favorites' })
-//       }, 1000)
-//     } else {
-//       // alert error
-//       console.error('Add to favorite error:', resp.error)
-//     }
-//   }
-
-// }
-
-// export default MarketPlaceEmployerWork

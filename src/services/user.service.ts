@@ -1,5 +1,5 @@
 import { userApi } from '@/api/user.api'
-import type { Params } from '@/types/global.type'
+import type { Id, Params } from '@/types/global.type'
 import { useQuery } from '@tanstack/react-query'
 
 export const useUser = () => {
@@ -15,5 +15,11 @@ export const useUser = () => {
     queryFn: userApi.getUsersSummary,
   })
 
-  return { listUsers, getUsersSummary }
+  const getUser = (id: Id) =>
+    useQuery({
+      queryKey: ['user', id],
+      queryFn: () => userApi.getUser(id),
+    })
+
+  return { listUsers, getUsersSummary, getUser }
 }

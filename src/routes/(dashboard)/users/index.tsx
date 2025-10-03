@@ -23,18 +23,25 @@ import {
   IconSearch,
   IconTrash,
 } from '@tabler/icons-react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 
 import { IconChevronUp, IconChevronDown } from '@tabler/icons-react'
 import { IconArrowDown } from '@tabler/icons-react'
 import StatCard from '@/components/StatCard'
+import type { Id } from '@/types/global.type'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
 })
 
 function Users() {
+  const navigate = useNavigate()
+
+  const handleView = (userId: Id) => {
+    navigate({ to: `/users/${userId}` })
+  }
+
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const perpage = 14
@@ -214,9 +221,7 @@ function Users() {
                                   leftSection={<IconEye size={16} />}
                                   variant="subtle"
                                   color="gray"
-                                  onClick={() =>
-                                    console.log('View user', user.email)
-                                  }
+                                  onClick={() => handleView(user.id)}
                                 >
                                   View
                                 </Menu.Item>
