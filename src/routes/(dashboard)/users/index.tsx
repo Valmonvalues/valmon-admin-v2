@@ -16,6 +16,8 @@ import {
   TextInput,
 } from '@mantine/core'
 import {
+  IconChevronLeft,
+  IconChevronRight,
   IconDotsVertical,
   IconEye,
   IconSearch,
@@ -240,23 +242,27 @@ function Users() {
           )}
         </Paper>
 
-        <div className="pagination-controls">
+        <div className="pagination-controls flex items-center gap-1">
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
+            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Previous"
           >
-            Previous
+            <IconChevronLeft size={24} />
           </button>
 
-          <span>Page {page}</span>
+          <span>{page}</span>
 
           <button
             onClick={() => setPage((prev) => prev + 1)}
             disabled={
               page >= Math.ceil((data?.data.pagination.total || 0) / perpage)
             }
+            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Next"
           >
-            Next
+            <IconChevronRight size={24} />
           </button>
         </div>
       </div>
