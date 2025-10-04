@@ -2,8 +2,6 @@ import { Card } from '@mantine/core'
 import { type StatCardProps } from '@/types/user.types'
 import { Image } from '@mantine/core'
 
-import { IconUser } from '@tabler/icons-react'
-
 import profile from '@/assets/icons/cardprofile.svg'
 
 const StatCard = ({ title, value, color }: StatCardProps) => {
@@ -17,7 +15,6 @@ const StatCard = ({ title, value, color }: StatCardProps) => {
           <div
             className={`flex h-12 w-12 justify-center items-center rounded-xl ${color}`}
           >
-            {/* <IconUser size={28} className="text-black/70" /> */}
             {/* <img src={profile} alt="" /> */}
             {/* h={20} w="auto"  */}
             <Image radius="md" h={30} w="auto" src={profile} />

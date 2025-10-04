@@ -1,6 +1,5 @@
 import { IconStarFilled } from '@tabler/icons-react'
 import { dummyReviews } from '../Navigation/data/dummyData'
-import StarRating from '../StarRating'
 import ReviewCard from './ReviewCard'
 
 function ReviewsSection() {

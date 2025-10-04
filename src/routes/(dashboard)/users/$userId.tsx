@@ -18,12 +18,12 @@ export const Route = createFileRoute('/(dashboard)/users/$userId')({
 })
 
 function RouteComponent() {
-  const [isOnline, setIsOnline] = useState(false)
+  const [isOnline] = useState(false)
   const [activeTab, setActiveTab] = useState('Profile Brief')
   const router = useNavigate()
   const { getUser } = useUser()
   const { userId } = Route.useParams()
-  const { data: user, isLoading: userLoader } = getUser(userId)
+  const { data: user } = getUser(userId)
 
   const renderTabContent = () => {
     switch (activeTab) {

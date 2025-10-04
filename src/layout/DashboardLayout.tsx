@@ -14,9 +14,9 @@ type LayoutProps = {
 }
 
 const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
-  const [opened, { toggle }] = useDisclosure()
+  const [opened] = useDisclosure()
   const [notificationOpen, setNotificationOpen] = useState(false)
-  const [unreadNotifications, setUnreadNotifications] = useState([
+  const [unreadNotifications] = useState([
     {
       id: 1,
       message: 'Anything goes',

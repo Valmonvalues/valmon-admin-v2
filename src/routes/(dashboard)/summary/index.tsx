@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
 // Dashboard.tsx
-import wallet from '@/assets/icons/empty-wallet.svg'
-import walletCheck from '@/assets/icons/wallet-check.svg'
-import convertShape from '@/assets/icons/convertshape.svg'
-import cardblack from '@/assets/icons/card-pos-black.svg'
+// import wallet from '@/assets/icons/empty-wallet.svg'
+// import walletCheck from '@/assets/icons/wallet-check.svg'
+// import convertShape from '@/assets/icons/convertshape.svg'
+// import cardblack from '@/assets/icons/card-pos-black.svg'
 
 // import SharedLoader from './SharedLoader'
 // import DashboardAreaChart from './DashboardAreaChart'
 // import DashboardBarChart from './DashboardBarChart'
 // import DashboardLineChart from './DashboardLineChart'
 // import DashboardStatsCard from './DashboardStatsCard'
-import { summary } from '@/services/summary'
+// import { summary } from '@/services/summary'
 import DashboardLayout from '@/layout/DashboardLayout'
 
-interface PlatformOverview {
-  [key: string]: number | { value: number; percentage?: number }
-}
+// interface PlatformOverview {
+//   [key: string]: number | { value: number; percentage?: number }
+// }
 
-interface SummaryData {
-  platform_overview: PlatformOverview
-  top_marketplace_categories: { name: string }[]
-  top_skill_categories: { name: string }[]
-  total_users: {
-    value: number
-    percentage_increase: number
-  }
-  income_from_skills: any
-  skilled_employments: any
-  market_place_sales: any
-}
+// interface SummaryData {
+//   platform_overview: PlatformOverview
+//   top_marketplace_categories: { name: string }[]
+//   top_skill_categories: { name: string }[]
+//   total_users: {
+//     value: number
+//     percentage_increase: number
+//   }
+//   income_from_skills: any
+//   skilled_employments: any
+//   market_place_sales: any
+// }
 
-interface Card {
-  title: string
-  value: any
-  icon: string
-  id: string
-  bg: string
-}
+// interface Card {
+//   title: string
+//   value: any
+//   icon: string
+//   id: string
+//   bg: string
+// }
 
 export const Route = createFileRoute('/(dashboard)/summary/')({
   component: Dashboard,
@@ -53,107 +53,106 @@ export const Route = createFileRoute('/(dashboard)/summary/')({
 
 // const Dashboard: React.FC = () => {
 function Dashboard() {
-  const [period, setPeriod] = useState<'week' | 'month' | 'year'>('week')
-  const [loading, setLoading] = useState<boolean>(false)
-  const [topMarketCategory, setTopMarketCategory] = useState<
-    { name: string }[]
-  >([])
-  const [topCategory, setTopCategory] = useState<{ name: string }[]>([])
+  // const [period, setPeriod] = useState<'week' | 'month' | 'year'>('week')
+  // const [, setLoading] = useState<boolean>(false)
+  // const [topMarketCategory, setTopMarketCategory] = useState<
+  //   { name: string }[]
+  // >([])
+  // const [topCategory, setTopCategory] = useState<{ name: string }[]>([])
 
-  const [appSummary, setAppSummary] = useState<{
-    cards: { data: Card[]; icon: any[] }
-    data: Partial<SummaryData>
-  }>({
-    cards: {
-      data: [
-        {
-          title: 'All Reports',
-          value: 40,
-          icon: walletCheck,
-          id: 'all_reports',
-          bg: 'bg-[#F45E5E1A]',
-        },
-        {
-          title: 'Resolved Reports',
-          value: 40,
-          icon: wallet,
-          id: 'resolved_reports',
-          bg: 'bg-[#5E6DF41A]',
-        },
-        {
-          title: 'In-Escrow',
-          value: 40,
-          icon: convertShape,
-          id: 'in_escrow_count',
-          bg: 'bg-[#F45E5E1A]',
-        },
-        {
-          title: 'In-Escrow Value',
-          value: 40,
-          icon: cardblack,
-          id: 'in_escrow_amount',
-          bg: 'bg-[#5EF4881A]',
-        },
-      ],
-      icon: [],
-    },
-    data: {},
-  })
+  // const [appSummary, setAppSummary] = useState<{
+  //   cards: { data: Card[]; icon: any[] }
+  //   data: Partial<SummaryData>
+  // }>({
+  //   cards: {
+  //     data: [
+  //       {
+  //         title: 'All Reports',
+  //         value: 40,
+  //         icon: walletCheck,
+  //         id: 'all_reports',
+  //         bg: 'bg-[#F45E5E1A]',
+  //       },
+  //       {
+  //         title: 'Resolved Reports',
+  //         value: 40,
+  //         icon: wallet,
+  //         id: 'resolved_reports',
+  //         bg: 'bg-[#5E6DF41A]',
+  //       },
+  //       {
+  //         title: 'In-Escrow',
+  //         value: 40,
+  //         icon: convertShape,
+  //         id: 'in_escrow_count',
+  //         bg: 'bg-[#F45E5E1A]',
+  //       },
+  //       {
+  //         title: 'In-Escrow Value',
+  //         value: 40,
+  //         icon: cardblack,
+  //         id: 'in_escrow_amount',
+  //         bg: 'bg-[#5EF4881A]',
+  //       },
+  //     ],
+  //     icon: [],
+  //   },
+  //   data: {},
+  // })
 
-  //   const { summary } = SummaryController()
+  // //   const { summary } = SummaryController()
 
-  const fetchSummary = async (selectedPeriod: string) => {
-    setLoading(true)
-    try {
-      const summaryRequest = summary()
+  // const fetchSummary = async (selectedPeriod: string) => {
+  //   setLoading(true)
+  //   try {
+  //     const summaryRequest = summary()
 
-      const { data, status, error } = await summaryRequest(selectedPeriod)
-      console.log(status)
-      if (status.value === 'success') {
-        const _data: SummaryData = data.value.data
-        setAppSummary((prev) => ({
-          ...prev,
-          data: _data,
-        }))
+  //     const { data, status } = await summaryRequest(selectedPeriod)
+  //     console.log(status)
+  //     if (status.value === 'success') {
+  //       const _data: SummaryData = data.value.data
+  //       setAppSummary((prev) => ({
+  //         ...prev,
+  //         data: _data,
+  //       }))
 
-        setTopMarketCategory(_data.top_marketplace_categories || [])
-        setTopCategory(_data.top_skill_categories || [])
+  //       setTopMarketCategory(_data.top_marketplace_categories || [])
+  //       setTopCategory(_data.top_skill_categories || [])
 
-        setAppSummary((prev) => {
-          const newCards = prev.cards.data.map((card) => {
-            const overviewValue = _data.platform_overview[card.id]
-            return {
-              ...card,
-              value: overviewValue ?? card.value,
-            }
-          })
+  //       setAppSummary((prev) => {
+  //         const newCards = prev.cards.data.map((card) => {
+  //           const overviewValue = _data.platform_overview[card.id]
+  //           return {
+  //             ...card,
+  //             value: overviewValue ?? card.value,
+  //           }
+  //         })
 
-          return {
-            ...prev,
-            cards: {
-              ...prev.cards,
-              data: newCards,
-            },
-          }
-        })
-      } else if (status.value === 'error') {
-        console.error(error.value)
-      }
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  //         return {
+  //           ...prev,
+  //           cards: {
+  //             ...prev.cards,
+  //             data: newCards,
+  //           },
+  //         }
+  //       })
+  //     } else if (status.value === 'error') {
+  //       console.error(error.value)
+  //     }
+  //   } catch (err) {
+  //     console.error(err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
-  useEffect(() => {
-    fetchSummary(period)
-  }, [period])
+  // useEffect(() => {
+  //   fetchSummary(period)
+  // }, [period])
 
   return (
     <DashboardLayout>
-      <div className="bg-primary_bg w-full p-8">
-        {/* Period Selector */}
+      {/* <div className="bg-primary_bg w-full p-8">
         <div className="bg-black w-fit text-sm p-2 mb-10 px-5 rounded-2xl text-white center gap-3">
           <span> Show Result For</span>
           <span className="ring ring-white ring-offset-0 center rounded-sm">
@@ -171,9 +170,9 @@ function Dashboard() {
           </span>
         </div>
 
-        {/* Charts Row */}
+
         <div className="flex gap-4 mb-10">
-          {/* <div className="card card-compact bg-base-100 h-[500px] w-2/4 shadow-xl flex-1">
+          <div className="card card-compact bg-base-100 h-[500px] w-2/4 shadow-xl flex-1">
           <div className="card-body">
             {loading ? (
               <SharedLoader />
@@ -183,10 +182,10 @@ function Dashboard() {
               />
             )}
           </div>
-        </div> */}
+        </div>
 
           <div className="flex gap-4 flex-col">
-            {/* Total User Card */}
+
             <div className="card card-compact bg-base-100 min-w-[19%] h-40 shadow-xl">
               <div className="card-body p-[16px] text-[#101828]">
                 <h2 className="text-[#101828] text-sm font-semibold">
@@ -197,7 +196,6 @@ function Dashboard() {
                     <span className="text-[22px] font-bold">
                       {appSummary.data?.total_users?.value}
                     </span>
-                    {/* You can move this SVG into its own component if needed */}
                     <svg
                       width="43"
                       height="43"
@@ -221,7 +219,7 @@ function Dashboard() {
                       />
                     </svg>
                   </p>
-                  {/* <div className="flex gap-2 items-center w-[70%] mx-auto">
+                  <div className="flex gap-2 items-center w-[70%] mx-auto">
                   {appSummary.data?.total_users?.percentage_increase > 0 ? (
                     <svg
                       width="22"
@@ -259,12 +257,11 @@ function Dashboard() {
                     {appSummary.data?.total_users?.percentage_increase}%
                   </span>
                   <span>Up from yesterday</span>
-                </div> */}
+                </div>
                 </div>
               </div>
             </div>
 
-            {/* Top Skill Categories */}
             <div className="card card-compact bg-base-100 w-80 shadow-xl">
               <div className="card-body gap-1">
                 <h2 className="text-sm mb-1">Top Skill Categories</h2>
@@ -279,7 +276,6 @@ function Dashboard() {
               </div>
             </div>
 
-            {/* Top Marketplace Categories */}
             <div className="card card-compact bg-base-100 w-80 shadow-xl">
               <div className="card-body gap-1">
                 <h2 className="text-sm mb-1">Top MarketPlace Categories</h2>
@@ -296,9 +292,8 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* More charts */}
         <div className="flex items-center gap-8 mb-10">
-          {/* <div className="card card-compact bg-base-100 h-[400px] w-2/4 shadow-xl flex-1">
+          <div className="card card-compact bg-base-100 h-[400px] w-2/4 shadow-xl flex-1">
           <div className="card-body">
             {loading ? (
               <SharedLoader />
@@ -308,8 +303,8 @@ function Dashboard() {
               />
             )}
           </div>
-        </div> */}
-          {/* <div className="card card-compact bg-base-100 h-[400px] w-2/4 shadow-xl flex-1">
+        </div>
+          <div className="card card-compact bg-base-100 h-[400px] w-2/4 shadow-xl flex-1">
           <div className="card-body">
             {loading ? (
               <SharedLoader />
@@ -319,11 +314,10 @@ function Dashboard() {
               />
             )}
           </div>
-        </div> */}
+        </div>
         </div>
 
-        {/* Cards */}
-        {/* <div className="flex flex-wrap gap-6 justify-between mb-10">
+        <div className="flex flex-wrap gap-6 justify-between mb-10">
         {appSummary.cards.data.map((detail, index) => (
           <DashboardStatsCard
             key={index}
@@ -334,8 +328,9 @@ function Dashboard() {
             iconBg={detail.bg}
           />
         ))}
-      </div> */}
       </div>
+      </div> */}
+      <div className="">Coming Soon</div>
     </DashboardLayout>
   )
 }

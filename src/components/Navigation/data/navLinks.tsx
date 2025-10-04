@@ -3,7 +3,6 @@ import {
   IconCalendarDot,
   IconCoin,
   IconLayout2,
-  IconLogout,
   IconMessageUser,
   IconPaint,
   IconSettings,

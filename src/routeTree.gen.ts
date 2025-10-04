@@ -18,11 +18,9 @@ import { Route as dashboardSummaryIndexRouteImport } from './routes/(dashboard)/
 import { Route as dashboardSkillsIndexRouteImport } from './routes/(dashboard)/skills/index'
 import { Route as dashboardSettingsIndexRouteImport } from './routes/(dashboard)/settings/index'
 import { Route as dashboardResolutionIndexRouteImport } from './routes/(dashboard)/resolution/index'
-import { Route as dashboardProfileIndexRouteImport } from './routes/(dashboard)/profile/index'
 import { Route as dashboardMarketPlaceIndexRouteImport } from './routes/(dashboard)/marketPlace/index'
 import { Route as dashboardAccountIndexRouteImport } from './routes/(dashboard)/account/index'
 import { Route as dashboardUsersUserIdRouteImport } from './routes/(dashboard)/users/$userId'
-import { Route as dashboardProfileUserIdRouteImport } from './routes/(dashboard)/profile/$userId'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
@@ -70,11 +68,6 @@ const dashboardResolutionIndexRoute =
     path: '/resolution/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const dashboardProfileIndexRoute = dashboardProfileIndexRouteImport.update({
-  id: '/(dashboard)/profile/',
-  path: '/profile/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const dashboardMarketPlaceIndexRoute =
   dashboardMarketPlaceIndexRouteImport.update({
     id: '/(dashboard)/marketPlace/',
@@ -91,21 +84,14 @@ const dashboardUsersUserIdRoute = dashboardUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const dashboardProfileUserIdRoute = dashboardProfileUserIdRouteImport.update({
-  id: '/(dashboard)/profile/$userId',
-  path: '/profile/$userId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
-  '/profile/$userId': typeof dashboardProfileUserIdRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
-  '/profile': typeof dashboardProfileIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
   '/settings': typeof dashboardSettingsIndexRoute
   '/skills': typeof dashboardSkillsIndexRoute
@@ -117,11 +103,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace': typeof MarketplaceIndexRoute
-  '/profile/$userId': typeof dashboardProfileUserIdRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
-  '/profile': typeof dashboardProfileIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
   '/settings': typeof dashboardSettingsIndexRoute
   '/skills': typeof dashboardSkillsIndexRoute
@@ -134,11 +118,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
   '/marketplace/': typeof MarketplaceIndexRoute
-  '/(dashboard)/profile/$userId': typeof dashboardProfileUserIdRoute
   '/(dashboard)/users/$userId': typeof dashboardUsersUserIdRoute
   '/(dashboard)/account/': typeof dashboardAccountIndexRoute
   '/(dashboard)/marketPlace/': typeof dashboardMarketPlaceIndexRoute
-  '/(dashboard)/profile/': typeof dashboardProfileIndexRoute
   '/(dashboard)/resolution/': typeof dashboardResolutionIndexRoute
   '/(dashboard)/settings/': typeof dashboardSettingsIndexRoute
   '/(dashboard)/skills/': typeof dashboardSkillsIndexRoute
@@ -152,11 +134,9 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace'
-    | '/profile/$userId'
     | '/users/$userId'
     | '/account'
     | '/marketPlace'
-    | '/profile'
     | '/resolution'
     | '/settings'
     | '/skills'
@@ -168,11 +148,9 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace'
-    | '/profile/$userId'
     | '/users/$userId'
     | '/account'
     | '/marketPlace'
-    | '/profile'
     | '/resolution'
     | '/settings'
     | '/skills'
@@ -184,11 +162,9 @@ export interface FileRouteTypes {
     | '/'
     | '/getstarted'
     | '/marketplace/'
-    | '/(dashboard)/profile/$userId'
     | '/(dashboard)/users/$userId'
     | '/(dashboard)/account/'
     | '/(dashboard)/marketPlace/'
-    | '/(dashboard)/profile/'
     | '/(dashboard)/resolution/'
     | '/(dashboard)/settings/'
     | '/(dashboard)/skills/'
@@ -201,11 +177,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GetstartedRoute: typeof GetstartedRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
-  dashboardProfileUserIdRoute: typeof dashboardProfileUserIdRoute
   dashboardUsersUserIdRoute: typeof dashboardUsersUserIdRoute
   dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
   dashboardMarketPlaceIndexRoute: typeof dashboardMarketPlaceIndexRoute
-  dashboardProfileIndexRoute: typeof dashboardProfileIndexRoute
   dashboardResolutionIndexRoute: typeof dashboardResolutionIndexRoute
   dashboardSettingsIndexRoute: typeof dashboardSettingsIndexRoute
   dashboardSkillsIndexRoute: typeof dashboardSkillsIndexRoute
@@ -279,13 +253,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardResolutionIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(dashboard)/profile/': {
-      id: '/(dashboard)/profile/'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof dashboardProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(dashboard)/marketPlace/': {
       id: '/(dashboard)/marketPlace/'
       path: '/marketPlace'
@@ -307,13 +274,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardUsersUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(dashboard)/profile/$userId': {
-      id: '/(dashboard)/profile/$userId'
-      path: '/profile/$userId'
-      fullPath: '/profile/$userId'
-      preLoaderRoute: typeof dashboardProfileUserIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -321,11 +281,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GetstartedRoute: GetstartedRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
-  dashboardProfileUserIdRoute: dashboardProfileUserIdRoute,
   dashboardUsersUserIdRoute: dashboardUsersUserIdRoute,
   dashboardAccountIndexRoute: dashboardAccountIndexRoute,
   dashboardMarketPlaceIndexRoute: dashboardMarketPlaceIndexRoute,
-  dashboardProfileIndexRoute: dashboardProfileIndexRoute,
   dashboardResolutionIndexRoute: dashboardResolutionIndexRoute,
   dashboardSettingsIndexRoute: dashboardSettingsIndexRoute,
   dashboardSkillsIndexRoute: dashboardSkillsIndexRoute,
