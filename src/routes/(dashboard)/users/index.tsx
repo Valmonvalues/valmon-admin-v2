@@ -1,35 +1,17 @@
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useUser } from '@/services/user.service'
-import type { User } from '@/types/user.types'
-import {
-  ActionIcon,
-  Badge,
-  Divider,
-  Group,
-  Loader,
-  Menu,
-  Paper,
-  ScrollArea,
-  SimpleGrid,
-  Table,
-  Text,
-  TextInput,
-} from '@mantine/core'
-import {
-  IconChevronLeft,
-  IconChevronRight,
-  IconDotsVertical,
-  IconEye,
-  IconSearch,
-  IconTrash,
-} from '@tabler/icons-react'
-import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
-import { useState } from 'react'
-
-import { IconChevronUp, IconChevronDown } from '@tabler/icons-react'
-import { IconArrowDown } from '@tabler/icons-react'
+import { SimpleGrid } from '@mantine/core'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useMemo, useState } from 'react'
 import StatCard from '@/components/StatCard'
 import type { Id } from '@/types/global.type'
+import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
+import { notifications } from '@mantine/notifications'
+import { ReusableTable } from '@/components/table/ReusableTable'
+import { userColumns } from '@/columns/userColumns'
+import { PaginationControls } from '@/components/table/PaginationControls'
+import { perPage as perpage } from '@/constant/config'
+import type { User } from '@/types/user.types'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
@@ -39,22 +21,78 @@ function Users() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const perpage = 14
-  const { listUsers, getUsersSummary } = useUser()
+  const { listUsers, getUsersSummary, deleteUser } = useUser()
   const { data, isLoading } = listUsers({ page, perpage })
   const { data: usersSummary } = getUsersSummary
-
-  const users = data?.data.users ?? []
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<null | Id>(null)
+  const users = data?.users ?? []
   const summary = usersSummary?.data ?? []
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof User
+    direction: 'asc' | 'desc'
+  }>({ key: 'name', direction: 'asc' })
+  const totalUsers = data?.pagination?.total ?? 0
+  const totalPages = Math.ceil(totalUsers / perpage)
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '-'
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-GB')
+    return new Date(dateString).toLocaleDateString('en-GB')
+  }
+
+  const sortedUsers = useMemo(() => {
+    const sortableItems = [...users]
+
+    sortableItems.sort((a, b) => {
+      const aValue = a[sortConfig.key]
+      const bValue = b[sortConfig.key]
+
+      if (aValue === null || aValue === undefined) return 1
+      if (bValue === null || bValue === undefined) return -1
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'asc' ? -1 : 1
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'asc' ? 1 : -1
+      }
+      return 0
+    })
+
+    return sortableItems
+  }, [users, sortConfig])
+
+  const handleSort = (key: keyof User) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+    }))
   }
 
   const handleView = (userId: Id) => {
     navigate({ to: `/users/${userId}` })
+  }
+
+  const handleDeleteClick = (userId: Id) => {
+    setSelectedUser(userId)
+    setDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteUser.mutate(selectedUser as Id, {
+      onSuccess: () => {
+        setSelectedUser(null)
+        setDeleteModalOpen(false)
+      },
+      onError: (error) => {
+        console.error('Error deleting user:', error)
+        notifications.show({
+          title: 'Error',
+          message: 'Failed to delete user. Please try again.',
+          color: 'red',
+        })
+      },
+    })
   }
 
   return (
@@ -78,213 +116,41 @@ function Users() {
           />
         </SimpleGrid>
 
-        <Paper
-          shadow="xs"
-          radius="md"
-          p="md"
-          withBorder
-          className="max-w-[1300px]"
-        >
-          <Group justify="space-between" mb="md">
-            <div className="">
-              <Text fw={600}>
-                Customers{' '}
-                <Text span c="yellow">
-                  {users.length} Registered
-                </Text>
-              </Text>
-              <Text size="sm" c="dimmed">
-                List Of All Customers on The Platform
-              </Text>
-            </div>
-            <TextInput
-              placeholder="Search"
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
-              leftSection={<IconSearch size={16} />}
-            />
-          </Group>
-          <Divider my="sm" />
-          {isLoading ? (
-            <Group justify="center" p="xl">
-              <Loader />
-            </Group>
-          ) : (
-            <ScrollArea h={700} offsetScrollbars scrollbarSize={8}>
-              <div className="min-w-[1400px]">
-                <Table highlightOnHover>
-                  <Table.Thead className="text-[12px]">
-                    <Table.Tr className="text-gray-500">
-                      <Table.Th className="whitespace-nowrap">
-                        Serial Number
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">Image</Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className=""> Name</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Email</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Market Listing</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Joined Date</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Times Reported</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Types</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Last Seen</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        <div className="flex items-center ">
-                          <div className="">Status</div>
-                          <IconArrowDown stroke={1} size={15} />
-                        </div>
-                      </Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>
-                    {users.map((user, idx) => {
-                      return (
-                        <Table.Tr key={idx}>
-                          <Table.Td>{idx + 1}</Table.Td>
-                          <Table.Td>
-                            <img
-                              src={user.image}
-                              alt={user.name}
-                              width={32}
-                              height={32}
-                            />
-                          </Table.Td>
-                          <Table.Td>{user.name}</Table.Td>
-                          <Table.Td className="text-gray-500">
-                            {user.email}
-                          </Table.Td>
-                          <Table.Td className="text-gray-500">
-                            {user.listings_count}
-                          </Table.Td>
-                          <Table.Td className="text-gray-500">
-                            {formatDate(user.join_date)}
-                          </Table.Td>
-                          <Table.Td className="text-gray-500">
-                            {user.reported_count}
-                          </Table.Td>
-                          <Table.Td className="whitespace-nowrap text-gray-500">
-                            {user.type}
-                          </Table.Td>
-                          <Table.Td className="text-gray-500">
-                            {user.last_seen_at}
-                          </Table.Td>
-                          {/* <Table.Td>{user.status}</Table.Td> */}
-                          <Table.Td>
-                            <Badge
-                              color={
-                                user.status.toLocaleLowerCase() === 'active'
-                                  ? 'oklch(47.6% 0.114 61.907)'
-                                  : 'grey'
-                              }
-                              variant="light"
-                            >
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className={`size-2  ${
-                                    user.status.toLocaleLowerCase() === 'active'
-                                      ? 'bg-yellow-800'
-                                      : 'bg-gray-800'
-                                  } rounded-full`}
-                                />
-                                {user.status}
-                              </div>
-                            </Badge>
-                          </Table.Td>
-                          <Table.Td>
-                            <Menu>
-                              <Menu.Target>
-                                <ActionIcon variant="subtle" color="gray">
-                                  <IconDotsVertical size={18} stroke={2} />
-                                </ActionIcon>
-                              </Menu.Target>
-                              <Menu.Dropdown>
-                                <Menu.Item
-                                  leftSection={<IconEye size={16} />}
-                                  variant="subtle"
-                                  color="gray"
-                                  onClick={() => handleView(user.id)}
-                                >
-                                  View
-                                </Menu.Item>
-                                <Menu.Item
-                                  color="red"
-                                  leftSection={<IconTrash size={16} />}
-                                  onClick={() =>
-                                    console.log('Delete user', user.email)
-                                  }
-                                >
-                                  Delete
-                                </Menu.Item>
-                              </Menu.Dropdown>
-                            </Menu>
-                          </Table.Td>
-                        </Table.Tr>
-                      )
-                    })}
-                  </Table.Tbody>
-                </Table>
-              </div>
-            </ScrollArea>
-          )}
-        </Paper>
+        <ReusableTable
+          title="Customers"
+          totalCount={totalUsers}
+          data={sortedUsers}
+          columns={userColumns({
+            page,
+            perpage,
+            formatDate,
+            handleView,
+            handleDeleteClick,
+          })}
+          isLoading={isLoading}
+          searchQuery={search}
+          onSearchChange={setSearch}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+        />
 
-        <div className="pagination-controls flex items-center gap-1">
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Previous"
-          >
-            <IconChevronLeft size={24} />
-          </button>
-
-          <span>{page}</span>
-
-          <button
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={
-              page >= Math.ceil((data?.data.pagination.total || 0) / perpage)
-            }
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Next"
-          >
-            <IconChevronRight size={24} />
-          </button>
-        </div>
+        {!isLoading && totalPages > 1 && (
+          <PaginationControls
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
       </div>
+
+      <ConfirmDeleteModal
+        opened={deleteModalOpen}
+        onCancel={() => setDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        loading={deleteUser.isPending}
+      />
     </DashboardLayout>
   )
 }

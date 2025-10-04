@@ -23,9 +23,7 @@ function RouteComponent() {
   const router = useNavigate()
   const { getUser } = useUser()
   const { userId } = Route.useParams()
-  const { data: userData, isLoading: userLoader } = getUser(userId)
-
-  const user = userData?.data
+  const { data: user, isLoading: userLoader } = getUser(userId)
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -75,7 +73,7 @@ function RouteComponent() {
         >
           <IconArrowLeft className="h-6 w-6" />
         </div>
-        <div className="w-full">
+        <div className="max-w-7xl">
           <aside className="rounded-xl bg-white shadow-sm ">
             <div className="card-body flex-row gap-20">
               <div className="flex flex-col flex-1">
@@ -216,7 +214,7 @@ function RouteComponent() {
             </div>
           </aside>
 
-          <section className="flex-1 mt-7 max-w-7xl mx-auto">
+          <section className="flex-1 mt-7 max-w-7xl">
             <div className="flex-wrap inline-block bg-white py-3 px-5 rounded-xl items-center gap-4 md:gap-6 mb-6 shadow-sm">
               {tabs.map((tab) => (
                 <button

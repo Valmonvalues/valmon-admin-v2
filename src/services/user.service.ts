@@ -1,8 +1,9 @@
 import { userApi } from '@/api/user.api'
 import type { Id, Params } from '@/types/global.type'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useUser = () => {
+  const queryClient = useQueryClient()
   const listUsers = (params?: Params) => {
     return useQuery({
       queryKey: ['users', params],
@@ -21,5 +22,12 @@ export const useUser = () => {
       queryFn: () => userApi.getUser(id),
     })
 
-  return { listUsers, getUsersSummary, getUser }
+  const deleteUser = useMutation({
+    mutationFn: (id: Id) => userApi.deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
+  })
+
+  return { listUsers, getUsersSummary, getUser, deleteUser }
 }

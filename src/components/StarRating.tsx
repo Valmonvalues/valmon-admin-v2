@@ -1,11 +1,16 @@
 import { IconStarFilled, IconStar } from '@tabler/icons-react'
 
-function StarRating({
+const StarRating = ({
   rating,
   totalStars = 5,
   size = 18,
   color = 'text-yellow-500',
-}) {
+}: {
+  rating: number
+  totalStars?: number
+  size?: number
+  color?: string
+}) => {
   const stars = []
   for (let i = 1; i <= totalStars; i++) {
     stars.push(

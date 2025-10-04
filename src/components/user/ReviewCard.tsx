@@ -1,6 +1,16 @@
 import StarRating from '../StarRating'
 
-function ReviewCard({ reviewerName, rating, avatar, comment }) {
+function ReviewCard({
+  reviewerName,
+  rating,
+  avatar,
+  comment,
+}: {
+  reviewerName: string
+  rating: number
+  avatar: string
+  comment: string
+}) {
   return (
     <div className="flex items-start gap-3 border border-gray-200 p-4 rounded-lg">
       <img

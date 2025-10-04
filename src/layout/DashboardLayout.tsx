@@ -1,12 +1,5 @@
 import { navLinks } from '@/components/Navigation/data/navLinks'
-import {
-  AppShell,
-  Avatar,
-  Burger,
-  Group,
-  ScrollArea,
-  Text,
-} from '@mantine/core'
+import { AppShell, Avatar, ScrollArea } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Link, useLocation } from '@tanstack/react-router'
 
@@ -34,24 +27,20 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
   const getRouteName = () => {
     const routeName = pathname.split('-')
-
     if (routeName.length > 1) {
       return routeName[1].charAt(0).toUpperCase() + routeName[1].slice(1)
     }
-
-    // Chima added this
     return ''
   }
 
   const handleLogout = () => {
-    // Implement your logout logic here
     storage.removeItem('valmon_adminToken')
     window.location.replace('/')
   }
 
   return (
     <AppShell
-      padding="md"
+      padding="lg"
       header={{ height: { base: 60, md: 70, lg: 80 } }}
       navbar={{
         width: { base: 100, md: 200, lg: 250 },
@@ -122,37 +111,29 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                   )}
                 </div>
 
-                {/* Profile */}
-                <Link to="/profilesetting">
-                  <div className="relative ml-3">
-                    <button
-                      id="user-menu-button"
-                      type="button"
-                      className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                      {/* <img
-                        className="h-8 w-8 rounded-full"
-                        src={'store.UserAccount?.profile_pic'}
-                        alt=""
-                      /> */}
-                      <Avatar src={''} />
-                    </button>
-                  </div>
-                </Link>
+                <div className="relative ml-3">
+                  <button
+                    id="user-menu-button"
+                    type="button"
+                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  >
+                    <Avatar src={''} />
+                  </button>
+                </div>
 
                 {/* Name + Role */}
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-1">
-                    <span className="rounded-md px-3 py-2 font-medium text-white hover:bg-gray-700 hover:text-white">
+                <div className="hidden sm:block">
+                  <div className="flex space-x-3 items-center">
+                    <span className="font-medium text-white hover:bg-gray-700 hover:text-white">
                       {/* {'store.UserAccount?.name'} */}
                       OluwaDunsin
                     </span>
-                    <span className="font-normal rounded-3xl bg-[#E1CD7182] pt-2 px-4 text-white">
+                    <div className="font-normal px-3 py-1 rounded-3xl bg-[#E1CD7182] text-white">
                       {/* {store.UserAccount?.role === 'super_admin'
                     ? 'Super Admin'
                     : 'admin'} */}
                       Super Admin
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -167,7 +148,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 key={idx}
                 to={navlink.route}
-                className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-6 text-white`}
+                className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-4 text-white`}
                 activeProps={{
                   className: 'activeMenu',
                 }}
@@ -179,7 +160,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
           })}
           <p
             onClick={handleLogout}
-            className="flex items-center gap-4 font-medium p-4 mb-6 text-red-500"
+            className="flex items-center gap-4 font-medium p-4 mb-4 text-red-500"
           >
             <IconLogout />
             <span>Logout</span>
