@@ -1,15 +1,11 @@
 import React from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import brandLogo from '@/assets/images/Logo/valmon.svg'
-import magnifyLens from '@/assets/icons/magnifyingglass.svg'
 
 const AuthNavBar: React.FC = () => {
-  // You can use useNavigate() from TanStack Router for programmatic navigation if needed
-  const navigate = useNavigate()
-
   return (
     <nav
-      className="bg-stone-950 w-full fixed z-[1000]"
+      className="bg-stone-950 w-full fixed z-50"
       style={{ fontFamily: 'satoshiB' }}
     >
       <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
@@ -89,20 +85,20 @@ const AuthNavBar: React.FC = () => {
               <div className="flex space-x-4">
                 <Link
                   to="/"
-                  className="rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:text-white"
+                  className="rounded-md px-3 py-2 font-medium text-white hover:bg-gray-700 hover:text-white"
                   aria-current="page"
                 >
                   Explore Skills
                 </Link>
                 <Link
                   to="/marketplace"
-                  className="rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:text-white"
+                  className="rounded-md px-3 py-2 font-medium text-white hover:bg-gray-700 hover:text-white"
                 >
                   MarketPlace
                 </Link>
                 <Link
                   to="/"
-                  className="rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:text-white"
+                  className="rounded-md px-3 py-2 font-medium text-white hover:bg-gray-700 hover:text-white"
                 >
                   Sign In
                 </Link>

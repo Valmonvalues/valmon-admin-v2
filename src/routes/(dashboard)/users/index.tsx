@@ -37,31 +37,26 @@ export const Route = createFileRoute('/(dashboard)/users/')({
 
 function Users() {
   const navigate = useNavigate()
-
-  const handleView = (userId: Id) => {
-    navigate({ to: `/users/${userId}` })
-  }
-
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const perpage = 14
   const { listUsers, getUsersSummary } = useUser()
-  // const { data: users, isLoading } = listUsers
   const { data, isLoading } = listUsers({ page, perpage })
-  const { data: usersSummary, isLoading: userSummaryLoader } = getUsersSummary
+  const { data: usersSummary } = getUsersSummary
 
-  const users: User[] = data?.data.users ?? []
+  const users = data?.data.users ?? []
   const summary = usersSummary?.data ?? []
-
-  console.log('users', users)
-  console.log('data', data)
-  // console.log('getUsersSummary', summary)
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '-'
     const date = new Date(dateString)
     return date.toLocaleDateString('en-GB')
   }
+
+  const handleView = (userId: Id) => {
+    navigate({ to: `/users/${userId}` })
+  }
+
   return (
     <DashboardLayout>
       <div className="">
@@ -119,7 +114,7 @@ function Users() {
               <div className="min-w-[1400px]">
                 <Table highlightOnHover>
                   <Table.Thead className="text-[12px]">
-                    <Table.Tr>
+                    <Table.Tr className="text-gray-500">
                       <Table.Th className="whitespace-nowrap">
                         Serial Number
                       </Table.Th>
@@ -188,25 +183,44 @@ function Users() {
                             />
                           </Table.Td>
                           <Table.Td>{user.name}</Table.Td>
-                          <Table.Td>{user.email}</Table.Td>
-                          <Table.Td>{user.listings_count}</Table.Td>
-                          <Table.Td>{formatDate(user.join_date)}</Table.Td>
-                          <Table.Td>{user.reported_count}</Table.Td>
-                          <Table.Td className="whitespace-nowrap">
+                          <Table.Td className="text-gray-500">
+                            {user.email}
+                          </Table.Td>
+                          <Table.Td className="text-gray-500">
+                            {user.listings_count}
+                          </Table.Td>
+                          <Table.Td className="text-gray-500">
+                            {formatDate(user.join_date)}
+                          </Table.Td>
+                          <Table.Td className="text-gray-500">
+                            {user.reported_count}
+                          </Table.Td>
+                          <Table.Td className="whitespace-nowrap text-gray-500">
                             {user.type}
                           </Table.Td>
-                          <Table.Td>{user.last_seen_at}</Table.Td>
+                          <Table.Td className="text-gray-500">
+                            {user.last_seen_at}
+                          </Table.Td>
                           {/* <Table.Td>{user.status}</Table.Td> */}
                           <Table.Td>
                             <Badge
                               color={
                                 user.status.toLocaleLowerCase() === 'active'
-                                  ? 'green'
-                                  : 'yellow'
+                                  ? 'oklch(47.6% 0.114 61.907)'
+                                  : 'grey'
                               }
                               variant="light"
                             >
-                              {user.status}
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className={`size-2  ${
+                                    user.status.toLocaleLowerCase() === 'active'
+                                      ? 'bg-yellow-800'
+                                      : 'bg-gray-800'
+                                  } rounded-full`}
+                                />
+                                {user.status}
+                              </div>
                             </Badge>
                           </Table.Td>
                           <Table.Td>

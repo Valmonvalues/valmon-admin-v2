@@ -13,6 +13,8 @@ import { Link, useLocation } from '@tanstack/react-router'
 import brandLogo from '@/assets/images/Logo/valmon.svg'
 import bell from '@/assets/icons/notification-bing.svg'
 import { useState } from 'react'
+import { IconLogout } from '@tabler/icons-react'
+import { storage } from '@/constant/config'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -39,6 +41,12 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
     // Chima added this
     return ''
+  }
+
+  const handleLogout = () => {
+    // Implement your logout logic here
+    storage.removeItem('valmon_adminToken')
+    window.location.replace('/')
   }
 
   return (
@@ -159,7 +167,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 key={idx}
                 to={navlink.route}
-                className="flex items-center gap-4 font-medium p-4 mb-6 text-white"
+                className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-6 text-white`}
                 activeProps={{
                   className: 'activeMenu',
                 }}
@@ -169,7 +177,15 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               </Link>
             )
           })}
+          <p
+            onClick={handleLogout}
+            className="flex items-center gap-4 font-medium p-4 mb-6 text-red-500"
+          >
+            <IconLogout />
+            <span>Logout</span>
+          </p>
         </AppShell.Section>
+        <AppShell.Section className="px-2 pt-4 rounded-lg text-center mb-5 flex items-center justify-center"></AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>

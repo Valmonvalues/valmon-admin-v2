@@ -51,9 +51,4 @@ export const navLinks = [
     icon: <IconMessageUser />,
     route: '/account',
   },
-  {
-    label: 'Logout',
-    icon: <IconLogout />,
-    route: '/logout',
-  },
 ]

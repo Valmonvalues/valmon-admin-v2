@@ -13,6 +13,7 @@
     "check": "prettier --write . && eslint --fix"
   },
   "dependencies": {
+    "@mantine/carousel": "^8.3.3",
     "@mantine/charts": "^8.3.2",
     "@mantine/core": "^8.3.2",
     "@mantine/dates": "^8.3.2",
@@ -29,6 +30,8 @@
     "@tanstack/router-plugin": "^1.132.0",
     "axios": "^1.12.2",
     "dayjs": "^1.11.18",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.2.1",
