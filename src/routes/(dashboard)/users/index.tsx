@@ -35,11 +35,6 @@ function Users() {
   const totalUsers = data?.pagination?.total ?? 0
   const totalPages = Math.ceil(totalUsers / perpage)
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return '-'
-    return new Date(dateString).toLocaleDateString('en-GB')
-  }
-
   const sortedUsers = useMemo(() => {
     const sortableItems = [...users]
 
@@ -122,8 +117,6 @@ function Users() {
           data={sortedUsers}
           columns={userColumns({
             page,
-            perpage,
-            formatDate,
             handleView,
             handleDeleteClick,
           })}
