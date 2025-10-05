@@ -28,8 +28,9 @@ export const categoriesColumns = ({
       <Image
         src={category.image}
         alt={category.name}
-        width={32}
-        height={32}
+        // width={12}
+        // height={12}
+        style={{ width: 35, height: 30, objectFit: 'cover', borderRadius: 8 }}
         radius="xl"
         fit="cover"
       />
