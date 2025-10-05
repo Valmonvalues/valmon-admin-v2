@@ -20,6 +20,7 @@ export type SortConfig<T> = {
 export interface ColumnDef<T> {
   key: any
   header: React.ReactNode
+  sortable?: boolean
   render: (item: T, index: number) => React.ReactNode
 }
 
@@ -46,7 +47,10 @@ export function ReusableTable<T extends { id: Id }>({
   sortConfig,
   onSort,
 }: ReusableTableProps<T>) {
-  const renderSortIcon = (columnKey: string) => {
+  const renderSortIcon = (columnKey: string, sortable?: boolean) => {
+    // if (!sortable) return null
+    if (sortable === false) return null
+
     if (sortConfig.key !== columnKey) {
       return <IconArrowDown stroke={1} size={15} />
     }
@@ -92,18 +96,21 @@ export function ReusableTable<T extends { id: Id }>({
                     <Table.Th
                       key={String(column.key)}
                       className="whitespace-nowrap cursor-pointer"
-                      onClick={() => onSort(column.key)}
+                      onClick={() => {
+                        // if (!column.sortable) return
+                        onSort(column.key)
+                      }}
                     >
                       <div className="flex items-center">
                         <div>{column.header}</div>
-                        {renderSortIcon(String(column.key))}
+                        {renderSortIcon(String(column.key), column.sortable)}
                       </div>
                     </Table.Th>
                   ))}
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {data.map((item, index) => (
+                {data?.map((item, index) => (
                   <Table.Tr key={item.id} className="text-gray-800">
                     {columns.map((column) => (
                       <Table.Td key={String(column.key)}>

@@ -12,6 +12,7 @@ import { userColumns } from '@/columns/userColumns'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import { perPage as perpage } from '@/constant/config'
 import type { User } from '@/types/user.types'
+import useSortedData from '@/hook/sortData'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
@@ -35,27 +36,29 @@ function Users() {
   const totalUsers = data?.pagination?.total ?? 0
   const totalPages = Math.ceil(totalUsers / perpage)
 
-  const sortedUsers = useMemo(() => {
-    const sortableItems = [...users]
+  const sortedUsers = useSortedData(users!, sortConfig)
 
-    sortableItems.sort((a, b) => {
-      const aValue = a[sortConfig.key]
-      const bValue = b[sortConfig.key]
+  // const sortedUsers = useMemo(() => {
+  //   const sortableItems = [...users]
 
-      if (aValue === null || aValue === undefined) return 1
-      if (bValue === null || bValue === undefined) return -1
+  //   sortableItems.sort((a, b) => {
+  //     const aValue = a[sortConfig.key]
+  //     const bValue = b[sortConfig.key]
 
-      if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1
-      }
-      return 0
-    })
+  //     if (aValue === null || aValue === undefined) return 1
+  //     if (bValue === null || bValue === undefined) return -1
 
-    return sortableItems
-  }, [users, sortConfig])
+  //     if (aValue < bValue) {
+  //       return sortConfig.direction === 'asc' ? -1 : 1
+  //     }
+  //     if (aValue > bValue) {
+  //       return sortConfig.direction === 'asc' ? 1 : -1
+  //     }
+  //     return 0
+  //   })
+
+  //   return sortableItems
+  // }, [users, sortConfig])
 
   const handleSort = (key: keyof User) => {
     setSortConfig((prev) => ({
