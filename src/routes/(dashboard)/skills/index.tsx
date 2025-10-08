@@ -1,6 +1,7 @@
 import { categoriesColumns } from '@/columns/categoriesColumns'
 import { transactionColumns } from '@/columns/transactionColumns'
 import { userColumns } from '@/columns/userColumns'
+import BaseButton from '@/components/BaseButton'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import TabHeader from '@/components/TabHeader'
@@ -13,6 +14,9 @@ import type { Id } from '@/types/global.type'
 import type { Transaction } from '@/types/skills.types'
 import { SimpleGrid } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+
+import { formatNumber } from '@/utils/formatters'
+
 import { useState } from 'react'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
@@ -42,7 +46,7 @@ function Skills() {
   }>({ key: 'employer_name', direction: 'asc' })
 
   const sortedTransaction = useSortedData(transaction, sortConfig)
-  console.log(categoriesData)
+  // console.log(categoriesData)
 
   const handleSort = (key: keyof Transaction) => {
     setSortConfig((prev) => ({
@@ -95,12 +99,12 @@ function Skills() {
             />
             <StatCard
               title="Service Providers"
-              value={skillsData?.transaction_value}
+              value={formatNumber(skillsData?.transaction_value)}
               color="bg-purple-100"
             />
             <StatCard
               title="Normal Users"
-              value={skillsData?.valmon_earning}
+              value={formatNumber(skillsData?.valmon_earning)}
               color="bg-green-100"
             />
           </SimpleGrid>
@@ -155,6 +159,13 @@ function Skills() {
               onSearchChange={setSearch}
               sortConfig={sortConfig}
               onSort={handleSort}
+              headerActions={
+                <BaseButton
+                  title="Add New"
+                  showPlusIcon={true}
+                  className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 text-sm font-medium rounded-md transition-colors duration-200 shadow-none border-0"
+                />
+              }
             />
           </div>
 

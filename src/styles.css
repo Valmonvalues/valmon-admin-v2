@@ -4,6 +4,10 @@
 :root {
   --color-layout: #232222;
   --color-bg-primary: #f5f1f1;
+  --color-bright-gold: #cfb159;
+  --color-dark-gold: #8b6914;
+  /* --color-bright-gold: #cf5959;
+  --color-dark-gold: #32148b; */
 }
 
 @theme {
@@ -13,12 +17,15 @@
   --color-base: #000;
   --color-layout: var(--color-layout);
   /* --color-bg-primary: var(--color-bg-primary); */
+  --color-bright-gold: var(--color-bright-gold);
+  --color-dark-gold: var(--color-dark-gold);
   --radius-appRadius: 10px;
 
   /* Shadows */
   --shadow-3xl: -15px 15px 24px rgba(22, 51, 102, 0.25);
   --shadow-4xl: 15px 15px 24px rgba(22, 51, 102, 0.25);
   --shadow-linkpreview: 0px 1px 4px #0c0c0d0d;
+  --shadow-none: 0 0 #0000;
 }
 
 body {
@@ -86,4 +93,22 @@ code {
 
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+}
+
+.btn {
+  box-shadow: none !important;
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
+
+.btn-gold {
+  background-color: var(--color-dark-gold);
+  color: white;
+  box-shadow: none;
+}
+
+.btn-gold:hover {
+  background-color: var(--color-bright-gold);
 }

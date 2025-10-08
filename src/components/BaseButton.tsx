@@ -10,6 +10,7 @@ interface BaseButtonProps {
   className?: string
   src?: string
   alt?: string
+  showPlusIcon?: boolean
 }
 
 const BaseButton: React.FC<BaseButtonProps> = ({
@@ -22,6 +23,7 @@ const BaseButton: React.FC<BaseButtonProps> = ({
   className = '',
   src,
   alt,
+  showPlusIcon = false,
 }) => {
   // Compose inline styles
   const style: React.CSSProperties = {
@@ -52,6 +54,23 @@ const BaseButton: React.FC<BaseButtonProps> = ({
           {title && <span>{title}</span>}
           {alt && src && <img src={src} alt={alt} className="ms-1" />}
         </>
+      )}
+
+      {showPlusIcon && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
       )}
     </button>
   )

@@ -34,6 +34,8 @@ interface ReusableTableProps<T> {
   onSearchChange: (value: string) => void
   sortConfig: SortConfig<T>
   onSort: (key: keyof T) => void
+
+  headerActions?: React.ReactNode
 }
 
 export function ReusableTable<T extends { id: Id }>({
@@ -46,6 +48,7 @@ export function ReusableTable<T extends { id: Id }>({
   onSearchChange,
   sortConfig,
   onSort,
+  headerActions,
 }: ReusableTableProps<T>) {
   const renderSortIcon = (columnKey: string, sortable?: boolean) => {
     // if (!sortable) return null
@@ -74,12 +77,22 @@ export function ReusableTable<T extends { id: Id }>({
             List Of All {title} on The Platform
           </Text>
         </div>
-        <TextInput
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.currentTarget.value)}
-          leftSection={<IconSearch size={16} />}
-        />
+
+        <div className="flex gap-3 items-center">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {headerActions && (
+            <div className="flex-shrink-0">{headerActions}</div>
+          )}
+        </div>
       </Group>
       <Divider my="sm" />
       {isLoading ? (
