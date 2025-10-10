@@ -83,10 +83,16 @@ function Skills() {
 
   return (
     <DashboardLayout>
-      <div>Hello "/(dashboard)/skills/"!</div>
-
       <div className="mb-4">
-        <TabHeader activeTab={activeTab} onChange={setActiveTab} />
+        {/* <TabHeader activeTab={activeTab} onChange={setActiveTab} /> */}
+        <TabHeader
+          activeTab={activeTab}
+          onChange={setActiveTab}
+          tabs={[
+            { id: 'skill transactions', label: 'Skill Transactions' },
+            { id: 'skill parent', label: 'Skill Parent Category' },
+          ]}
+        />
       </div>
 
       {activeTab === 'skill transactions' && (

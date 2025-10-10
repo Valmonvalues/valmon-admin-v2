@@ -22,6 +22,12 @@ export const useUser = () => {
       queryFn: () => userApi.getUser(id),
     })
 
+  const getMe = () =>
+    useQuery({
+      queryKey: ['me'],
+      queryFn: userApi.getMe,
+    })
+
   const deleteUser = useMutation({
     mutationFn: (id: Id) => userApi.deleteUser(id),
     onSuccess: () => {
@@ -29,5 +35,5 @@ export const useUser = () => {
     },
   })
 
-  return { listUsers, getUsersSummary, getUser, deleteUser }
+  return { listUsers, getUsersSummary, getUser, getMe, deleteUser }
 }

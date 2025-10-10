@@ -41,6 +41,45 @@ export interface User {
   status: string
 }
 
+// "data": {
+//     "id": 1,
+//     "name": "Valmon Admin",
+//     "email": "superadmin@valmon.com",
+//     "notification_preference": {
+//         "notifications": true,
+//         "new_report": true,
+//         "sales_summary": true,
+//         "new_user": true
+//     },
+//     "role": "super_admin",
+//     "created_at": "2024-11-15T22:07:06.000000Z",
+//     "updated_at": "2025-08-22T19:03:12.000000Z",
+//     "first_name": "Oluwadunsin",
+//     "last_name": "Ajibade",
+//     "image_path": null,
+//     "profile_pic": "https:\/\/valmon.ctrixx.com\/images\/user.png"
+// }
+
+// export interface Me {
+//   created_at: '2024-11-15T22:07:06.000000Z'
+//   email: 'superadmin@valmon.com'
+//   first_name: 'Oluwadunsin'
+//   id: 1
+//   image_path: null
+//   last_name: 'Ajibade'
+//   name: 'Valmon Admin'
+//   notification_preference: {
+//     new_report: boolean
+//     new_user: boolean
+//     notifications: boolean
+//   }
+
+//   sales_summary: boolean
+//   profile_pic: string
+//   role: string
+//   updated_at: string
+// }
+
 export interface UserListType {
   id: Id
   first_name: string

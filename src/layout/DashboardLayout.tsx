@@ -8,6 +8,7 @@ import bell from '@/assets/icons/notification-bing.svg'
 import { useState } from 'react'
 import { IconLogout } from '@tabler/icons-react'
 import { storage } from '@/constant/config'
+import { useUser } from '@/services/user.service'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -22,6 +23,11 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       message: 'Anything goes',
     },
   ])
+
+  const { getMe } = useUser()
+
+  const { data: me, isLoading: meIsloading } = getMe()
+  console.log(me?.name)
 
   const { pathname } = useLocation()
 
@@ -126,7 +132,9 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                   <div className="flex space-x-3 items-center">
                     <span className="font-medium text-white hover:bg-gray-700 hover:text-white">
                       {/* {'store.UserAccount?.name'} */}
-                      OluwaDunsin
+                      {/* Issues */}
+                      {/* {me.name} */}
+                      {me?.name ?? meIsloading}
                     </span>
                     <div className="font-normal px-3 py-1 rounded-3xl bg-[#E1CD7182] text-white">
                       {/* {store.UserAccount?.role === 'super_admin'
