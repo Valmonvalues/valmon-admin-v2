@@ -3,13 +3,12 @@ import {
   Paper,
   Group,
   Text,
-  TextInput,
   Divider,
   Loader,
   ScrollArea,
   Table,
 } from '@mantine/core'
-import { IconSearch, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
+import { IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import { type Id } from '@/types/global.type'
 
 export type SortConfig<T> = {

@@ -1,31 +1,34 @@
+import { useState } from 'react'
 import { categoriesColumns } from '@/columns/categoriesColumns'
 import { transactionColumns } from '@/columns/transactionColumns'
-import { userColumns } from '@/columns/userColumns'
 import BaseButton from '@/components/BaseButton'
-import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import TabHeader from '@/components/TabHeader'
-import { PaginationControls } from '@/components/table/PaginationControls'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import useSortedData from '@/hook/sortData'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useSkills } from '@/services/skills.service'
 import type { Id } from '@/types/global.type'
-import type { Transaction } from '@/types/skills.types'
+import type { Transaction, CategoriesResponse } from '@/types/skills.types'
 import { SimpleGrid } from '@mantine/core'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { formatNumber } from '@/utils/formatters'
 
-import { useState } from 'react'
+import profile from '@/assets/icons/cardprofile.svg'
+import cardblack from '@/assets/icons/card-pos-black.svg'
+import cardwhite from '@/assets/icons/card-pos.svg'
+import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
+import { notifications } from '@mantine/notifications'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
 })
 
 function Skills() {
-  const navigate = useNavigate()
-  const { listSkills, listCategories } = useSkills()
+  // const navigate = useNavigate()
+  const { listSkills, listCategories, deleteTransaction, deleteParent } =
+    useSkills()
   const [search, setSearch] = useState('')
   const [activeTab, setActiveTab] = useState('skill transactions')
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -33,10 +36,10 @@ function Skills() {
   const [selectedTransaction, setSelectedTransaction] = useState<null | Id>(
     null,
   )
+  const [selectedParent, setSelectedParent] = useState<null | Id>(null)
 
   const { data: skillsData, isLoading: skillDataLoader } = listSkills()
-  const { data: categoriesData, isLoading: categoriesDataLoader } =
-    listCategories()
+  const { data: categoriesData } = listCategories()
   const transaction = skillsData?.all_transactions || []
   const categories = categoriesData || []
 
@@ -44,6 +47,11 @@ function Skills() {
     key: keyof Transaction
     direction: 'asc' | 'desc'
   }>({ key: 'employer_name', direction: 'asc' })
+
+  const [sortConfigParent, setSortConfigParent] = useState<{
+    key: keyof CategoriesResponse
+    direction: 'asc' | 'desc'
+  }>({ key: 'name', direction: 'asc' })
 
   const sortedTransaction = useSortedData(transaction, sortConfig)
   // console.log(categoriesData)
@@ -55,31 +63,65 @@ function Skills() {
     }))
   }
 
+  const handleSortParent = (key: keyof CategoriesResponse) => {
+    setSortConfigParent((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+    }))
+  }
+
   const handleView = (transactionId: Id) => {
     // navigate({ to: `/users/${transactionId}` })
+    console.log(transactionId)
   }
 
   const handleDeleteClick = (transactionId: Id) => {
-    // selectedTransaction(transactionId)
+    console.log(transactionId)
+
+    setSelectedTransaction(transactionId)
     setDeleteModalOpen(true)
   }
 
-  // const handleConfirmDelete = () => {
-  //   deleteUser.mutate(selectedUser as Id, {
-  //     onSuccess: () => {
-  //       setSelectedUser(null)
-  //       setDeleteModalOpen(false)
-  //     },
-  //     onError: (error) => {
-  //       console.error('Error deleting user:', error)
-  //       notifications.show({
-  //         title: 'Error',
-  //         message: 'Failed to delete user. Please try again.',
-  //         color: 'red',
-  //       })
-  //     },
-  //   })
-  // }
+  const handleDeleteClickParent = (transactionId: Id) => {
+    console.log(transactionId)
+
+    setSelectedParent(transactionId)
+    setDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteTransaction.mutate(selectedTransaction as Id, {
+      onSuccess: () => {
+        setSelectedTransaction(null)
+        setDeleteModalOpen(false)
+      },
+      onError: (error) => {
+        console.error('Error deleting user:', error)
+        notifications.show({
+          title: 'Error',
+          message: 'Failed to delete user. Please try again.',
+          color: 'red',
+        })
+      },
+    })
+  }
+
+  const handleConfirmDeleteParent = () => {
+    deleteTransaction.mutate(selectedParent as Id, {
+      onSuccess: () => {
+        setSelectedParent(null)
+        setDeleteModalOpen(false)
+      },
+      onError: (error) => {
+        console.error('Error deleting user:', error)
+        notifications.show({
+          title: 'Error',
+          message: 'Failed to delete user. Please try again.',
+          color: 'red',
+        })
+      },
+    })
+  }
 
   return (
     <DashboardLayout>
@@ -97,21 +139,30 @@ function Skills() {
 
       {activeTab === 'skill transactions' && (
         <>
-          <SimpleGrid cols={3} spacing="lg" className="mb-6 max-w-[900px]">
+          <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
             <StatCard
-              title="All Users"
+              title="Total Transaction"
               value={transaction.length}
               color="bg-pink-100"
+              image={profile}
             />
             <StatCard
-              title="Service Providers"
+              title="Transaction Value"
               value={formatNumber(skillsData?.transaction_value)}
               color="bg-purple-100"
+              image={cardblack}
             />
             <StatCard
-              title="Normal Users"
+              title="Valmon Earnings"
               value={formatNumber(skillsData?.valmon_earning)}
-              color="bg-green-100"
+              color="bg-dark-gold"
+              image={cardwhite}
+            />
+            <StatCard
+              title="Top Categories"
+              // value={formatNumber(skillsData?.valmon_earning)}
+              // color="bg-green-100"
+              // image={earningImage}
             />
           </SimpleGrid>
 
@@ -134,14 +185,14 @@ function Skills() {
               />
             </div>
 
-            {/* <ConfirmDeleteModal
-          opened={deleteModalOpen}
-          onCancel={() => setDeleteModalOpen(false)}
-          onConfirm={handleConfirmDelete}
-          title="Delete User"
-          message="Are you sure you want to delete this user? This action cannot be undone."
-          loading={deleteUser.isPending}
-        /> */}
+            <ConfirmDeleteModal
+              opened={deleteModalOpen}
+              onCancel={() => setDeleteModalOpen(false)}
+              onConfirm={handleConfirmDelete}
+              title="Delete Transaction"
+              message="Are you sure you want to delete this user? This action cannot be undone."
+              loading={deleteTransaction.isPending}
+            />
           </div>
         </>
       )}
@@ -158,13 +209,13 @@ function Skills() {
               data={categories}
               columns={categoriesColumns({
                 handleView,
-                handleDeleteClick,
+                handleDeleteClickParent,
               })}
               isLoading={skillDataLoader}
               searchQuery={search}
               onSearchChange={setSearch}
-              sortConfig={sortConfig}
-              onSort={handleSort}
+              sortConfig={sortConfigParent}
+              onSort={handleSortParent}
               headerActions={
                 <BaseButton
                   title="Add New"
@@ -175,14 +226,14 @@ function Skills() {
             />
           </div>
 
-          {/* <ConfirmDeleteModal
-          opened={deleteModalOpen}
-          onCancel={() => setDeleteModalOpen(false)}
-          onConfirm={handleConfirmDelete}
-          title="Delete User"
-          message="Are you sure you want to delete this user? This action cannot be undone."
-          loading={deleteUser.isPending}
-        /> */}
+          <ConfirmDeleteModal
+            opened={deleteModalOpen}
+            onCancel={() => setDeleteModalOpen(false)}
+            onConfirm={handleConfirmDeleteParent}
+            title="Delete User"
+            message="Are you sure you want to delete this user? This action cannot be undone."
+            loading={deleteParent.isPending}
+          />
         </div>
       )}
     </DashboardLayout>

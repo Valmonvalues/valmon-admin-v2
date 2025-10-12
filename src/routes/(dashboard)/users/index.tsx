@@ -2,7 +2,7 @@ import DashboardLayout from '@/layout/DashboardLayout'
 import { useUser } from '@/services/user.service'
 import { SimpleGrid } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import StatCard from '@/components/StatCard'
 import type { Id } from '@/types/global.type'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
@@ -13,6 +13,8 @@ import { PaginationControls } from '@/components/table/PaginationControls'
 import { perPage as perpage } from '@/constant/config'
 import type { User } from '@/types/user.types'
 import useSortedData from '@/hook/sortData'
+
+import profile from '@/assets/icons/cardprofile.svg'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
@@ -101,16 +103,19 @@ function Users() {
             title="All Users"
             value={summary.total_users}
             color="bg-pink-100"
+            image={profile}
           />
           <StatCard
             title="Service Providers"
             value={summary.service_providers}
             color="bg-purple-100"
+            image={profile}
           />
           <StatCard
             title="Normal Users"
             value={summary.employers}
             color="bg-green-100"
+            image={profile}
           />
         </SimpleGrid>
 

@@ -1,21 +1,36 @@
 import { skillsApi } from '@/api/skills.api'
-import type { Params } from '@/types/global.type'
-import { useQuery } from '@tanstack/react-query'
+import type { Id, Params } from '@/types/global.type'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useSkills = () => {
+  const queryClient = useQueryClient()
   const listSkills = (params?: Params) => {
     return useQuery({
-      queryKey: ['/skills/transaction', params],
+      queryKey: ['transactions', params],
       queryFn: () => skillsApi.listTransaction(params),
     })
   }
 
   const listCategories = (params?: Params) => {
     return useQuery({
-      queryKey: ['/skills/categories', params],
+      queryKey: ['categories', params],
       queryFn: () => skillsApi.listCategories(params),
     })
   }
 
-  return { listSkills, listCategories }
+  const deleteTransaction = useMutation({
+    mutationFn: (id: Id) => skillsApi.deleteTransaction(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+    },
+  })
+
+  const deleteParent = useMutation({
+    mutationFn: (id: Id) => skillsApi.deleteParent(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+    },
+  })
+
+  return { listSkills, listCategories, deleteTransaction, deleteParent }
 }

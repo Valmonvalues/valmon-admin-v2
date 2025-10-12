@@ -8,6 +8,9 @@
   --color-dark-gold: #8b6914;
   /* --color-bright-gold: #cf5959;
   --color-dark-gold: #32148b; */
+
+  --color-icon-light-blue: #5ea6f41a;
+  --color-icon-light-pink: #f45e5e1a;
 }
 
 @theme {
@@ -19,6 +22,8 @@
   /* --color-bg-primary: var(--color-bg-primary); */
   --color-bright-gold: var(--color-bright-gold);
   --color-dark-gold: var(--color-dark-gold);
+  --color-icon-light-blue: var(--color-icon-light-blue);
+  --color-icon-light-pink: var(--color-icon-light-pink);
   --radius-appRadius: 10px;
 
   /* Shadows */

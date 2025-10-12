@@ -91,7 +91,7 @@ const AuthNavBar: React.FC = () => {
                   Explore Skills
                 </Link>
                 <Link
-                  to="/marketplace"
+                  to="/marketPlace"
                   className="rounded-md px-3 py-2 font-medium text-white hover:bg-gray-700 hover:text-white"
                 >
                   MarketPlace

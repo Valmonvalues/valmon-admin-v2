@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { Id, Pagination } from './global.type'
 
 export interface User {
@@ -123,8 +124,13 @@ export interface UserListType {
 
 export interface StatCardProps {
   title: string
-  value: number
-  color: string
+  value?: string | number
+  // value: number
+  color?: string
+  image?: string | ReactNode
+  showImage?: boolean
+  imageSize?: number
+  imageClassName?: string
 }
 
 export interface UserResponseType {

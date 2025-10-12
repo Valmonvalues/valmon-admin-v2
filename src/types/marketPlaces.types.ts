@@ -46,6 +46,19 @@ export interface ListingItem {
   status: string
 }
 
+export interface CategoryItem {
+  id: number
+  name: string
+  products_listed: string
+  products_sold: number
+  active_listings_cost: number
+}
+
+// export interface Approval {
+//   total_awaiting: number
+//   awaiting_value: number
+// }
+
 export interface Markeplace {
   total_users: number
   service_providers: number
@@ -71,5 +84,8 @@ export interface MarketplaceResponse {
   In_Escrow_Value: number
   In_Escrow_count: number
   marketPlace: Markeplace
+  //   approval: Approval
+  total_awaiting: number
+  awaiting_value: number
   pagination: Pagination
 }

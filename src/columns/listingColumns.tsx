@@ -24,7 +24,8 @@ export interface ListingItem {
 interface ListingColumnHandlers {
   page: number
   handleView: (id: number) => void
-  handleDeleteClick: (id: number) => void
+  handleDeleteClick?: (id: number) => void
+  isButtons?: boolean
 }
 
 // Define your columns
@@ -32,6 +33,7 @@ export const listingColumns = ({
   page,
   handleView,
   handleDeleteClick,
+  isButtons = false,
 }: ListingColumnHandlers): ColumnDef<ListingItem>[] => [
   {
     key: 'sn',
@@ -56,7 +58,7 @@ export const listingColumns = ({
   },
   {
     key: 'name',
-    header: 'Name',
+    header: 'Product Name',
     render: (listing): ReactNode => listing.name,
   },
   {
@@ -74,26 +76,40 @@ export const listingColumns = ({
     header: 'Category',
     render: (listing): ReactNode => listing.category,
   },
+
+  {
+    key: 'seller_image',
+    header: 'Seller Image',
+    render: (listing): ReactNode => (
+      <div className="flex justify-center">
+        <div className="w-9 h-9 flex-shrink-0">
+          <img
+            src={listing.seller_image}
+            alt={listing.seller_name}
+            className="w-full h-full rounded-full object-cover"
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: 'seller_name',
+    header: 'Seller Name',
+    render: (listing): ReactNode => (
+      <div className="max-w-[180px]">
+        <span
+          title={listing.seller_name}
+          className="truncate text-sm font-medium"
+        >
+          {listing.seller_name}
+        </span>
+      </div>
+    ),
+  },
   {
     key: 'price',
     header: 'Price',
     render: (listing): ReactNode => `$${listing.price}`,
-  },
-  {
-    key: 'seller',
-    header: 'Seller',
-    render: (listing): ReactNode => (
-      <div className="flex items-center gap-2">
-        <img
-          src={listing.seller_image}
-          alt={listing.seller_name}
-          width={28}
-          height={28}
-          className="rounded-full object-cover"
-        />
-        <span>{listing.seller_name}</span>
-      </div>
-    ),
   },
   {
     key: 'listing_date',
@@ -126,29 +142,35 @@ export const listingColumns = ({
   {
     key: 'actions',
     header: 'Actions',
-    render: (listing): ReactNode => (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="subtle" color="gray">
-            <IconDotsVertical size={18} stroke={2} />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            leftSection={<IconEye size={16} />}
-            onClick={() => handleView(listing.id)}
-          >
-            View
-          </Menu.Item>
-          <Menu.Item
-            color="red"
-            leftSection={<IconTrash size={16} />}
-            onClick={() => handleDeleteClick(listing.id)}
-          >
-            Delete
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    ),
+    render: (listing): ReactNode => {
+      if (isButtons) {
+        return <button>Approve</button>
+      } else {
+        return (
+          <Menu>
+            <Menu.Target>
+              <ActionIcon variant="subtle" color="gray">
+                <IconDotsVertical size={18} stroke={2} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={<IconEye size={16} />}
+                onClick={() => handleView(listing.id)}
+              >
+                View
+              </Menu.Item>
+              <Menu.Item
+                color="red"
+                leftSection={<IconTrash size={16} />}
+                onClick={() => handleDeleteClick?.(listing.id)}
+              >
+                Delete
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        )
+      }
+    },
   },
 ]

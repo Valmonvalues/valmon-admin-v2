@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GetstartedRouteImport } from './routes/getstarted'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index'
 import { Route as dashboardWalletIndexRouteImport } from './routes/(dashboard)/wallet/index'
 import { Route as dashboardUsersIndexRouteImport } from './routes/(dashboard)/users/index'
 import { Route as dashboardSummaryIndexRouteImport } from './routes/(dashboard)/summary/index'
@@ -30,11 +29,6 @@ const GetstartedRoute = GetstartedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
-  id: '/marketplace/',
-  path: '/marketplace/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const dashboardWalletIndexRoute = dashboardWalletIndexRouteImport.update({
@@ -88,7 +82,6 @@ const dashboardUsersUserIdRoute = dashboardUsersUserIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
-  '/marketplace': typeof MarketplaceIndexRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
@@ -102,7 +95,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
-  '/marketplace': typeof MarketplaceIndexRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
@@ -117,7 +109,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
-  '/marketplace/': typeof MarketplaceIndexRoute
   '/(dashboard)/users/$userId': typeof dashboardUsersUserIdRoute
   '/(dashboard)/account/': typeof dashboardAccountIndexRoute
   '/(dashboard)/marketPlace/': typeof dashboardMarketPlaceIndexRoute
@@ -133,7 +124,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/getstarted'
-    | '/marketplace'
     | '/users/$userId'
     | '/account'
     | '/marketPlace'
@@ -147,7 +137,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/getstarted'
-    | '/marketplace'
     | '/users/$userId'
     | '/account'
     | '/marketPlace'
@@ -161,7 +150,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/getstarted'
-    | '/marketplace/'
     | '/(dashboard)/users/$userId'
     | '/(dashboard)/account/'
     | '/(dashboard)/marketPlace/'
@@ -176,7 +164,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GetstartedRoute: typeof GetstartedRoute
-  MarketplaceIndexRoute: typeof MarketplaceIndexRoute
   dashboardUsersUserIdRoute: typeof dashboardUsersUserIdRoute
   dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
   dashboardMarketPlaceIndexRoute: typeof dashboardMarketPlaceIndexRoute
@@ -202,13 +189,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marketplace/': {
-      id: '/marketplace/'
-      path: '/marketplace'
-      fullPath: '/marketplace'
-      preLoaderRoute: typeof MarketplaceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(dashboard)/wallet/': {
@@ -280,7 +260,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GetstartedRoute: GetstartedRoute,
-  MarketplaceIndexRoute: MarketplaceIndexRoute,
   dashboardUsersUserIdRoute: dashboardUsersUserIdRoute,
   dashboardAccountIndexRoute: dashboardAccountIndexRoute,
   dashboardMarketPlaceIndexRoute: dashboardMarketPlaceIndexRoute,
