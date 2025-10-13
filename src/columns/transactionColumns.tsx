@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ActionIcon, Badge, Menu } from '@mantine/core'
-import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
+import { IconDotsVertical, IconEye } from '@tabler/icons-react'
 import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
@@ -14,7 +14,6 @@ interface TransactionColumnHandlers {
 
 export const transactionColumns = ({
   handleView,
-  handleDeleteClick,
 }: TransactionColumnHandlers): ColumnDef<Transaction>[] => [
   {
     key: 'sn',
@@ -99,13 +98,13 @@ export const transactionColumns = ({
           >
             View
           </Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
             onClick={() => handleDeleteClick(txn.id)}
           >
             Delete
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Dropdown>
       </Menu>
     ),

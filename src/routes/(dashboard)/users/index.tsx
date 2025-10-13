@@ -11,7 +11,7 @@ import { ReusableTable } from '@/components/table/ReusableTable'
 import { userColumns } from '@/columns/userColumns'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import { perPage as perpage } from '@/constant/config'
-import type { User } from '@/types/user.types'
+import type { UserListType } from '@/types/user.types'
 import useSortedData from '@/hook/sortData'
 
 import profile from '@/assets/icons/cardprofile.svg'
@@ -32,7 +32,7 @@ function Users() {
   const users = data?.users ?? []
   const summary = usersSummary?.data ?? []
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof User
+    key: keyof UserListType
     direction: 'asc' | 'desc'
   }>({ key: 'name', direction: 'asc' })
   const totalUsers = data?.pagination?.total ?? 0
@@ -62,7 +62,7 @@ function Users() {
   //   return sortableItems
   // }, [users, sortConfig])
 
-  const handleSort = (key: keyof User) => {
+  const handleSort = (key: keyof UserListType) => {
     setSortConfig((prev) => ({
       key,
       direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',

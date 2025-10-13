@@ -151,8 +151,18 @@ export interface User {
   joined_date: string
 }
 
-// UserListType can be an alias of User if they are identical
-export type UserListType = User
+export type UserListType = {
+  id: number
+  image: string
+  name: string
+  email: string
+  listings_count: string
+  join_date: string
+  reported_count: string
+  type: string
+  last_seen_at: string
+  status: string
+}
 
 // --- Other Interfaces (Unchanged) ---
 

@@ -3,7 +3,7 @@ import { ActionIcon, Badge, Menu } from '@mantine/core'
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
-import type { User } from '@/types/user.types'
+import type { UserListType } from '@/types/user.types'
 import { perPage } from '@/constant/config'
 import { formatDate } from '@/components/utils/helper'
 
@@ -17,7 +17,7 @@ export const userColumns = ({
   page,
   handleView,
   handleDeleteClick,
-}: UserColumnHandlers): ColumnDef<User>[] => [
+}: UserColumnHandlers): ColumnDef<UserListType>[] => [
   {
     key: 'sn',
     header: 'SN',
