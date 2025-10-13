@@ -1,14 +1,15 @@
 import { Image } from '@mantine/core'
-import { dummyImages } from '../Navigation/data/dummyData'
 import { Carousel } from '@mantine/carousel'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import type { GalleryItem } from '@/types/user.types'
 
-function CarouselSection() {
-  const slides = dummyImages.map((image) => (
+function CarouselSection({ gallery }: { gallery: GalleryItem[] | undefined }) {
+  console.log(gallery)
+  const slides = gallery?.map((image) => (
     <Carousel.Slide key={image.id}>
       <Image
-        src={image.src}
-        alt={image.alt}
+        src={image.asset_url}
+        alt={image.name || 'Image'}
         radius="lg"
         className="w-full h-96 object-cover"
       />

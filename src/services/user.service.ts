@@ -35,5 +35,27 @@ export const useUser = () => {
     },
   })
 
-  return { listUsers, getUsersSummary, getUser, getMe, deleteUser }
+  const suspendUser = useMutation({
+    mutationFn: (id: Id) => userApi.suspendUser(id),
+    onSuccess: (_, variable) => {
+      queryClient.invalidateQueries({ queryKey: ['user', variable] })
+    },
+  })
+
+  const restoreUser = useMutation({
+    mutationFn: (id: Id) => userApi.restoreUser(id),
+    onSuccess: (_, variable) => {
+      queryClient.invalidateQueries({ queryKey: ['user', variable] })
+    },
+  })
+
+  return {
+    listUsers,
+    getUsersSummary,
+    getUser,
+    getMe,
+    deleteUser,
+    suspendUser,
+    restoreUser,
+  }
 }

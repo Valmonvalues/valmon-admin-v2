@@ -100,40 +100,43 @@ export function ReusableTable<T extends { id: Id }>({
         </Group>
       ) : (
         <ScrollArea h={700} offsetScrollbars scrollbarSize={8}>
-          <div className="min-w-[1400px]">
-            <Table highlightOnHover>
-              <Table.Thead className="text-[12px]">
-                <Table.Tr className="text-gray-500">
+          {/* <div className="min-w-[1000px]"> */}
+          <Table highlightOnHover>
+            <Table.Thead className="text-[12px]">
+              <Table.Tr className="text-gray-500">
+                {columns.map((column) => (
+                  <Table.Th
+                    key={String(column.key)}
+                    className="whitespace-nowrap cursor-pointer"
+                    onClick={() => {
+                      // if (!column.sortable) return
+                      onSort(column.key)
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <div>{column.header}</div>
+                      {renderSortIcon(String(column.key), column.sortable)}
+                    </div>
+                  </Table.Th>
+                ))}
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {data?.map((item, index) => (
+                <Table.Tr key={item.id} className="text-gray-800">
                   {columns.map((column) => (
-                    <Table.Th
+                    <Table.Td
                       key={String(column.key)}
-                      className="whitespace-nowrap cursor-pointer"
-                      onClick={() => {
-                        // if (!column.sortable) return
-                        onSort(column.key)
-                      }}
+                      className="whitespace-nowrap"
                     >
-                      <div className="flex items-center">
-                        <div>{column.header}</div>
-                        {renderSortIcon(String(column.key), column.sortable)}
-                      </div>
-                    </Table.Th>
+                      {column.render(item, index)}
+                    </Table.Td>
                   ))}
                 </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {data?.map((item, index) => (
-                  <Table.Tr key={item.id} className="text-gray-800">
-                    {columns.map((column) => (
-                      <Table.Td key={String(column.key)}>
-                        {column.render(item, index)}
-                      </Table.Td>
-                    ))}
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-          </div>
+              ))}
+            </Table.Tbody>
+          </Table>
+          {/* </div> */}
         </ScrollArea>
       )}
     </Paper>

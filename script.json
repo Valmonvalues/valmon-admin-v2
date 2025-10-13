@@ -1,0 +1,1490 @@
+{
+  "status_code": 200,
+  "success": true,
+  "message": "Fetched user",
+  "data": {
+    "id": 57,
+    "google_id": null,
+    "first_name": "James",
+    "last_name": "John",
+    "phone": "08151599415",
+    "country_code": "+234",
+    "email": "iamdunsin15@gmail.com",
+    "notification_preference": {
+      "push_notification": true,
+      "message_notification": true,
+      "payment_notification": true,
+      "email_notification": true
+    },
+    "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+    "avatar_url": null,
+    "created_at": "2025-02-07T19:20:40.000000Z",
+    "updated_at": "2025-09-08T22:05:39.000000Z",
+    "account_type": "worker",
+    "account_status": "SUSPENDED",
+    "deleted_at": null,
+    "email_verified_at": "2025-02-07T19:21:26.000000Z",
+    "last_seen_at": "2025-09-08 22:05:39",
+    "rating": 4,
+    "ratings_count": 2,
+    "inbox_response_time": 0,
+    "inbox_response_rate": 0,
+    "active_jobs_count": 0,
+    "profile": {
+      "id": 48,
+      "user_id": "57",
+      "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+      "addresses": [
+        {
+          "details": "No 3 Sawmill",
+          "street": "124 road egbeda",
+          "city": "Lagos",
+          "state": "Lagos",
+          "country": "Nigeria",
+          "postal_code": "200113"
+        }
+      ],
+      "services": [
+        {
+          "service_id": 68,
+          "years_of_experience": 10,
+          "primary": false,
+          "service": {
+            "id": 68,
+            "name": "Animator",
+            "service_category_id": "36",
+            "description": "",
+            "service_image": null,
+            "tags": null,
+            "slug": "animator",
+            "created_at": "2025-04-05T15:25:47.000000Z",
+            "updated_at": "2025-04-05T15:25:47.000000Z",
+            "image_url": null,
+            "worker_count": 0
+          }
+        },
+        {
+          "service_id": 76,
+          "years_of_experience": 12,
+          "primary": true,
+          "service": {
+            "id": 76,
+            "name": "Software architect",
+            "service_category_id": "36",
+            "description": "",
+            "service_image": null,
+            "tags": null,
+            "slug": "software-architect",
+            "created_at": "2025-04-05T15:28:39.000000Z",
+            "updated_at": "2025-04-05T15:28:39.000000Z",
+            "image_url": null,
+            "worker_count": 1
+          }
+        }
+      ],
+      "gigs": [
+        {
+          "service_id": 69,
+          "title": "sfa",
+          "pricing_type": "per day",
+          "price": "500",
+          "description": "I\u2019m will deliver a professional and timely job",
+          "service": {
+            "id": 69,
+            "name": "Content creator",
+            "service_category_id": "36",
+            "description": "",
+            "service_image": null,
+            "tags": null,
+            "slug": "content-creator",
+            "created_at": "2025-04-05T15:26:11.000000Z",
+            "updated_at": "2025-04-05T15:26:11.000000Z",
+            "image_url": null,
+            "worker_count": 0
+          }
+        },
+        {
+          "service_id": 75,
+          "title": "zdghfh",
+          "pricing_type": "per session",
+          "price": "1000",
+          "description": "dfhed",
+          "service": {
+            "id": 75,
+            "name": "iPhone apps",
+            "service_category_id": "36",
+            "description": "",
+            "service_image": null,
+            "tags": null,
+            "slug": "iphone-apps",
+            "created_at": "2025-04-05T15:28:20.000000Z",
+            "updated_at": "2025-04-05T15:28:20.000000Z",
+            "image_url": null,
+            "worker_count": 0
+          }
+        }
+      ],
+      "primary_service_id": "76",
+      "working_hours": [
+        {
+          "day": "Monday",
+          "from": "10:00 AM",
+          "to": "15:00 PM",
+          "open": true
+        },
+        {
+          "day": "Tuesday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        },
+        {
+          "day": "Wednesday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        },
+        {
+          "day": "Thursday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        },
+        {
+          "day": "Friday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        },
+        {
+          "day": "Saturday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        },
+        {
+          "day": "Sunday",
+          "from": "06:00 AM",
+          "to": "06:00 AM",
+          "open": true
+        }
+      ],
+      "country": null,
+      "city": null,
+      "language": null,
+      "state": null,
+      "deleted_at": null,
+      "created_at": "2025-02-07T19:20:41.000000Z",
+      "updated_at": "2025-08-25T20:03:23.000000Z",
+      "image_url": null,
+      "completed_jobs": 0
+    },
+    "reviews": [
+      {
+        "id": 33,
+        "user_id": "57",
+        "reviewer_id": "58",
+        "content": "Great delivery",
+        "rating": 4,
+        "created_at": "2025-08-13T12:59:17.000000Z",
+        "updated_at": "2025-08-13T12:59:17.000000Z",
+        "user": {
+          "id": 57,
+          "google_id": null,
+          "first_name": "James",
+          "last_name": "John",
+          "phone": "08151599415",
+          "country_code": "+234",
+          "email": "iamdunsin15@gmail.com",
+          "notification_preference": {
+            "push_notification": true,
+            "message_notification": true,
+            "payment_notification": true,
+            "email_notification": true
+          },
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "avatar_url": null,
+          "created_at": "2025-02-07T19:20:40.000000Z",
+          "updated_at": "2025-09-08T22:05:39.000000Z",
+          "account_type": "worker",
+          "account_status": "SUSPENDED",
+          "deleted_at": null,
+          "email_verified_at": "2025-02-07T19:21:26.000000Z",
+          "last_seen_at": "2025-09-08 22:05:39",
+          "rating": 4,
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0
+        },
+        "reviewer": {
+          "id": 58,
+          "google_id": null,
+          "first_name": "John",
+          "last_name": "Peterson",
+          "phone": "08151599415",
+          "country_code": "+234",
+          "email": "firstclasstouch15@gmail.com",
+          "notification_preference": {
+            "email_notifications": true,
+            "message_notifications": false,
+            "push_notifications": true,
+            "payment_notifications": true
+          },
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/pFUYYkDFHKYNFPy8wfvprbVG7uZ6brLIgrxhtwQo.png",
+          "avatar_url": null,
+          "created_at": "2025-02-11T15:55:11.000000Z",
+          "updated_at": "2025-08-23T18:20:10.000000Z",
+          "account_type": "employer",
+          "account_status": "ACTIVE",
+          "deleted_at": null,
+          "email_verified_at": "2025-02-11T15:57:15.000000Z",
+          "last_seen_at": "2025-08-23 18:20:10",
+          "rating": 5,
+          "ratings_count": 1,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0
+        }
+      },
+      {
+        "id": 34,
+        "user_id": "57",
+        "reviewer_id": "58",
+        "content": "Great delivery",
+        "rating": 4,
+        "created_at": "2025-08-13T12:59:35.000000Z",
+        "updated_at": "2025-08-13T12:59:35.000000Z",
+        "user": {
+          "id": 57,
+          "google_id": null,
+          "first_name": "James",
+          "last_name": "John",
+          "phone": "08151599415",
+          "country_code": "+234",
+          "email": "iamdunsin15@gmail.com",
+          "notification_preference": {
+            "push_notification": true,
+            "message_notification": true,
+            "payment_notification": true,
+            "email_notification": true
+          },
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "avatar_url": null,
+          "created_at": "2025-02-07T19:20:40.000000Z",
+          "updated_at": "2025-09-08T22:05:39.000000Z",
+          "account_type": "worker",
+          "account_status": "SUSPENDED",
+          "deleted_at": null,
+          "email_verified_at": "2025-02-07T19:21:26.000000Z",
+          "last_seen_at": "2025-09-08 22:05:39",
+          "rating": 4,
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0
+        },
+        "reviewer": {
+          "id": 58,
+          "google_id": null,
+          "first_name": "John",
+          "last_name": "Peterson",
+          "phone": "08151599415",
+          "country_code": "+234",
+          "email": "firstclasstouch15@gmail.com",
+          "notification_preference": {
+            "email_notifications": true,
+            "message_notifications": false,
+            "push_notifications": true,
+            "payment_notifications": true
+          },
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/pFUYYkDFHKYNFPy8wfvprbVG7uZ6brLIgrxhtwQo.png",
+          "avatar_url": null,
+          "created_at": "2025-02-11T15:55:11.000000Z",
+          "updated_at": "2025-08-23T18:20:10.000000Z",
+          "account_type": "employer",
+          "account_status": "ACTIVE",
+          "deleted_at": null,
+          "email_verified_at": "2025-02-11T15:57:15.000000Z",
+          "last_seen_at": "2025-08-23 18:20:10",
+          "rating": 5,
+          "ratings_count": 1,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0
+        }
+      }
+    ],
+    "gallery": [
+      {
+        "id": 28,
+        "user_id": "57",
+        "path": "account\/57\/gallery\/lNeUIulS8Mw3HE0utsOHgtC3kUU6EGEPvLijDvp9.jpg",
+        "name": null,
+        "created_at": "2025-02-07T19:51:14.000000Z",
+        "updated_at": "2025-02-07T19:51:14.000000Z",
+        "asset_url": "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/gallery\/lNeUIulS8Mw3HE0utsOHgtC3kUU6EGEPvLijDvp9.jpg"
+      },
+      {
+        "id": 29,
+        "user_id": "57",
+        "path": "account\/57\/gallery\/Xcn4DkTm4TG4nPTgbhdntEff5asZyd5PWDfo4LCo.jpg",
+        "name": null,
+        "created_at": "2025-02-07T19:51:14.000000Z",
+        "updated_at": "2025-02-07T19:51:14.000000Z",
+        "asset_url": "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/gallery\/Xcn4DkTm4TG4nPTgbhdntEff5asZyd5PWDfo4LCo.jpg"
+      },
+      {
+        "id": 30,
+        "user_id": "57",
+        "path": "account\/57\/gallery\/4a1h54km8b7Kc09RXYqt9lp2rSc1cnYp7KDMwT4A.jpg",
+        "name": null,
+        "created_at": "2025-02-07T19:51:14.000000Z",
+        "updated_at": "2025-02-07T19:51:14.000000Z",
+        "asset_url": "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/gallery\/4a1h54km8b7Kc09RXYqt9lp2rSc1cnYp7KDMwT4A.jpg"
+      },
+      {
+        "id": 31,
+        "user_id": "57",
+        "path": "account\/57\/gallery\/aqrzOykyinfb1zWbxOzXufzaxt3rnOXwBmEaZS6C.jpg",
+        "name": null,
+        "created_at": "2025-02-07T19:51:14.000000Z",
+        "updated_at": "2025-02-07T19:51:14.000000Z",
+        "asset_url": "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/gallery\/aqrzOykyinfb1zWbxOzXufzaxt3rnOXwBmEaZS6C.jpg"
+      },
+      {
+        "id": 32,
+        "user_id": "57",
+        "path": "account\/57\/gallery\/AQ4yOa7OQva3tf4dGfEcK8TXHUxVH10P0sp683gk.jpg",
+        "name": null,
+        "created_at": "2025-02-07T19:51:14.000000Z",
+        "updated_at": "2025-02-07T19:51:14.000000Z",
+        "asset_url": "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/gallery\/AQ4yOa7OQva3tf4dGfEcK8TXHUxVH10P0sp683gk.jpg"
+      }
+    ],
+    "listings": [
+      {
+        "id": 28,
+        "listing_category_id": "2",
+        "user_id": "57",
+        "location": "Anambra",
+        "title": "fgiklk",
+        "color": "blue",
+        "price": "100700.00",
+        "negotiable": true,
+        "condition": "new",
+        "description": "uyrfikjlkk",
+        "created_at": "2025-07-18T12:43:07.000000Z",
+        "updated_at": "2025-08-13T14:25:20.000000Z",
+        "status": "ACTIVE",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/8m9VRsLoERd5pEf6GT0MeZ3F5cxOnEltpHV9RRX1.png"
+        ],
+        "category": {
+          "id": 2,
+          "name": "Clothes",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-25T20:36:08.000000Z",
+          "updated_at": "2024-10-25T20:36:08.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      },
+      {
+        "id": 34,
+        "listing_category_id": "1",
+        "user_id": "57",
+        "location": "Lagos",
+        "title": "samsung",
+        "color": "blue",
+        "price": "180000.00",
+        "negotiable": true,
+        "condition": "used",
+        "description": "good good",
+        "created_at": "2025-08-21T16:03:47.000000Z",
+        "updated_at": "2025-08-21T16:06:31.000000Z",
+        "status": "DENIED",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/6tZ2UVCpRZQU9gD6j0CM1kVRf8RZeIESgG3bWYHc.png"
+        ],
+        "category": {
+          "id": 1,
+          "name": "Phones",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-19T22:38:19.000000Z",
+          "updated_at": "2024-10-19T22:38:19.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      },
+      {
+        "id": 35,
+        "listing_category_id": "2",
+        "user_id": "57",
+        "location": "Lagos",
+        "title": "cloth",
+        "color": "black",
+        "price": "1800.00",
+        "negotiable": true,
+        "condition": "used",
+        "description": "Nice",
+        "created_at": "2025-08-21T16:05:34.000000Z",
+        "updated_at": "2025-08-21T16:06:35.000000Z",
+        "status": "ACTIVE",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/bHS37TNP51nZJusyeUub942ycjMj8xHPziOCoj84.png"
+        ],
+        "category": {
+          "id": 2,
+          "name": "Clothes",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-25T20:36:08.000000Z",
+          "updated_at": "2024-10-25T20:36:08.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      },
+      {
+        "id": 36,
+        "listing_category_id": "2",
+        "user_id": "57",
+        "location": "FCT - Abuja",
+        "title": "Agbada",
+        "color": "Black",
+        "price": "20000.00",
+        "negotiable": true,
+        "condition": "new",
+        "description": "Good",
+        "created_at": "2025-08-21T16:09:23.000000Z",
+        "updated_at": "2025-08-21T21:03:11.000000Z",
+        "status": "DENIED",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/JD4sWE0h5S0cij7dE77ZZJpowdPH5t79aJH854kz.png"
+        ],
+        "category": {
+          "id": 2,
+          "name": "Clothes",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-25T20:36:08.000000Z",
+          "updated_at": "2024-10-25T20:36:08.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      },
+      {
+        "id": 37,
+        "listing_category_id": "3",
+        "user_id": "57",
+        "location": "FCT - Abuja",
+        "title": "2 Bedroom",
+        "color": "Grey",
+        "price": "2000000.00",
+        "negotiable": true,
+        "condition": "used",
+        "description": "Good",
+        "created_at": "2025-08-21T16:10:41.000000Z",
+        "updated_at": "2025-08-23T16:19:19.000000Z",
+        "status": "ACTIVE",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/btwOwvgS59eEAG0TPTRI4div098jM7O49mBReNoL.png"
+        ],
+        "category": {
+          "id": 3,
+          "name": "House",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-31T19:33:03.000000Z",
+          "updated_at": "2024-10-31T19:33:03.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      },
+      {
+        "id": 40,
+        "listing_category_id": "1",
+        "user_id": "57",
+        "location": "Niger",
+        "title": "iphone 7",
+        "color": "blue",
+        "price": "80000.00",
+        "negotiable": true,
+        "condition": "used",
+        "description": "good condition",
+        "created_at": "2025-08-27T19:00:27.000000Z",
+        "updated_at": "2025-08-27T19:00:27.000000Z",
+        "status": "PENDING",
+        "deleted_at": null,
+        "images": [
+          "https:\/\/valmon.ctrixx.com\/storage\/account\/57\/listings\/wo0bK6YdS6qVfw1LSnmRXkX7k5X9QZKNVN0puPWE.jpg"
+        ],
+        "category": {
+          "id": 1,
+          "name": "Phones",
+          "status": "1",
+          "description": null,
+          "created_at": "2024-10-19T22:38:19.000000Z",
+          "updated_at": "2024-10-19T22:38:19.000000Z"
+        },
+        "user": {
+          "id": 57,
+          "first_name": "James",
+          "last_name": "John",
+          "rating": 4,
+          "profile_pic": "https:\/\/valmon.ctrixx.com\/storage\/images\/HaP4MWxejyDS8TJGBay7b7CTIG5HBi0c3r1eDPTC.jpg",
+          "ratings_count": 2,
+          "inbox_response_time": 0,
+          "inbox_response_rate": 0,
+          "active_jobs_count": 0,
+          "profile": {
+            "id": 48,
+            "user_id": "57",
+            "bio": "I am a painter with over 20 years of experience and I am readily available at your service feel free to call me on my line: 081111111111",
+            "addresses": [
+              {
+                "details": "No 3 Sawmill",
+                "street": "124 road egbeda",
+                "city": "Lagos",
+                "state": "Lagos",
+                "country": "Nigeria",
+                "postal_code": "200113"
+              }
+            ],
+            "services": [
+              {
+                "service_id": 68,
+                "years_of_experience": 10,
+                "primary": false,
+                "service": {
+                  "id": 68,
+                  "name": "Animator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "animator",
+                  "created_at": "2025-04-05T15:25:47.000000Z",
+                  "updated_at": "2025-04-05T15:25:47.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 76,
+                "years_of_experience": 12,
+                "primary": true,
+                "service": {
+                  "id": 76,
+                  "name": "Software architect",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "software-architect",
+                  "created_at": "2025-04-05T15:28:39.000000Z",
+                  "updated_at": "2025-04-05T15:28:39.000000Z",
+                  "image_url": null,
+                  "worker_count": 1
+                }
+              }
+            ],
+            "gigs": [
+              {
+                "service_id": 69,
+                "title": "sfa",
+                "pricing_type": "per day",
+                "price": "500",
+                "description": "I\u2019m will deliver a professional and timely job",
+                "service": {
+                  "id": 69,
+                  "name": "Content creator",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "content-creator",
+                  "created_at": "2025-04-05T15:26:11.000000Z",
+                  "updated_at": "2025-04-05T15:26:11.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              },
+              {
+                "service_id": 75,
+                "title": "zdghfh",
+                "pricing_type": "per session",
+                "price": "1000",
+                "description": "dfhed",
+                "service": {
+                  "id": 75,
+                  "name": "iPhone apps",
+                  "service_category_id": "36",
+                  "description": "",
+                  "service_image": null,
+                  "tags": null,
+                  "slug": "iphone-apps",
+                  "created_at": "2025-04-05T15:28:20.000000Z",
+                  "updated_at": "2025-04-05T15:28:20.000000Z",
+                  "image_url": null,
+                  "worker_count": 0
+                }
+              }
+            ],
+            "primary_service_id": "76",
+            "working_hours": [
+              {
+                "day": "Monday",
+                "from": "10:00 AM",
+                "to": "15:00 PM",
+                "open": true
+              },
+              {
+                "day": "Tuesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Wednesday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Thursday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Friday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Saturday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              },
+              {
+                "day": "Sunday",
+                "from": "06:00 AM",
+                "to": "06:00 AM",
+                "open": true
+              }
+            ],
+            "country": null,
+            "city": null,
+            "language": null,
+            "state": null,
+            "deleted_at": null,
+            "created_at": "2025-02-07T19:20:41.000000Z",
+            "updated_at": "2025-08-25T20:03:23.000000Z",
+            "image_url": null,
+            "completed_jobs": 0
+          }
+        }
+      }
+    ]
+  }
+}

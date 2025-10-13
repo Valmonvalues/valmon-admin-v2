@@ -12,6 +12,8 @@ import { Avatar } from '@mantine/core'
 import CarouselSection from '@/components/user/CarouselSection'
 import ServicesSection from '@/components/user/ServiceSection'
 import ReviewsSection from '@/components/user/ReviewSection'
+import { notifications } from '@mantine/notifications'
+import { useConfirmModal } from '@/providers/ModalProvider'
 
 export const Route = createFileRoute('/(dashboard)/users/$userId')({
   component: RouteComponent,
@@ -21,18 +23,19 @@ function RouteComponent() {
   const [isOnline] = useState(false)
   const [activeTab, setActiveTab] = useState('Profile Brief')
   const router = useNavigate()
-  const { getUser } = useUser()
+  const { getUser, suspendUser, restoreUser, deleteUser } = useUser()
   const { userId } = Route.useParams()
   const { data: user } = getUser(userId)
+  const { showConfirmModal } = useConfirmModal()
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Profile Brief':
         return (
           <>
-            <CarouselSection />
-            <ServicesSection />
-            <ReviewsSection />
+            <CarouselSection gallery={user?.gallery} />
+            <ServicesSection gigs={user?.profile?.gigs} />
+            <ReviewsSection reviews={user?.reviews} />
           </>
         )
       case 'Work Gallery':
@@ -64,6 +67,71 @@ function RouteComponent() {
     }
   }
 
+  const handleDelete = async () => {
+    const res = await showConfirmModal({
+      title: 'Delete User',
+      message: 'Are you sure you want to delete this user?',
+      confirmLabel: 'Confirm',
+      cancelLabel: 'Cancel',
+      confirmColor: 'red',
+      icon: 'delete',
+      loading: suspendUser.isPending || restoreUser.isPending,
+    })
+
+    if (res !== 'confirm') return
+
+    deleteUser.mutate(userId, {
+      onSuccess: () => {
+        notifications.show({
+          title: 'Success',
+          message: 'User deleted successfully',
+          color: 'green',
+        })
+        router({ to: '..' })
+      },
+      onError: (error) => {
+        console.error(error)
+      },
+    })
+  }
+
+  const isActive = user?.account_status === 'ACTIVE'
+  const manageUser = async () => {
+    const action = isActive ? 'deactivate' : 'activate'
+    const actionTitle = isActive ? 'Deactivate User' : 'Activate User'
+    const actionMessage = `Are you sure you want to ${action} this user?`
+
+    const res = await showConfirmModal({
+      title: actionTitle,
+      message: actionMessage,
+      confirmLabel: 'Confirm',
+      cancelLabel: 'Cancel',
+      confirmColor: 'red',
+      icon: 'delete',
+      loading: suspendUser.isPending || restoreUser.isPending,
+    })
+
+    if (res !== 'confirm') return
+
+    const mutation = isActive ? suspendUser : restoreUser
+    const successMessage = isActive
+      ? 'User suspended successfully'
+      : 'User restored successfully'
+
+    mutation.mutate(userId, {
+      onSuccess: () => {
+        notifications.show({
+          title: 'Success',
+          message: successMessage,
+          color: 'green',
+        })
+      },
+      onError: (error) => {
+        console.error(error)
+      },
+    })
+  }
+
   return (
     <DashboardLayout>
       <div className="flex gap-3 items-start">
@@ -73,7 +141,7 @@ function RouteComponent() {
         >
           <IconArrowLeft className="h-6 w-6" />
         </div>
-        <div className="max-w-7xl">
+        <div className="w-full">
           <aside className="rounded-xl bg-white shadow-sm ">
             <div className="card-body flex-row gap-20">
               <div className="flex flex-col flex-1">
@@ -103,7 +171,7 @@ function RouteComponent() {
                     <div className="flex gap-2 items-center text-[#62646A] text-xs w-1/2">
                       <IconMapPin className="h-4 w-4" />
                       <span className="font-medium text-[rgba(0,0,0,1)]">
-                        {user?.profile?.location || 'N/A'}
+                        {user?.profile?.country || 'Nigeria'}
                       </span>
                     </div>
                     <div className="flex gap-2 items-center text-[#62646A] text-xs my-2.5">
@@ -189,10 +257,8 @@ function RouteComponent() {
                     Contact
                   </a>
                   <button
-                    className="btn bg-[#FFB241] flex-1 rounded-2xl border-[#FF9F12CC] border-2"
-                    // onClick={() =>
-                    //   manageUser(adminUsers.id, adminUsers.account_status)
-                    // }
+                    className={`btn ${isActive ? 'bg-[#FFB241] border-[#FF9F12CC]' : 'bg-blue-500 text-gray-800 border-blue-500'} flex-1 rounded-2xl  border-2`}
+                    onClick={() => manageUser()}
                   >
                     {user?.account_status === 'ACTIVE'
                       ? 'Deactivate'
@@ -200,7 +266,7 @@ function RouteComponent() {
                   </button>
                   <button
                     className="btn bg-red-600 flex-1 text-white rounded-2xl border-red-600 border-2"
-                    // onClick={() => removeUser(adminUsers.id)}
+                    onClick={handleDelete}
                   >
                     Delete
                   </button>

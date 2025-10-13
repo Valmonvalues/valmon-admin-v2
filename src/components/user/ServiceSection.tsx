@@ -1,6 +1,6 @@
-import { dummyServices } from '../Navigation/data/dummyData'
+import type { Gig } from '@/types/user.types'
 
-function ServicesSection() {
+function ServicesSection({ gigs }: { gigs: Gig[] | undefined }) {
   return (
     <div className="bg-white p-5 rounded-xl shadow-sm mb-6">
       <div className="flex justify-between items-center mb-4">
@@ -11,21 +11,23 @@ function ServicesSection() {
       </div>
 
       <div className="space-y-4">
-        {dummyServices.map((service) => (
+        {gigs?.map((gig) => (
           <div
-            key={service.id}
+            key={gig.service_id}
             className="grid grid-cols-6 items-center text-gray-700 border p-2 rounded-md border-gray-200"
           >
-            {/* Tailwind's grid system for alignment */}
-            <div className="col-span-1 text-sm">{service.type}</div>
-            <div className="col-span-2 font-medium text-sm">
-              Title: {service.title}
+            <div className="col-span-1 text-sm capitalize">
+              {gig.service.name}
+            </div>
+            <div className="col-span-2 font-medium text-sm capitalize">
+              Title: {gig.title || 'N/A'}
+            </div>
+            <div className="col-span-1 text-sm capitalize">
+              Pricing Type: <span>{gig.pricing_type || 'Per Hour'}</span>
             </div>
             <div className="col-span-1 text-sm">
-              Pricing Type: <span>{service.pricingType}</span>
-            </div>
-            <div className="col-span-1 text-sm">
-              Price: <span className="font-semibold">NGN {service.price}</span>
+              Price:{' '}
+              <span className="font-semibold">NGN {gig.price || '0'}</span>
             </div>
             <div className="col-span-1 text-right">
               <button className="px-3 py-1 text-xs font-semibold text-yellow-800">

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Badge, Menu } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Menu } from '@mantine/core'
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import { perPage } from '@/constant/config'
@@ -43,18 +43,7 @@ export const listingColumns = ({
   {
     key: 'image',
     header: 'Image',
-    render: (listing): ReactNode =>
-      listing.image ? (
-        <img
-          src={listing.image}
-          alt={listing.name}
-          width={48}
-          height={48}
-          className="rounded-md object-cover"
-        />
-      ) : (
-        <div className="w-12 h-12 bg-gray-200 rounded-md" />
-      ),
+    render: (listing): ReactNode => <Avatar src={listing.image} size="md" />,
   },
   {
     key: 'name',

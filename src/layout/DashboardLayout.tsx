@@ -26,9 +26,9 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
   const { getMe } = useUser()
 
-  const { data: me, isLoading: meIsloading } = getMe()
-  console.log(me?.name)
+  const { data: me } = getMe()
 
+  console.log(me)
   const { pathname } = useLocation()
 
   const getRouteName = () => {
@@ -131,16 +131,10 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="hidden sm:block">
                   <div className="flex space-x-3 items-center">
                     <span className="font-medium text-white hover:bg-gray-700 hover:text-white">
-                      {/* {'store.UserAccount?.name'} */}
-                      {/* Issues */}
-                      {/* {me.name} */}
-                      {me?.name ?? meIsloading}
+                      {me?.name}
                     </span>
                     <div className="font-normal px-3 py-1 rounded-3xl bg-[#E1CD7182] text-white">
-                      {/* {store.UserAccount?.role === 'super_admin'
-                    ? 'Super Admin'
-                    : 'admin'} */}
-                      Super Admin
+                      {me?.role || 'User'}
                     </div>
                   </div>
                 </div>

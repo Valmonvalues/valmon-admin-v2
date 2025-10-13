@@ -1,3 +1,4 @@
+import { Avatar } from '@mantine/core'
 import StarRating from '../StarRating'
 
 function ReviewCard({
@@ -8,16 +9,12 @@ function ReviewCard({
 }: {
   reviewerName: string
   rating: number
-  avatar: string
+  avatar: string | null
   comment: string
 }) {
   return (
     <div className="flex items-start gap-3 border border-gray-200 p-4 rounded-lg">
-      <img
-        src={avatar}
-        alt={reviewerName}
-        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-      />
+      <Avatar src={avatar} size="md" alt={reviewerName} />
       <div className="flex-grow">
         <div className="flex justify-between items-center mb-1">
           <h4 className="font-semibold text-gray-800">{reviewerName}</h4>
