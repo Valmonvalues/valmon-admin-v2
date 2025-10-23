@@ -131,7 +131,8 @@ function Account() {
                       }
                     }),
                 },
-                { name: 'file', label: 'Upload Photo', type: 'file' },
+                // { name: 'file', label: 'Upload Photo', type: 'file' },
+                { name: 'file', label: '', type: 'file' },
               ]}
               onSubmit={handleAddManager}
               loading={loading}

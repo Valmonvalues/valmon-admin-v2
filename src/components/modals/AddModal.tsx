@@ -40,6 +40,7 @@ const AddModal = ({
 }: AddModalProps) => {
   //   const formData: Record<string, any> = {};
   const [formData, setFormData] = useState<Record<string, any>>({})
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   useEffect(() => {
     if (!opened) {
@@ -52,6 +53,12 @@ const AddModal = ({
       ...prev,
       [name]: value,
     }))
+
+    if (value instanceof File) {
+      const reader = new FileReader()
+      reader.onloadend = () => setImagePreview(reader.result as string)
+      reader.readAsDataURL(value)
+    }
   }
 
   const handleSubmit = () => {
@@ -59,6 +66,20 @@ const AddModal = ({
     // onClose()
     // setFormData({})
   }
+
+  useEffect(() => {
+    if (!opened) {
+      setFormData((prev) => {
+        const newData = { ...prev }
+        delete newData[fileField?.name as string]
+        return newData
+      })
+      setImagePreview(null)
+    }
+  }, [opened])
+
+  const fileField = fields.find((f) => f.type === 'file')
+  const otherFields = fields.filter((f) => f.type !== 'file')
 
   return (
     <Modal
@@ -78,7 +99,60 @@ const AddModal = ({
       }}
     >
       <div className="flex flex-col gap-4">
-        {fields.map((field) => {
+        {/* {fileField && (
+          <div className="flex flex-col items-center mb-4">
+            <div className="relative w-32 h-32">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-full border border-gray-300"
+                />
+              ) : (
+                <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm border border-gray-300">
+                  No Image
+                </div>
+              )}
+            </div>
+            <FileInput
+              key={fileField.name}
+              label={fileField.label}
+              placeholder="Upload image"
+              value={formData[fileField.name] || null}
+              onChange={(file) => handleChange(fileField.name, file)}
+              radius="md"
+              className="mt-2"
+            />{' '}
+          </div>
+        )} */}
+
+        {fileField && (
+          <div className="flex flex-col items-center mb-4">
+            <label htmlFor="upload-image" className="cursor-pointer">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-full border border-gray-300"
+                />
+              ) : (
+                <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm border border-gray-300">
+                  Upload Image
+                </div>
+              )}
+            </label>
+
+            <FileInput
+              id="upload-image"
+              style={{ display: 'none' }}
+              onChange={(file) => handleChange(fileField.name, file)}
+              radius="md"
+              className="mt-2"
+            />
+          </div>
+        )}
+
+        {otherFields.map((field) => {
           if (field.type === 'text' || field.type === 'email') {
             return (
               <TextInput
@@ -186,12 +260,15 @@ const AddModal = ({
             loading={loading}
             radius="md"
             size="md"
-            className="bg-black text-white hover:bg-gray-800"
+            fullWidth
+            variant="filled"
+            color="dark"
+            // className="bg-black text-white hover:bg-gray-800"
           >
             {submitLabel}
             {/* Save */}
           </Button>
-          <Button
+          {/* <Button
             variant="default"
             radius="md"
             size="md"
@@ -199,7 +276,7 @@ const AddModal = ({
             className="text-gray-700"
           >
             Close
-          </Button>
+          </Button> */}
         </Group>
       </div>
     </Modal>
