@@ -36,6 +36,25 @@ export const useMarketPlaces = () => {
     })
   }
 
+  // const addCategory = useMutation({
+  //   mutationFn: marketPlaces.addCategory,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['categories'] })
+  //     notifications.show({
+  //       title: 'Success',
+  //       message: 'Category added successfully',
+  //       color: 'green',
+  //     })
+  //   },
+  //   onError: (error: any) => {
+  //     notifications.show({
+  //       title: 'Error',
+  //       message: error.response?.data?.message || 'Failed to add category',
+  //       color: 'red',
+  //     })
+  //   },
+  // })
+
   const deleteProduct = useMutation({
     mutationFn: (id: Id) => marketPlaces.deleteProduct(id),
     onSuccess: () => {
@@ -62,6 +81,7 @@ export const useMarketPlaces = () => {
     listingApproval,
     listingClosed,
     listingCategories,
+    // addCategory,
     deleteProduct,
     deleteClosed,
     deleteCategories,

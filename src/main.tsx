@@ -14,6 +14,7 @@ import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfirmModalProvider } from './providers/ModalProvider.tsx'
+import { GlobalProvider } from './contexts/GlobalContext.tsx'
 
 // Create a new router instance
 const router = createRouter({
@@ -40,14 +41,16 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <MantineProvider>
-          <Notifications position={'top-right'} />
-          <ConfirmModalProvider>
-            <RouterProvider router={router} />
-          </ConfirmModalProvider>
-        </MantineProvider>
-      </QueryClientProvider>
+      <GlobalProvider>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider>
+            <Notifications position={'top-right'} />
+            <ConfirmModalProvider>
+              <RouterProvider router={router} />
+            </ConfirmModalProvider>
+          </MantineProvider>
+        </QueryClientProvider>
+      </GlobalProvider>
     </StrictMode>,
   )
 }

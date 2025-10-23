@@ -14,6 +14,17 @@ export const skillsApi = {
     return response.data
   },
 
+  addCategory: async (categoryData: {
+    name: string
+    description?: string
+    image?: File | string
+  }) => {
+    const response = await apiClient.post('/create/category', categoryData)
+    // console.log(categoryData)
+    // console.log(response)
+    return response.data
+  },
+
   deleteTransaction: async (id: Id) =>
     await apiClient.delete(`/skills/transactions/${id}`),
 

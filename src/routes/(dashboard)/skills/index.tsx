@@ -19,7 +19,7 @@ import profile from '@/assets/icons/cardprofile.svg'
 import cardblack from '@/assets/icons/card-pos-black.svg'
 import cardwhite from '@/assets/icons/card-pos.svg'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
-import { notifications } from '@mantine/notifications'
+import { useHandleDelete } from '@/hook/useHandleDelete'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -27,16 +27,25 @@ export const Route = createFileRoute('/(dashboard)/skills/')({
 
 function Skills() {
   // const navigate = useNavigate()
-  const { listSkills, listCategories, deleteTransaction, deleteParent } =
-    useSkills()
+  const {
+    listSkills,
+    listCategories,
+    addCategory,
+    deleteTransaction,
+    deleteParent,
+  } = useSkills()
+  const {
+    // selectedId: selectedManager,
+    modalOpen: deleteModalOpen,
+    setModalOpen: setDeleteModalOpen,
+    handleDeleteClick,
+    handleConfirmDelete,
+  } = useHandleDelete({
+    mutation: deleteTransaction,
+    entityName: 'skills',
+  })
   const [search, setSearch] = useState('')
   const [activeTab, setActiveTab] = useState('skill transactions')
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-
-  const [selectedTransaction, setSelectedTransaction] = useState<null | Id>(
-    null,
-  )
-  const [selectedParent, setSelectedParent] = useState<null | Id>(null)
 
   const { data: skillsData, isLoading: skillDataLoader } = listSkills()
   const { data: categoriesData } = listCategories()
@@ -54,7 +63,6 @@ function Skills() {
   }>({ key: 'name', direction: 'asc' })
 
   const sortedTransaction = useSortedData(transaction, sortConfig)
-  // console.log(categoriesData)
 
   const handleSort = (key: keyof Transaction) => {
     setSortConfig((prev) => ({
@@ -75,58 +83,19 @@ function Skills() {
     console.log(transactionId)
   }
 
-  const handleDeleteClick = (transactionId: Id) => {
-    console.log(transactionId)
-
-    setSelectedTransaction(transactionId)
-    setDeleteModalOpen(true)
-  }
-
-  const handleDeleteClickParent = (transactionId: Id) => {
-    console.log(transactionId)
-
-    setSelectedParent(transactionId)
-    setDeleteModalOpen(true)
-  }
-
-  const handleConfirmDelete = () => {
-    deleteTransaction.mutate(selectedTransaction as Id, {
-      onSuccess: () => {
-        setSelectedTransaction(null)
-        setDeleteModalOpen(false)
-      },
-      onError: (error) => {
-        console.error('Error deleting user:', error)
-        notifications.show({
-          title: 'Error',
-          message: 'Failed to delete user. Please try again.',
-          color: 'red',
-        })
-      },
-    })
-  }
-
-  const handleConfirmDeleteParent = () => {
-    deleteTransaction.mutate(selectedParent as Id, {
-      onSuccess: () => {
-        setSelectedParent(null)
-        setDeleteModalOpen(false)
-      },
-      onError: (error) => {
-        console.error('Error deleting user:', error)
-        notifications.show({
-          title: 'Error',
-          message: 'Failed to delete user. Please try again.',
-          color: 'red',
-        })
-      },
-    })
+  const handleAddCategory = async (categoryData: any) => {
+    try {
+      await addCategory.mutateAsync(categoryData)
+      // setModalOpened(false);
+    } catch (error) {
+      // Error is already handled in the mutation
+      console.error('Error adding category:', error)
+    }
   }
 
   return (
     <DashboardLayout>
       <div className="mb-4">
-        {/* <TabHeader activeTab={activeTab} onChange={setActiveTab} /> */}
         <TabHeader
           activeTab={activeTab}
           onChange={setActiveTab}
@@ -198,9 +167,6 @@ function Skills() {
       )}
 
       {activeTab === 'skill parent' && (
-        // <div className="text-center text-gray-500 mt-10">
-        //   Skill Parent Category content coming soon...
-        // </div>
         <div className="">
           <div className="">
             <ReusableTable
@@ -209,7 +175,7 @@ function Skills() {
               data={categories}
               columns={categoriesColumns({
                 handleView,
-                handleDeleteClickParent,
+                handleDeleteClick,
               })}
               isLoading={skillDataLoader}
               searchQuery={search}
@@ -220,7 +186,19 @@ function Skills() {
                 <BaseButton
                   title="Add New"
                   showPlusIcon={true}
-                  className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 text-sm font-medium rounded-md transition-colors duration-200 shadow-none border-0"
+                  modalTitle="Add Parent Category"
+                  fields={[
+                    { name: 'name', label: 'Name', type: 'text' },
+                    {
+                      name: 'description',
+                      label: 'Description',
+                      type: 'textarea',
+                    },
+                    { name: 'image', label: 'Pick a file', type: 'file' },
+                  ]}
+                  // onSubmit={(data) => console.log("New Category:", data)}
+                  onSubmit={handleAddCategory}
+                  className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
                 />
               }
             />
@@ -229,7 +207,7 @@ function Skills() {
           <ConfirmDeleteModal
             opened={deleteModalOpen}
             onCancel={() => setDeleteModalOpen(false)}
-            onConfirm={handleConfirmDeleteParent}
+            onConfirm={handleConfirmDelete}
             title="Delete User"
             message="Are you sure you want to delete this user? This action cannot be undone."
             loading={deleteParent.isPending}

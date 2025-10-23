@@ -1,5 +1,6 @@
 import { skillsApi } from '@/api/skills.api'
 import type { Id, Params } from '@/types/global.type'
+import { notifications } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useSkills = () => {
@@ -18,6 +19,25 @@ export const useSkills = () => {
     })
   }
 
+  const addCategory = useMutation({
+    mutationFn: skillsApi.addCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      notifications.show({
+        title: 'Success',
+        message: 'Category added successfully',
+        color: 'green',
+      })
+    },
+    onError: (error: any) => {
+      notifications.show({
+        title: 'Error',
+        message: error.response?.data?.message || 'Failed to add category',
+        color: 'red',
+      })
+    },
+  })
+
   const deleteTransaction = useMutation({
     mutationFn: (id: Id) => skillsApi.deleteTransaction(id),
     onSuccess: () => {
@@ -32,5 +52,11 @@ export const useSkills = () => {
     },
   })
 
-  return { listSkills, listCategories, deleteTransaction, deleteParent }
+  return {
+    listSkills,
+    listCategories,
+    addCategory,
+    deleteTransaction,
+    deleteParent,
+  }
 }

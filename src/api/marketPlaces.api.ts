@@ -27,6 +27,17 @@ export const marketPlaces = {
     return response.data
   },
 
+  // addCategory: async (categoryData: {
+  //   name: string
+  //   description?: string
+  //   image?: File | string
+  // }) => {
+  //   const response = await apiClient.post('/create/category', categoryData)
+  //   console.log(categoryData)
+  //   console.log(response)
+  //   return response.data
+  // },
+
   deleteProduct: async (id: Id) =>
     await apiClient.delete(`/listings/summary/${id}`),
 

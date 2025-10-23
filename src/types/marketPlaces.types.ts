@@ -1,36 +1,4 @@
-// "data": {
-//         "total_users": 72,
-//         "service_providers": 40,
-//         "employers": 32,
-//         "user_status": {
-//             "active": 70,
-//             "inactive": 0,
-//             "suspended": 2
-//         },
-//         "weekly_growth": {
-//             "total_users": "N\/A",
-//             "service_providers": "N\/A",
-//             "employers": "N\/A"
-//         },
-//         "topCategories": [],
-//         "topServices": {
-//             "": 50,
-//             "\"service_image\":null": 41,
-//             "\"tags\":null": 41,
-//             "\"description\":\"\"": 26,
-//             "\"primary\":true": 22,
-//             "\"primary\":false": 19,
-//             "\"image_url\":null": 17,
-//             "\"service_category_id\":\"1\"": 16
-//         }
-//     }
-
 import type { Pagination } from './global.type'
-
-// "totalListingCount": 11,
-// "totalListedValue": "123000.00",
-// "In_Escrow_Value": 0,
-// "In_Escrow_count": 0
 
 export interface ListingItem {
   id: number

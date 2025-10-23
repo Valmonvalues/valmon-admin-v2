@@ -33,7 +33,6 @@ interface ReusableTableProps<T> {
   onSearchChange: (value: string) => void
   sortConfig: SortConfig<T>
   onSort: (key: keyof T) => void
-
   headerActions?: React.ReactNode
 }
 

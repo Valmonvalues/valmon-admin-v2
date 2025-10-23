@@ -77,7 +77,7 @@ function MarketPlace() {
   const [selectedProduct, setSelectedProduct] = useState<null | Id>(null)
   // const [selectedApproval, setSelectedApproval] = useState<null | Id>(null)
   // const [selectedClosedTransaction, setSelectedClosedTransaction] =
-  useState<null | Id>(null)
+  // useState<null | Id>(null)
   const [selectedCategories, setSelectedCategories] = useState<null | Id>(null)
 
   console.log(approval)
@@ -110,6 +110,14 @@ function MarketPlace() {
   }
 
   const handleView = (listingId: Id) => {
+    // navigate({ to: `/${}` })
+    console.log('View listing:', listingId)
+  }
+  const handleApprove = (listingId: Id) => {
+    // navigate({ to: `/${}` })
+    console.log('View listing:', listingId)
+  }
+  const handleReject = (listingId: Id) => {
     // navigate({ to: `/${}` })
     console.log('View listing:', listingId)
   }
@@ -249,6 +257,8 @@ function MarketPlace() {
                 page,
                 handleView,
                 handleDeleteClick,
+                buttonLayout: 'menu', // Menu style
+                showActions: ['view', 'edit', 'delete'],
               })}
               isLoading={listingIsloading}
               searchQuery={search}
@@ -291,8 +301,10 @@ function MarketPlace() {
               columns={listingColumns({
                 page,
                 handleView,
-                // handleDeleteClick,
-                isButtons: true,
+                handleApprove, // Make sure to define this function
+                handleReject, // Make sure to define this function
+                buttonLayout: 'horizontal', // Horizontal buttons
+                showActions: ['approve', 'reject', 'view'],
               })}
               isLoading={approvalIsloading}
               searchQuery={search}
@@ -339,6 +351,8 @@ function MarketPlace() {
                 page,
                 handleView,
                 handleDeleteClick,
+                buttonLayout: 'menu',
+                showActions: ['view', 'delete'],
               })}
               isLoading={closedIsloading}
               searchQuery={search}
@@ -414,7 +428,19 @@ function MarketPlace() {
                   <BaseButton
                     title="Add New"
                     showPlusIcon={true}
-                    className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 text-sm font-medium rounded-md transition-colors duration-200 shadow-none border-0"
+                    modalTitle="Add Parent Category"
+                    fields={[
+                      { name: 'name', label: 'Name', type: 'text' },
+                      {
+                        name: 'description',
+                        label: 'Description',
+                        type: 'textarea',
+                      },
+                      { name: 'file', label: 'Pick a file', type: 'file' },
+                    ]}
+                    onSubmit={(data) => console.log('New Category:', data)}
+                    // onSubmit={handleAddCategory}
+                    className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
                   />
                 }
               />

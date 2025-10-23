@@ -1,7 +1,15 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Avatar, Badge, Menu } from '@mantine/core'
-import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
+import { ActionIcon, Avatar, Badge, Button, Group, Menu } from '@mantine/core'
+import {
+  IconCheck,
+  IconDotsVertical,
+  IconEye,
+  IconTrash,
+  IconX,
+  IconEdit,
+} from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
+import type { Id } from '@/types/global.type'
 import { perPage } from '@/constant/config'
 import { formatDate } from '@/components/utils/helper'
 
@@ -20,12 +28,14 @@ export interface ListingItem {
   status: string
 }
 
-// Define handlers for view & delete actions
-interface ListingColumnHandlers {
+interface ListingColumnsProps {
   page: number
-  handleView: (id: number) => void
-  handleDeleteClick?: (id: number) => void
-  isButtons?: boolean
+  handleView: (id: Id) => void
+  handleDeleteClick?: (id: Id) => void
+  handleApprove?: (id: Id) => void
+  handleReject?: (id: Id) => void
+  buttonLayout?: 'menu' | 'horizontal' // Changed from isButtons to buttonLayout
+  showActions?: string[]
 }
 
 // Define your columns
@@ -33,8 +43,11 @@ export const listingColumns = ({
   page,
   handleView,
   handleDeleteClick,
-  isButtons = false,
-}: ListingColumnHandlers): ColumnDef<ListingItem>[] => [
+  handleApprove,
+  handleReject,
+  buttonLayout = 'menu', // Use buttonLayout instead of isButtons
+  showActions = ['view', 'edit', 'delete'],
+}: ListingColumnsProps): ColumnDef<ListingItem>[] => [
   {
     key: 'sn',
     header: 'SN',
@@ -65,7 +78,6 @@ export const listingColumns = ({
     header: 'Category',
     render: (listing): ReactNode => listing.category,
   },
-
   {
     key: 'seller_image',
     header: 'Seller Image',
@@ -132,30 +144,107 @@ export const listingColumns = ({
     key: 'actions',
     header: 'Actions',
     render: (listing): ReactNode => {
-      if (isButtons) {
-        return <button>Approve</button>
-      } else {
+      // Use buttonLayout instead of isButtons
+      if (buttonLayout === 'horizontal') {
         return (
-          <Menu>
+          <Group gap="xs" wrap="nowrap">
+            {showActions.includes('approve') && (
+              <Button
+                size="xs"
+                variant="light"
+                color="green"
+                leftSection={<IconCheck size={14} />}
+                onClick={() => handleApprove?.(listing.id)} // Fixed: listing.id not item.id
+              >
+                Approve
+              </Button>
+            )}
+            {showActions.includes('reject') && (
+              <Button
+                size="xs"
+                variant="light"
+                color="red"
+                leftSection={<IconX size={14} />}
+                onClick={() => handleReject?.(listing.id)} // Fixed: listing.id not item.id
+              >
+                Reject
+              </Button>
+            )}
+            {showActions.includes('view') && (
+              <Button
+                size="xs"
+                variant="light"
+                leftSection={<IconEye size={14} />}
+                onClick={() => handleView(listing.id)} // Fixed: listing.id not item.id
+              >
+                View
+              </Button>
+            )}
+            {showActions.includes('edit') && (
+              <Button
+                size="xs"
+                variant="light"
+                leftSection={<IconEdit size={14} />}
+                onClick={() => handleView(listing.id)} // You might want a separate edit handler
+              >
+                Edit
+              </Button>
+            )}
+          </Group>
+        )
+      } else {
+        // Menu layout
+        return (
+          <Menu position="bottom-end" withArrow>
             <Menu.Target>
               <ActionIcon variant="subtle" color="gray">
                 <IconDotsVertical size={18} stroke={2} />
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconEye size={16} />}
-                onClick={() => handleView(listing.id)}
-              >
-                View
-              </Menu.Item>
-              <Menu.Item
-                color="red"
-                leftSection={<IconTrash size={16} />}
-                onClick={() => handleDeleteClick?.(listing.id)}
-              >
-                Delete
-              </Menu.Item>
+              {showActions.includes('view') && (
+                <Menu.Item
+                  leftSection={<IconEye size={16} />}
+                  onClick={() => handleView(listing.id)}
+                >
+                  View
+                </Menu.Item>
+              )}
+              {showActions.includes('edit') && (
+                <Menu.Item
+                  leftSection={<IconEdit size={16} />}
+                  onClick={() => handleView(listing.id)} // You might want a separate edit handler
+                >
+                  Edit
+                </Menu.Item>
+              )}
+              {showActions.includes('delete') && handleDeleteClick && (
+                <Menu.Item
+                  color="red"
+                  leftSection={<IconTrash size={16} />}
+                  onClick={() => handleDeleteClick(listing.id)}
+                >
+                  Delete
+                </Menu.Item>
+              )}
+              {showActions.includes('approve') && handleApprove && (
+                <Menu.Item
+                  leftSection={<IconCheck size={16} />}
+                  color="green"
+                  onClick={() => handleApprove(listing.id)}
+                >
+                  Approve
+                </Menu.Item>
+              )}
+              {showActions.includes('reject') && handleReject && (
+                <Menu.Item
+                  leftSection={<IconX size={16} />}
+                  color="red"
+                  onClick={() => handleReject(listing.id)}
+                >
+                  Reject
+                </Menu.Item>
+              )}
             </Menu.Dropdown>
           </Menu>
         )

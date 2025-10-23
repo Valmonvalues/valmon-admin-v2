@@ -7,12 +7,12 @@ import type { CategoriesResponse } from '@/types/skills.types'
 
 interface CategoriesColumnHandlers {
   handleView: (id: Id) => void
-  handleDeleteClickParent: (id: Id) => void
+  handleDeleteClick: (id: Id) => void
 }
 
 export const categoriesColumns = ({
   handleView,
-  handleDeleteClickParent,
+  handleDeleteClick,
 }: CategoriesColumnHandlers): ColumnDef<CategoriesResponse>[] => [
   {
     key: 'sn',
@@ -94,7 +94,7 @@ export const categoriesColumns = ({
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
-            onClick={() => handleDeleteClickParent(category.id)}
+            onClick={() => handleDeleteClick(category.id)}
           >
             Delete
           </Menu.Item>
