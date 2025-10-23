@@ -128,7 +128,10 @@ const AddModal = ({
 
         {fileField && (
           <div className="flex flex-col items-center mb-4">
-            <label htmlFor="upload-image" className="cursor-pointer">
+            <label
+              htmlFor="upload-image"
+              className="cursor-pointer text-center"
+            >
               {imagePreview ? (
                 <img
                   src={imagePreview}
@@ -140,6 +143,7 @@ const AddModal = ({
                   Upload Image
                 </div>
               )}
+              Upload Photo
             </label>
 
             <FileInput
