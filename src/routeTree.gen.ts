@@ -20,6 +20,10 @@ import { Route as dashboardResolutionIndexRouteImport } from './routes/(dashboar
 import { Route as dashboardMarketPlaceIndexRouteImport } from './routes/(dashboard)/marketPlace/index'
 import { Route as dashboardAccountIndexRouteImport } from './routes/(dashboard)/account/index'
 import { Route as dashboardUsersUserIdRouteImport } from './routes/(dashboard)/users/$userId'
+import { Route as dashboardSkillsCategoryIdIndexRouteImport } from './routes/(dashboard)/skills/$categoryId/index'
+import { Route as dashboardMarketPlaceMarketPlaceIdIndexRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/index'
+import { Route as dashboardSkillsCategoryIdSubCategoryIdRouteImport } from './routes/(dashboard)/skills/$categoryId/$subCategoryId'
+import { Route as dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
@@ -78,6 +82,30 @@ const dashboardUsersUserIdRoute = dashboardUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardSkillsCategoryIdIndexRoute =
+  dashboardSkillsCategoryIdIndexRouteImport.update({
+    id: '/(dashboard)/skills/$categoryId/',
+    path: '/skills/$categoryId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardMarketPlaceMarketPlaceIdIndexRoute =
+  dashboardMarketPlaceMarketPlaceIdIndexRouteImport.update({
+    id: '/(dashboard)/marketPlace/$marketPlaceId/',
+    path: '/marketPlace/$marketPlaceId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardSkillsCategoryIdSubCategoryIdRoute =
+  dashboardSkillsCategoryIdSubCategoryIdRouteImport.update({
+    id: '/(dashboard)/skills/$categoryId/$subCategoryId',
+    path: '/skills/$categoryId/$subCategoryId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute =
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport.update({
+    id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId',
+    path: '/marketPlace/$marketPlaceId/$marketPlaceId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,6 +119,10 @@ export interface FileRoutesByFullPath {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
+  '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
+  '/marketPlace/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
+  '/skills/$categoryId': typeof dashboardSkillsCategoryIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -104,6 +136,10 @@ export interface FileRoutesByTo {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
+  '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
+  '/marketPlace/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
+  '/skills/$categoryId': typeof dashboardSkillsCategoryIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,6 +154,10 @@ export interface FileRoutesById {
   '/(dashboard)/summary/': typeof dashboardSummaryIndexRoute
   '/(dashboard)/users/': typeof dashboardUsersIndexRoute
   '/(dashboard)/wallet/': typeof dashboardWalletIndexRoute
+  '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/(dashboard)/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
+  '/(dashboard)/marketPlace/$marketPlaceId/': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
+  '/(dashboard)/skills/$categoryId/': typeof dashboardSkillsCategoryIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -133,6 +173,10 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
+    | '/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/skills/$categoryId/$subCategoryId'
+    | '/marketPlace/$marketPlaceId'
+    | '/skills/$categoryId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -146,6 +190,10 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
+    | '/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/skills/$categoryId/$subCategoryId'
+    | '/marketPlace/$marketPlaceId'
+    | '/skills/$categoryId'
   id:
     | '__root__'
     | '/'
@@ -159,6 +207,10 @@ export interface FileRouteTypes {
     | '/(dashboard)/summary/'
     | '/(dashboard)/users/'
     | '/(dashboard)/wallet/'
+    | '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/(dashboard)/skills/$categoryId/$subCategoryId'
+    | '/(dashboard)/marketPlace/$marketPlaceId/'
+    | '/(dashboard)/skills/$categoryId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -173,6 +225,10 @@ export interface RootRouteChildren {
   dashboardSummaryIndexRoute: typeof dashboardSummaryIndexRoute
   dashboardUsersIndexRoute: typeof dashboardUsersIndexRoute
   dashboardWalletIndexRoute: typeof dashboardWalletIndexRoute
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  dashboardSkillsCategoryIdSubCategoryIdRoute: typeof dashboardSkillsCategoryIdSubCategoryIdRoute
+  dashboardMarketPlaceMarketPlaceIdIndexRoute: typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
+  dashboardSkillsCategoryIdIndexRoute: typeof dashboardSkillsCategoryIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -254,6 +310,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardUsersUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)/skills/$categoryId/': {
+      id: '/(dashboard)/skills/$categoryId/'
+      path: '/skills/$categoryId'
+      fullPath: '/skills/$categoryId'
+      preLoaderRoute: typeof dashboardSkillsCategoryIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/marketPlace/$marketPlaceId/': {
+      id: '/(dashboard)/marketPlace/$marketPlaceId/'
+      path: '/marketPlace/$marketPlaceId'
+      fullPath: '/marketPlace/$marketPlaceId'
+      preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/skills/$categoryId/$subCategoryId': {
+      id: '/(dashboard)/skills/$categoryId/$subCategoryId'
+      path: '/skills/$categoryId/$subCategoryId'
+      fullPath: '/skills/$categoryId/$subCategoryId'
+      preLoaderRoute: typeof dashboardSkillsCategoryIdSubCategoryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId': {
+      id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
+      path: '/marketPlace/$marketPlaceId/$marketPlaceId'
+      fullPath: '/marketPlace/$marketPlaceId/$marketPlaceId'
+      preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -269,6 +353,13 @@ const rootRouteChildren: RootRouteChildren = {
   dashboardSummaryIndexRoute: dashboardSummaryIndexRoute,
   dashboardUsersIndexRoute: dashboardUsersIndexRoute,
   dashboardWalletIndexRoute: dashboardWalletIndexRoute,
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute:
+    dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute,
+  dashboardSkillsCategoryIdSubCategoryIdRoute:
+    dashboardSkillsCategoryIdSubCategoryIdRoute,
+  dashboardMarketPlaceMarketPlaceIdIndexRoute:
+    dashboardMarketPlaceMarketPlaceIdIndexRoute,
+  dashboardSkillsCategoryIdIndexRoute: dashboardSkillsCategoryIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

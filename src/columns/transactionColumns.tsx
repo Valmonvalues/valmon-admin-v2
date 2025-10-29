@@ -6,6 +6,7 @@ import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
 // import { perPage } from '@/constant/config'
 import { formatDate } from '@/components/utils/helper'
+import { formatNumber } from '@/utils/formatters'
 
 interface TransactionColumnHandlers {
   handleView: (id: Id) => void
@@ -33,29 +34,44 @@ export const transactionColumns = ({
     render: (txn): ReactNode => txn.employee_name,
   },
   {
+    key: 'category',
+    header: 'Category',
+    render: (txn): ReactNode => txn.category || 'N/A',
+  },
+  {
+    key: 'skill',
+    header: 'Skill',
+    render: (txn): ReactNode => txn?.skill || 'N/A',
+  },
+  {
+    key: 'job_time',
+    header: 'Job Time',
+    render: (txn): ReactNode => txn?.job_time || '13 Hours',
+  },
+  {
     key: 'amount',
     header: 'Amount',
-    render: (txn): ReactNode => `$${txn.amount}`,
+    render: (txn): ReactNode => `NGN ${formatNumber(txn.amount)}`,
   },
   {
     key: 'to_valmon',
     header: 'To Valmon',
-    render: (txn): ReactNode => `$${txn.to_valmon}`,
+    render: (txn): ReactNode => `NGN ${formatNumber(txn.to_valmon)}`,
   },
-  {
-    key: 'job_created_at',
-    header: 'Job Created',
-    render: (txn): ReactNode => formatDate(txn.job_created_at),
-  },
-  {
-    key: 'job_completed_at',
-    header: 'Job Completed',
-    render: (txn): ReactNode =>
-      txn.job_completed_at ? formatDate(txn.job_completed_at) : '—',
-  },
+  // {
+  //   key: 'job_created_at',
+  //   header: 'Job Created',
+  //   render: (txn): ReactNode => formatDate(txn.job_created_at),
+  // },
+  // {
+  //   key: 'job_completed_at',
+  //   header: 'Job Completed',
+  //   render: (txn): ReactNode =>
+  //     txn.job_completed_at ? formatDate(txn.job_completed_at) : '—',
+  // },
   {
     key: 'date',
-    header: 'Transaction Date',
+    header: 'Date',
     render: (txn): ReactNode => formatDate(txn.date),
   },
   {

@@ -7,6 +7,8 @@ type SortConfig<T> = {
 
 function useSortedData<T>(data: T[], sortConfig: SortConfig<T>) {
   return useMemo(() => {
+    // if (!sortConfig.key) return data
+
     const sortableItems = [...data]
 
     sortableItems.sort((a, b) => {

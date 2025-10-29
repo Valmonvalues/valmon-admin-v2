@@ -24,7 +24,7 @@ function Account() {
   const { data, isLoading: managersLoading } = listAccountManagers()
   const managers = data || []
 
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
   const {
     modalOpen: deleteModalOpen,
@@ -65,7 +65,7 @@ function Account() {
 
   const handleAddManager = async (admin: Record<string, any>) => {
     try {
-      setLoading(true)
+      // setLoading(true)
 
       const formData = new FormData()
       formData.append('first_name', admin.firstName)
@@ -83,14 +83,12 @@ function Account() {
     } catch (error) {
       console.error('Error adding manager:', error)
     } finally {
-      setLoading(false)
+      // setLoading(false)
     }
   }
 
   return (
     <DashboardLayout>
-      <div>Hello "/(dashboard)/account/"!</div>
-
       <div className="">
         <ReusableTable
           title="Account Managers"
@@ -132,10 +130,15 @@ function Account() {
                     }),
                 },
                 // { name: 'file', label: 'Upload Photo', type: 'file' },
-                { name: 'file', label: 'Upload Photo', type: 'file' },
+                {
+                  name: 'file',
+                  label: 'Upload Photo',
+                  type: 'file',
+                  variant: 'profile_picture-upload',
+                },
               ]}
               onSubmit={handleAddManager}
-              loading={loading}
+              loading={addManager.isPending}
               className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
             />
           }

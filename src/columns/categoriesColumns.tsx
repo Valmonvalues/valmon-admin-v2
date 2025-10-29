@@ -28,8 +28,6 @@ export const categoriesColumns = ({
       <Image
         src={category.image}
         alt={category.name}
-        // width={12}
-        // height={12}
         style={{ width: 35, height: 30, objectFit: 'cover', borderRadius: 8 }}
         radius="xl"
         fit="cover"
@@ -55,23 +53,27 @@ export const categoriesColumns = ({
   {
     key: 'total_transactionst',
     header: 'Transactions',
-    render: (category): ReactNode => category.total_transactionst,
+    render: (category): ReactNode =>
+      `NGN ${Number(category.total_transactions).toFixed(2)}`,
   },
   {
     key: 'transaction_value',
     header: 'Transaction Value',
     render: (category): ReactNode =>
-      category.transaction_value != null
-        ? `$${Number(category.transaction_value).toFixed(2)}`
-        : '—',
+      `NGN ${Number(category.transacted_value).toFixed(2)}`,
+    // category.transaction_value != null
+    //   ? `NGN ${Number(category.transaction_value).toFixed(2)}`
+    //   : 'NGN 0',
   },
   {
     key: 'valmon_earning',
     header: 'Valmon Earning',
     render: (category): ReactNode =>
-      category.valmon_earning != null
-        ? `$${Number(category.valmon_earning).toFixed(2)}`
-        : '—',
+      `NGN ${Number(category.valmon_earning).toFixed(2)}`,
+
+    // category.valmon_earning != null
+    //   ? `$${Number(category.valmon_earning).toFixed(2)}`
+    //   : '—',
   },
   {
     key: 'actions',
@@ -91,13 +93,13 @@ export const categoriesColumns = ({
           >
             View
           </Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
             onClick={() => handleDeleteClick(category.id)}
           >
             Delete
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Dropdown>
       </Menu>
     ),

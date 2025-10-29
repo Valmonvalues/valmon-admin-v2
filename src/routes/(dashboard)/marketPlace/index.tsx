@@ -1,5 +1,5 @@
 import DashboardLayout from '@/layout/DashboardLayout'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import TabHeader from '@/components/TabHeader'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import { useMarketPlaces } from '@/services/marketPlaces.service'
@@ -25,7 +25,16 @@ export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
 })
 
+const viewRoutes = {
+  open: '/marketplace/open',
+  approval: '/marketplace/approval',
+  closed: '/marketplace/closed',
+  categories: '/marketplace/categories',
+}
+
 function MarketPlace() {
+  const navigate = useNavigate()
+
   const [activeTab, setActiveTab] = useState('open')
   const [search, setSearch] = useState('')
   const [page] = useState(1)
@@ -50,6 +59,7 @@ function MarketPlace() {
     page,
     perpage,
   })
+  console.log(closed)
 
   const { data: categories, isLoading: categoriesIsloading } =
     listingCategories({
@@ -80,7 +90,7 @@ function MarketPlace() {
   // useState<null | Id>(null)
   const [selectedCategories, setSelectedCategories] = useState<null | Id>(null)
 
-  console.log(approval)
+  console.log(listing)
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof ListingItem
@@ -109,10 +119,6 @@ function MarketPlace() {
     }))
   }
 
-  const handleView = (listingId: Id) => {
-    // navigate({ to: `/${}` })
-    console.log('View listing:', listingId)
-  }
   const handleApprove = (listingId: Id) => {
     // navigate({ to: `/${}` })
     console.log('View listing:', listingId)
@@ -204,6 +210,41 @@ function MarketPlace() {
     }
   }
 
+  const handleView = (itemId: Id, type?: string) => {
+    switch (type ?? activeTab) {
+      case 'open':
+        console.log('Viewing open listing:', itemId)
+        // navigate({ to: `/marketplace/open/${itemId}` })
+        navigate({ to: `/marketplace/${itemId}` })
+        break
+
+      case 'approval':
+        console.log('Viewing approval listing:', itemId)
+        // navigate({ to: `/marketplace/approval/${itemId}` })
+        navigate({ to: `/marketplace/${itemId}` })
+        break
+
+      case 'closed':
+        console.log('Viewing closed transaction:', itemId)
+        // navigate({ to: `/marketplace/closed/${itemId}` })
+        navigate({ to: `/marketplace/${itemId}` })
+        break
+
+      case 'categories':
+        console.log('Viewing category:', itemId)
+        // navigate({ to: `/marketplace/categories/${itemId}` })
+        navigate({ to: `/marketplace/${itemId}` })
+        break
+
+      default:
+        console.warn('Unknown type:', type)
+    }
+  }
+  // const handleView = (listingId: Id) => {
+  //   // navigate({ to: `/${}` })
+  //   console.log('View listing:', listingId)
+  // }
+
   return (
     <DashboardLayout>
       <div>
@@ -222,7 +263,7 @@ function MarketPlace() {
 
         {activeTab === 'open' && (
           <>
-            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
               <StatCard
                 title="Total Listings"
                 value={totalListings}
@@ -247,7 +288,7 @@ function MarketPlace() {
                 color="bg-icon-light-pink"
                 image={convertShape}
               />
-            </SimpleGrid>
+            </div>
 
             <ReusableTable<ListingItem>
               title="Product List"
@@ -255,7 +296,8 @@ function MarketPlace() {
               data={sortedListings}
               columns={listingColumns({
                 page,
-                handleView,
+                // handleView,
+                handleView: (id) => handleView(id, 'open'),
                 handleDeleteClick,
                 buttonLayout: 'menu', // Menu style
                 showActions: ['view', 'edit', 'delete'],
@@ -279,20 +321,20 @@ function MarketPlace() {
         )}
         {activeTab === 'approval' && (
           <>
-            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] mb-6">
               <StatCard
-                title="Total Listings"
+                title="Total Awaiting"
                 value={totalApprovals}
                 color="bg-icon-light-blue"
                 image={shop}
               />
               <StatCard
-                title="Listed Value"
-                value={formatNumber(approval?.awaiting_value)}
+                title="Awaiting Value"
+                value={`NGN ${formatNumber(approval?.awaiting_value)}`}
                 color="bg-green-100"
                 image={cardblack}
               />
-            </SimpleGrid>
+            </div>
 
             <ReusableTable<ListingItem>
               title="Awaiting Approval"
@@ -342,6 +384,33 @@ function MarketPlace() {
                 image={convertShape}
               /> */}
             </SimpleGrid>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
+              <StatCard
+                title="Total Transaction"
+                value={0}
+                color="bg-icon-light-blue"
+                image={shop}
+              />
+              <StatCard
+                title="Transaction Value"
+                value={formatNumber(0)}
+                color="bg-green-100"
+                image={cardblack}
+              />
+              <StatCard
+                title="Deleted Listings"
+                value={0}
+                color="bg-green-100"
+                image={cardblack}
+              />
+              <StatCard
+                title=""
+                value={0}
+                color="bg-icon-light-pink"
+                image={convertShape}
+              />
+            </div>
 
             <ReusableTable<ListingItem>
               title="Closed Transaction"
@@ -407,7 +476,8 @@ function MarketPlace() {
                 data={sortedCategories}
                 columns={categoryColumns({
                   page,
-                  handleView,
+                  // handleView,
+                  handleView: (id) => handleView(id, 'categories'),
                   handleDeleteClick,
                 })}
                 isLoading={categoriesIsloading}

@@ -23,6 +23,11 @@ function Resolution() {
   const { data: marketplaceData, isLoading: marketplaceLoading } =
     listingMarketPlace()
   const services = serviceData?.tickets || []
+  const ticketCountServices = serviceData?.summary?.ticketCount
+  const totalValueServices = serviceData?.summary?.ticketsAmount
+  const resolvedTicketCountServices = serviceData?.summary?.resolvedTicketCount
+  const resolvedTicketValueServices = serviceData?.summary?.resolvedTicketValue
+
   const marketplace = marketplaceData?.tickets || []
   console.log(marketplaceData)
 
@@ -94,27 +99,28 @@ function Resolution() {
           <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
             <StatCard
               title="All Reports"
-              value={services.length}
+              // value={services.length}
+              value={ticketCountServices}
               color="bg-pink-100"
               image={''}
             />
             <StatCard
               title="Resolved Reports"
-              value={formatNumber(0)}
+              value={formatNumber(resolvedTicketCountServices)}
               color="bg-purple-100"
               image={''}
             />
             <StatCard
               title="Total Value"
-              value={formatNumber(0)}
+              value={formatNumber(totalValueServices)}
               color="bg-dark-gold"
               image={''}
             />
             <StatCard
               title="Resolved Value"
-              // value={formatNumber(skillsData?.valmon_earning)}
-              // color="bg-green-100"
-              // image={earningImage}
+              value={formatNumber(resolvedTicketValueServices)}
+              color="bg-green-100"
+              image={''}
             />
           </SimpleGrid>
 

@@ -13,16 +13,18 @@ import { PaginationControls } from '@/components/table/PaginationControls'
 import { perPage as perpage } from '@/constant/config'
 import type { UserListType } from '@/types/user.types'
 import useSortedData from '@/hook/sortData'
+import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 import profile from '@/assets/icons/cardprofile.svg'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
+  // loader: () => 'a' === 2,
 })
 
 function Users() {
   const navigate = useNavigate()
-  const [search, setSearch] = useState('')
+  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const [page, setPage] = useState(1)
   const { listUsers, getUsersSummary, deleteUser } = useUser()
   const { data, isLoading } = listUsers({ page, perpage })
@@ -31,36 +33,22 @@ function Users() {
   const [selectedUser, setSelectedUser] = useState<null | Id>(null)
   const users = data?.users ?? []
   const summary = usersSummary?.data ?? []
+  const totalUsers = data?.pagination?.total ?? 0
+  const totalPages = Math.ceil(totalUsers / perpage)
+
   const [sortConfig, setSortConfig] = useState<{
     key: keyof UserListType
     direction: 'asc' | 'desc'
   }>({ key: 'name', direction: 'asc' })
-  const totalUsers = data?.pagination?.total ?? 0
-  const totalPages = Math.ceil(totalUsers / perpage)
 
-  const sortedUsers = useSortedData(users!, sortConfig)
+  const filteredUsers =
+    debouncedSearch.trim() === ''
+      ? users
+      : users.filter((user) =>
+          user.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
 
-  // const sortedUsers = useMemo(() => {
-  //   const sortableItems = [...users]
-
-  //   sortableItems.sort((a, b) => {
-  //     const aValue = a[sortConfig.key]
-  //     const bValue = b[sortConfig.key]
-
-  //     if (aValue === null || aValue === undefined) return 1
-  //     if (bValue === null || bValue === undefined) return -1
-
-  //     if (aValue < bValue) {
-  //       return sortConfig.direction === 'asc' ? -1 : 1
-  //     }
-  //     if (aValue > bValue) {
-  //       return sortConfig.direction === 'asc' ? 1 : -1
-  //     }
-  //     return 0
-  //   })
-
-  //   return sortableItems
-  // }, [users, sortConfig])
+  const sortedUsers = useSortedData(filteredUsers, sortConfig)
 
   const handleSort = (key: keyof UserListType) => {
     setSortConfig((prev) => ({
@@ -83,6 +71,11 @@ function Users() {
       onSuccess: () => {
         setSelectedUser(null)
         setDeleteModalOpen(false)
+        notifications.show({
+          title: 'Success',
+          message: 'User deleted',
+          color: 'green',
+        })
       },
       onError: (error) => {
         console.error('Error deleting user:', error)
@@ -101,19 +94,19 @@ function Users() {
         <SimpleGrid cols={3} spacing="lg" className="mb-6 max-w-[900px]">
           <StatCard
             title="All Users"
-            value={summary.total_users}
+            value={usersSummary?.total_users}
             color="bg-pink-100"
             image={profile}
           />
           <StatCard
             title="Service Providers"
-            value={summary.service_providers}
+            value={usersSummary?.service_providers}
             color="bg-purple-100"
             image={profile}
           />
           <StatCard
-            title="Normal Users"
-            value={summary.employers}
+            title="Client"
+            value={usersSummary?.employers}
             color="bg-green-100"
             image={profile}
           />
@@ -130,7 +123,7 @@ function Users() {
           })}
           isLoading={isLoading}
           searchQuery={search}
-          onSearchChange={setSearch}
+          onSearchChange={handleSearch}
           sortConfig={sortConfig}
           onSort={handleSort}
         />

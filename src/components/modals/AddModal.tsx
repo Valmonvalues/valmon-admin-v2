@@ -9,7 +9,9 @@ import {
   Group,
   Radio,
   Select,
+  Text,
 } from '@mantine/core'
+import { IconPhoto, IconUpload } from '@tabler/icons-react'
 
 export interface Field {
   name: string
@@ -17,6 +19,7 @@ export interface Field {
   type: 'text' | 'textarea' | 'email' | 'radio' | 'select' | 'file'
   placeholder?: string
   options?: { label: string; value: string }[]
+  variant?: 'default' | 'image-upload' | 'profile_picture-upload'
 }
 
 export interface AddModalProps {
@@ -25,6 +28,7 @@ export interface AddModalProps {
   opened: boolean
   onClose: () => void
   onSubmit: (data: Record<string, any>) => void
+  initialData?: {} | null
   loading?: boolean
   submitLabel?: string
 }
@@ -36,6 +40,7 @@ const AddModal = ({
   fields,
   onSubmit,
   loading = false,
+  initialData,
   submitLabel = 'Save',
 }: AddModalProps) => {
   //   const formData: Record<string, any> = {};
@@ -45,6 +50,8 @@ const AddModal = ({
   useEffect(() => {
     if (!opened) {
       setFormData({})
+    } else if (initialData && opened) {
+      setFormData(initialData)
     }
   }, [opened])
 
@@ -101,7 +108,10 @@ const AddModal = ({
       <div className="flex flex-col gap-4">
         {/* {fileField && (
           <div className="flex flex-col items-center mb-4">
-            <div className="relative w-32 h-32">
+            <label
+              htmlFor="upload-image"
+              className="cursor-pointer text-center"
+            >
               {imagePreview ? (
                 <img
                   src={imagePreview}
@@ -110,23 +120,73 @@ const AddModal = ({
                 />
               ) : (
                 <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm border border-gray-300">
-                  No Image
+                  Upload Image
                 </div>
               )}
-            </div>
+              Upload Photo
+            </label>
+
             <FileInput
-              key={fileField.name}
-              label={fileField.label}
-              placeholder="Upload image"
-              value={formData[fileField.name] || null}
+              id="upload-image"
+              style={{ display: 'none' }}
               onChange={(file) => handleChange(fileField.name, file)}
               radius="md"
               className="mt-2"
-            />{' '}
+            />
           </div>
         )} */}
 
-        {fileField && (
+        {fileField && fileField.variant === 'image-upload' && (
+          <div className="flex flex-col items-center mb-4">
+            <Text fw={500} size="sm" className="text-[#7E7BA9] mb-3 self-start">
+              Category Image
+            </Text>
+
+            <label htmlFor="upload-image" className="cursor-pointer w-full">
+              <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center hover:border-[#7E7BA9] transition-colors duration-200">
+                {imagePreview ? (
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-xl border border-gray-300 mb-3"
+                    />
+                    <Text size="sm" className="text-gray-600">
+                      Click to change image
+                    </Text>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 mb-3 border border-gray-300">
+                      <IconPhoto size={32} />
+                    </div>
+                    <Text fw={500} className="text-[#7E7BA9] mb-1">
+                      Select Image you want to upload
+                    </Text>
+                    <Text size="sm" className="text-gray-500">
+                      Png and Jpg Allowed
+                    </Text>
+                    <div className="mt-3 flex justify-center">
+                      <div className="bg-[#7E7BA9] text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                        <IconUpload size={16} />
+                        <Text size="sm">Upload Image</Text>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </label>
+
+            <FileInput
+              id="upload-image"
+              style={{ display: 'none' }}
+              accept="image/png,image/jpeg,image/jpg"
+              onChange={(file) => handleChange(fileField.name, file)}
+            />
+          </div>
+        )}
+
+        {fileField && fileField.variant === 'profile_picture-upload' && (
           <div className="flex flex-col items-center mb-4">
             <label
               htmlFor="upload-image"

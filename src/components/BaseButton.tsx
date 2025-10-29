@@ -1,3 +1,4 @@
+import { useGlobalContext } from '@/contexts/GlobalContext'
 import AddModal, { type Field } from './modals/AddModal'
 
 interface BaseButtonProps {
@@ -18,6 +19,7 @@ interface BaseButtonProps {
   // modalFields?: Field[]
   onSubmit?: (data: Record<string, any>) => void
   onClose?: () => void
+  initialData?: {} | null
   opened?: boolean
 }
 
@@ -36,8 +38,11 @@ export default function BaseButton({
   // modalFields = [],
   onSubmit,
   onClose,
-  opened = false,
+  initialData,
+  // opened = false,
 }: BaseButtonProps) {
+  const { openFormModal, setOpenFormModal } = useGlobalContext()
+
   // const [opened, setOpened] = useState(false)
 
   const baseClass = `
@@ -84,11 +89,12 @@ export default function BaseButton({
 
       {fields.length > 0 && (
         <AddModal
-          opened={opened}
+          opened={openFormModal}
           loading={loading}
-          onClose={onClose ?? (() => {})}
+          onClose={() => onClose?.() ?? setOpenFormModal(false)}
           title={modalTitle || title}
           fields={fields}
+          initialData={initialData}
           onSubmit={onSubmit ?? (() => {})}
         />
       )}

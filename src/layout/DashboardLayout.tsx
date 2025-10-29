@@ -145,21 +145,23 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       </AppShell.Header>
       <AppShell.Navbar px="md" py="xl" bg="var(--color-layout)">
         <AppShell.Section grow component={ScrollArea} scrollbarSize={1}>
-          {navLinks.map((navlink, idx) => {
-            return (
-              <Link
-                key={idx}
-                to={navlink.route}
-                className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-4 text-white`}
-                activeProps={{
-                  className: 'activeMenu',
-                }}
-              >
-                {navlink.icon}
-                <span>{navlink.label}</span>
-              </Link>
-            )
-          })}
+          {navLinks
+            .filter((nav) => nav.allowedRoles.includes(me?.role || ''))
+            .map((navlink, idx) => {
+              return (
+                <Link
+                  key={idx}
+                  to={navlink.route}
+                  className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-4 text-white`}
+                  activeProps={{
+                    className: 'activeMenu',
+                  }}
+                >
+                  {navlink.icon}
+                  <span>{navlink.label}</span>
+                </Link>
+              )
+            })}
           <p
             onClick={handleLogout}
             className="flex items-center gap-4 font-medium p-4 mb-4 text-red-500"
