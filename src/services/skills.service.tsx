@@ -113,6 +113,13 @@ export const useSkills = () => {
     },
   })
 
+  const deleteSubCategory = useMutation({
+    mutationFn: (id: Id) => skillsApi.deleteSubCategory(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sub-categories'] })
+    },
+  })
+
   return {
     listSkills,
     listCategories,
@@ -123,5 +130,6 @@ export const useSkills = () => {
     listCustomers,
     deleteTransaction,
     deleteParent,
+    deleteSubCategory,
   }
 }

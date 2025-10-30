@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
 
 interface GlobalContextType {
-  // Form Modal State
+  initialData: any
+  setInitialData: (data: any) => void
   openFormModal: boolean
   setOpenFormModal: (open: boolean) => void
 }
@@ -10,10 +11,13 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [openFormModal, setOpenFormModal] = useState(false)
+  const [initialData, setInitialData] = useState(null)
 
   const value: GlobalContextType = {
     openFormModal,
     setOpenFormModal,
+    initialData,
+    setInitialData,
   }
 
   return (

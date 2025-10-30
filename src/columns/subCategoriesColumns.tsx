@@ -21,10 +21,7 @@ import type { SubCategory } from '@/types/skills.types'
 
 interface SubCategoriesColumnHandlers {
   handleView: (id: Id) => void
-  handleEditSubCategory: (
-    id: Id,
-    updatedData: { name: string; description?: string },
-  ) => void
+  handleEditSubCategory: (subCategory: SubCategory) => void
   handleDeleteClick: (id: Id) => void
 }
 
@@ -102,7 +99,7 @@ export const subCategoriesColumns = ({
           </Menu.Item>
           <Menu.Item
             leftSection={<IconPencil size={16} />}
-            onClick={() => handleEditSubCategory(subCategory.id)}
+            onClick={() => handleEditSubCategory(subCategory)}
           >
             Edit
           </Menu.Item>

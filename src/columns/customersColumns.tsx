@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@mantine/core'
 import type { ColumnDef } from '@/components/table/ReusableTable'
-import type { Id } from '@/types/global.type'
+// import type { Id } from '@/types/global.type'
 import type { Customers } from '@/types/skills.types'
 
 // interface CustomerColumnHandlers {
@@ -46,38 +46,41 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
   },
   {
     key: 'name',
-    header: 'Customer',
+    header: 'User',
     sortable: true,
-    render: (customer): ReactNode => (
-      <Stack gap={0} style={{ lineHeight: 1.2 }}>
-        <Text fw={500}>{customer.name}</Text>
-        <Text size="sm" c="dimmed">
-          {customer.id}
-        </Text>
-      </Stack>
-    ),
+    render: (customer): ReactNode => {
+      // console.log(customer)
+      return (
+        <Stack gap={0} style={{ lineHeight: 1.2 }}>
+          <Text fw={500}>{customer.name}</Text>
+          <Text size="sm" c="dimmed">
+            {customer.email}
+          </Text>
+        </Stack>
+      )
+    },
   },
-  {
-    key: 'email',
-    header: 'Email',
-    sortable: true,
-    render: (customer): ReactNode => (
-      <Stack gap={0} style={{ lineHeight: 1.2 }}>
-        <Text fw={500}>{customer.email}</Text>
-        {/* <Text size="sm" c="dimmed">
-          {customer.id}
-        </Text> */}
-      </Stack>
-    ),
-  },
+  // {
+  //   key: 'email',
+  //   header: 'Email',
+  //   sortable: true,
+  //   render: (customer): ReactNode => (
+  //     <Stack gap={0} style={{ lineHeight: 1.2 }}>
+  //       <Text fw={500}>{customer.email}</Text>
+  //       <Text size="sm" c="dimmed">
+  //         {customer.id}
+  //       </Text>
+  //     </Stack>
+  //   ),
+  // },
   {
     key: 'listings_count',
     header: 'Market Listings',
     render: (customer): ReactNode => customer.listings_count,
   },
   {
-    key: 'join_date',
-    header: 'Join Date',
+    key: 'joined_date',
+    header: 'Joined Date',
     render: (customer): ReactNode =>
       new Date(customer.join_date).toLocaleDateString(),
   },

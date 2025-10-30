@@ -26,6 +26,7 @@ export const categoryColumns = ({
   {
     key: 'sn',
     header: 'SN',
+    sortable: false,
     render: (_, index): ReactNode => (page - 1) * perPage + index + 1,
   },
   {
@@ -64,6 +65,7 @@ export const categoryColumns = ({
   {
     key: 'actions',
     header: 'Actions',
+    sortable: false,
     render: (category): ReactNode => (
       <Menu>
         <Menu.Target>

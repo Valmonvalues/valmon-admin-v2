@@ -36,6 +36,13 @@ export const useMarketPlaces = () => {
     })
   }
 
+  const listingId = (id: Id) => {
+    return useQuery({
+      queryKey: ['listingId', id],
+      queryFn: () => marketPlaces.getListingId(id),
+    })
+  }
+
   // const addCategory = useMutation({
   //   mutationFn: marketPlaces.addCategory,
   //   onSuccess: () => {
@@ -81,6 +88,7 @@ export const useMarketPlaces = () => {
     listingApproval,
     listingClosed,
     listingCategories,
+    listingId,
     // addCategory,
     deleteProduct,
     deleteClosed,

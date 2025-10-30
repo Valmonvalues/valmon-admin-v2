@@ -1,5 +1,5 @@
 import type {
-  CustomersResponse,
+  // CustomersResponse,
   TransactionResponse,
 } from '@/types/skills.types'
 import { apiClient } from './apiClient'
@@ -66,4 +66,7 @@ export const skillsApi = {
 
   deleteParent: async (id: Id) =>
     await apiClient.delete(`/skills/categories/${id}`),
+
+  deleteSubCategory: async (id: Id) =>
+    await apiClient.delete(`/services/${id}`),
 }

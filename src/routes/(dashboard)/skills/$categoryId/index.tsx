@@ -1,11 +1,13 @@
 import { subCategoriesColumns } from '@/columns/subCategoriesColumns'
 import { BackButton } from '@/components/BackButton'
 import BaseButton from '@/components/BaseButton'
+import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
+import { useHandleDelete } from '@/hook/useHandleDelete'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useSkills } from '@/services/skills.service'
 import type { Id } from '@/types/global.type'
@@ -23,35 +25,32 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
 
-  const { listParentSubCategory, addSubCategory, editSubCategory } = useSkills()
+  const {
+    listParentSubCategory,
+    addSubCategory,
+    editSubCategory,
+    deleteSubCategory,
+  } = useSkills()
   const { data: parentSubCategoryResponse, isLoading } =
     listParentSubCategory(categoryId)
   const parentSubCategory: SubCategory[] =
     parentSubCategoryResponse?.all_sub_categories ?? []
 
-  const { setOpenFormModal } = useGlobalContext()
-
-  //   const [search, setSearch] = useState('')
-  //   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const {
+    modalOpen: deleteModalOpen,
+    setModalOpen: setDeleteModalOpen,
+    handleDeleteClick,
+    handleConfirmDelete,
+  } = useHandleDelete({
+    mutation: deleteSubCategory,
+    entityName: 'aub-categories',
+  })
+  const { initialData, setInitialData, setOpenFormModal } = useGlobalContext()
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof SubCategory
     direction: 'asc' | 'desc'
   }>({ key: 'name', direction: 'asc' })
-
-  //   const debouncedUpdate = useMemo(
-  //     () => debounce((value: string) => setDebouncedSearch(value), 400),
-  //     [],
-  //   )
-
-  //   useEffect(() => {
-  //     return () => debouncedUpdate.cancel()
-  //   }, [debouncedUpdate])
-
-  //   const handleSearch = (value: string) => {
-  //     setSearch(value)
-  //     debouncedUpdate(value)
-  //   }
 
   const filteredParentCategory =
     debouncedSearch.trim() === ''
@@ -71,12 +70,27 @@ function RouteComponent() {
 
   const handleAddCategory = async (subCategoryData: any) => {
     try {
-      await addSubCategory.mutateAsync(
-        { ...subCategoryData, service_category_id: categoryId },
-        {
-          onSuccess: () => setOpenFormModal(false),
-        },
-      )
+      if (initialData) {
+        await editSubCategory.mutateAsync(
+          {
+            id: initialData.id,
+            data: initialData,
+          },
+          {
+            onSuccess: () => {
+              setInitialData(null)
+              setOpenFormModal(false)
+            },
+          },
+        )
+      } else {
+        await addSubCategory.mutateAsync(
+          { ...subCategoryData, service_category_id: categoryId },
+          {
+            onSuccess: () => setOpenFormModal(false),
+          },
+        )
+      }
     } catch (error) {
       console.error('Error adding category:', error)
     }
@@ -85,13 +99,12 @@ function RouteComponent() {
   const handleView = (subCategoryId: Id) => {
     navigate({ to: `/skills/${categoryId}/${subCategoryId}` })
   }
-  const handleEditSubCategory = (
-    id: Id,
-    updatedData: { name: string; description?: string },
-  ) => {
-    editSubCategory.mutate({ id, data: updatedData })
+  const handleEditSubCategory = (data: SubCategory) => {
+    setOpenFormModal(true)
+    setInitialData(data)
+    // editSubCategory.mutate({ id, data: updatedData })
   }
-  const handleDeleteClick = (id: Id) => console.log('Delete', id)
+  // const handleDeleteClick = (id: Id) => console.log('Delete', id)
 
   console.log(categoryId)
 
@@ -159,13 +172,22 @@ function RouteComponent() {
                 ]}
                 onClick={() => setOpenFormModal(true)}
                 onSubmit={handleAddCategory}
-                loading={addSubCategory.isPending}
+                loading={addSubCategory.isPending || editSubCategory.isPending}
                 className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
               />
             </div>
           }
         />
       </div>
+
+      <ConfirmDeleteModal
+        opened={deleteModalOpen}
+        onCancel={() => setDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Transaction"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        loading={deleteSubCategory.isPending}
+      />
     </DashboardLayout>
   )
 }

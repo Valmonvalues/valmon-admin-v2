@@ -59,7 +59,7 @@ function MarketPlace() {
     page,
     perpage,
   })
-  console.log(closed)
+  // console.log(closed)
 
   const { data: categories, isLoading: categoriesIsloading } =
     listingCategories({

@@ -12,6 +12,7 @@ import {
   Text,
 } from '@mantine/core'
 import { IconPhoto, IconUpload } from '@tabler/icons-react'
+import { useGlobalContext } from '@/contexts/GlobalContext'
 
 export interface Field {
   name: string
@@ -40,20 +41,20 @@ const AddModal = ({
   fields,
   onSubmit,
   loading = false,
-  initialData,
   submitLabel = 'Save',
 }: AddModalProps) => {
   //   const formData: Record<string, any> = {};
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const { initialData } = useGlobalContext()
 
   useEffect(() => {
     if (!opened) {
       setFormData({})
-    } else if (initialData && opened) {
+    } else if (opened && initialData) {
       setFormData(initialData)
     }
-  }, [opened])
+  }, [opened, initialData])
 
   const handleChange = (name: string, value: any) => {
     setFormData((prev) => ({
