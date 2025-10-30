@@ -12,7 +12,6 @@ import type { Id } from '@/types/global.type'
 import { categoryColumns } from '@/columns/categoryColumns'
 import BaseButton from '@/components/BaseButton'
 import StatCard from '@/components/StatCard'
-import { SimpleGrid } from '@mantine/core'
 
 import shop from '@/assets/icons/shop.svg'
 import cardblack from '@/assets/icons/card-pos-black.svg'
@@ -20,6 +19,7 @@ import convertShape from '@/assets/icons/convertshape.svg'
 import { formatNumber } from '@/utils/formatters'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import { notifications } from '@mantine/notifications'
+import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
@@ -36,7 +36,7 @@ function MarketPlace() {
   const navigate = useNavigate()
 
   const [activeTab, setActiveTab] = useState('open')
-  const [search, setSearch] = useState('')
+  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const [page] = useState(1)
   const {
     listingSummary,
@@ -104,13 +104,13 @@ function MarketPlace() {
   //   const totalUsers = listing?.pagination?.total ?? 0
   //   const totalPages = Math.ceil(totalUsers / perpage)
 
-  const sortedListings = useSortedData(allOpenListing, sortConfig)
-  const sortedApprovals = useSortedData(allApprovalListing, sortConfig)
-  const sortedClosed = useSortedData(allCLosedListing, sortConfig)
-  const sortedCategories = useSortedData(
-    allCategoriesListing,
-    categorySortConfig,
-  )
+  // const sortedListings = useSortedData(allOpenListing, sortConfig)
+  // const sortedApprovals = useSortedData(allApprovalListing, sortConfig)
+  // const sortedClosed = useSortedData(allCLosedListing, sortConfig)
+  // const sortedCategories = useSortedData(
+  //   allCategoriesListing,
+  //   categorySortConfig,
+  // )
 
   const handleSort = (key: keyof ListingItem) => {
     setSortConfig((prev) => ({
@@ -118,6 +118,41 @@ function MarketPlace() {
       direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
     }))
   }
+
+  const filteredOpenListings =
+    debouncedSearch.trim() === ''
+      ? allOpenListing
+      : allOpenListing.filter((aol) =>
+          aol.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
+  const sortedListings = useSortedData(filteredOpenListings, sortConfig)
+
+  const filteredApprovalListings =
+    debouncedSearch.trim() === ''
+      ? allApprovalListing
+      : allApprovalListing.filter((apl) =>
+          apl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
+  const sortedApprovals = useSortedData(filteredApprovalListings, sortConfig)
+
+  const filteredCLosedListings =
+    debouncedSearch.trim() === ''
+      ? allCLosedListing
+      : allCLosedListing.filter((acl) =>
+          acl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
+  const sortedClosed = useSortedData(filteredCLosedListings, sortConfig)
+
+  const filteredCategoriesListings =
+    debouncedSearch.trim() === ''
+      ? allCategoriesListing
+      : allCategoriesListing.filter((acll) =>
+          acll.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
+  const sortedCategories = useSortedData(
+    filteredCategoriesListings,
+    categorySortConfig,
+  )
 
   const handleApprove = (listingId: Id) => {
     // navigate({ to: `/${}` })
@@ -304,7 +339,7 @@ function MarketPlace() {
               })}
               isLoading={listingIsloading}
               searchQuery={search}
-              onSearchChange={setSearch}
+              onSearchChange={handleSearch}
               sortConfig={sortConfig}
               onSort={handleSort}
             />
@@ -350,7 +385,7 @@ function MarketPlace() {
               })}
               isLoading={approvalIsloading}
               searchQuery={search}
-              onSearchChange={setSearch}
+              onSearchChange={handleSearch}
               sortConfig={sortConfig}
               onSort={handleSort}
             />
@@ -358,33 +393,6 @@ function MarketPlace() {
         )}
         {activeTab === 'closed' && (
           <>
-            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
-              {/* <StatCard
-                title="Total Listings"
-                value={totalListings}
-                color="bg-icon-light-blue"
-                image={shop}
-              />
-              <StatCard
-                title="Listed Value"
-                value={formatNumber(listing?.totalListedValue)}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow Value"
-                value={listing?.In_Escrow_Value}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow"
-                value={listing?.In_Escrow_count}
-                color="bg-icon-light-pink"
-                image={convertShape}
-              /> */}
-            </SimpleGrid>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
               <StatCard
                 title="Total Transaction"
@@ -425,7 +433,7 @@ function MarketPlace() {
               })}
               isLoading={closedIsloading}
               searchQuery={search}
-              onSearchChange={setSearch}
+              onSearchChange={handleSearch}
               sortConfig={sortConfig}
               onSort={handleSort}
             />
@@ -442,33 +450,6 @@ function MarketPlace() {
         )}
         {activeTab === 'categories' && (
           <>
-            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
-              {/* <StatCard
-                title="Total Listings"
-                value={totalListings}
-                color="bg-icon-light-blue"
-                image={shop}
-              />
-              <StatCard
-                title="Listed Value"
-                value={formatNumber(listing?.totalListedValue)}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow Value"
-                value={listing?.In_Escrow_Value}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow"
-                value={listing?.In_Escrow_count}
-                color="bg-icon-light-pink"
-                image={convertShape}
-              /> */}
-            </SimpleGrid>
-
             <div className="">
               <ReusableTable<CategoryItem>
                 title="Categories"
@@ -482,7 +463,7 @@ function MarketPlace() {
                 })}
                 isLoading={categoriesIsloading}
                 searchQuery={search}
-                onSearchChange={setSearch}
+                onSearchChange={handleSearch}
                 sortConfig={categorySortConfig}
                 // onSort={handleSort}
                 onSort={(key) =>
