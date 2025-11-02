@@ -10,6 +10,7 @@ interface BackButtonProps {
   withIcon?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   iconSize?: number
+  className?: string
   //   bg?: string
   onClick?: () => void
 }

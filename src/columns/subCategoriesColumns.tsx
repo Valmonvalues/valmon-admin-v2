@@ -50,6 +50,12 @@ export const subCategoriesColumns = ({
     sortable: true,
     render: (subCategory): ReactNode => subCategory.total_users ?? 0,
   },
+  // {
+  //   key: 'desc',
+  //   header: 'desc',
+  //   sortable: true,
+  //   render: (subCategory): ReactNode => subCategory.description ?? 0,
+  // },
   {
     key: 'total_transactions',
     header: 'Transactions',

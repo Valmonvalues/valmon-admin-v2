@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import TabHeader from '@/components/TabHeader'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import { useMarketPlaces } from '@/services/marketPlaces.service'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { perPage as perpage } from '@/constant/config'
 import type { CategoryItem, ListingItem } from '@/types/marketPlaces.types'
 import useSortedData from '@/hook/sortData'
@@ -18,19 +18,14 @@ import cardblack from '@/assets/icons/card-pos-black.svg'
 import convertShape from '@/assets/icons/convertshape.svg'
 import { formatNumber } from '@/utils/formatters'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
-import { notifications } from '@mantine/notifications'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
+import { useHandleDelete } from '@/hook/useHandleDelete'
+import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
+import { useGlobalContext } from '@/contexts/GlobalContext'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
 })
-
-const viewRoutes = {
-  open: '/marketplace/open',
-  approval: '/marketplace/approval',
-  closed: '/marketplace/closed',
-  categories: '/marketplace/categories',
-}
 
 function MarketPlace() {
   const navigate = useNavigate()
@@ -43,29 +38,61 @@ function MarketPlace() {
     listingApproval,
     listingClosed,
     listingCategories,
+    addCategory,
     deleteProduct,
     // deleteClosed,
     deleteCategories,
   } = useMarketPlaces()
+
+  const getDeleteMutation = () => {
+    switch (activeTab) {
+      case 'open':
+        return deleteProduct
+      // case 'closed':
+      //   return deleteClosed
+      case 'categories':
+        console.log('categories')
+        return deleteCategories
+      default:
+        return deleteProduct
+    }
+  }
+
+  const {
+    // selectedId: selectedManager,
+    modalOpen: deleteModalOpen,
+    setModalOpen: setDeleteModalOpen,
+    handleDeleteClick,
+    handleConfirmDelete,
+  } = useHandleDelete({
+    mutation: getDeleteMutation(),
+    entityName: 'marketplace',
+  })
+
+  const { handleApprove, handleReject } = useHandleApproveDeny()
+  const { setOpenFormModal } = useGlobalContext()
+
   const { data: listing, isLoading: listingIsloading } = listingSummary({
     page,
     perpage,
   })
+
   const { data: approval, isLoading: approvalIsloading } = listingApproval({
     page,
     perpage,
   })
+
   const { data: closed, isLoading: closedIsloading } = listingClosed({
     page,
     perpage,
   })
-  // console.log(closed)
 
   const { data: categories, isLoading: categoriesIsloading } =
     listingCategories({
       page,
       perpage,
     })
+
   const allOpenListing = listing?.all_listings ?? []
   // const totalListings = listing?.pagination?.total ?? 0
   const totalListings = listing?.totalListingCount ?? 0
@@ -82,16 +109,6 @@ function MarketPlace() {
 
   // const totalPages = Math.ceil(totalListings / perpage)
 
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-
-  const [selectedProduct, setSelectedProduct] = useState<null | Id>(null)
-  // const [selectedApproval, setSelectedApproval] = useState<null | Id>(null)
-  // const [selectedClosedTransaction, setSelectedClosedTransaction] =
-  // useState<null | Id>(null)
-  const [selectedCategories, setSelectedCategories] = useState<null | Id>(null)
-
-  console.log(listing)
-
   const [sortConfig, setSortConfig] = useState<{
     key: keyof ListingItem
     direction: 'asc' | 'desc'
@@ -103,14 +120,6 @@ function MarketPlace() {
   }>({ key: 'name', direction: 'asc' })
   //   const totalUsers = listing?.pagination?.total ?? 0
   //   const totalPages = Math.ceil(totalUsers / perpage)
-
-  // const sortedListings = useSortedData(allOpenListing, sortConfig)
-  // const sortedApprovals = useSortedData(allApprovalListing, sortConfig)
-  // const sortedClosed = useSortedData(allCLosedListing, sortConfig)
-  // const sortedCategories = useSortedData(
-  //   allCategoriesListing,
-  //   categorySortConfig,
-  // )
 
   const handleSort = (key: keyof ListingItem) => {
     setSortConfig((prev) => ({
@@ -154,131 +163,37 @@ function MarketPlace() {
     categorySortConfig,
   )
 
-  const handleApprove = (listingId: Id) => {
-    // navigate({ to: `/${}` })
-    console.log('View listing:', listingId)
+  useEffect(() => {
+    const leftOffValue = localStorage.getItem('leftOff')
+    console.log(leftOffValue)
+    if (leftOffValue) {
+      setActiveTab(leftOffValue)
+    } else {
+      setActiveTab('open')
+    }
+  }, [])
+
+  const handleView = (itemId: Id, type: string) => {
+    localStorage.setItem('leftOff', type)
+    navigate({ to: `/marketPlace/${itemId}` })
   }
-  const handleReject = (listingId: Id) => {
-    // navigate({ to: `/${}` })
-    console.log('View listing:', listingId)
-  }
 
-  const handleDeleteClick = (productId: Id) => {
-    switch (activeTab) {
-      case 'open':
-        setSelectedProduct(productId)
-        setDeleteModalOpen(true)
-        break
+  const handleAddCategory = async (categoryData: any) => {
+    try {
+      const formData = new FormData()
+      formData.append('name', categoryData.name)
 
-      // case 'closed':
-      //   setSelectedClosedTransaction(productId)
-      //   setDeleteModalOpen(true)
-      //   break
+      console.log('category: ', categoryData)
 
-      case 'categories':
-        setSelectedCategories(productId)
-        setDeleteModalOpen(true)
-        break
-
-      default:
-        console.log('Delete listing:', productId)
-        break
+      await addCategory.mutateAsync(formData, {
+        onSuccess: () => setOpenFormModal(false),
+      })
+      // setModalOpened(false);
+    } catch (error) {
+      // Error is already handled in the mutation
+      console.error('Error adding category:', error)
     }
   }
-
-  const handleConfirmDelete = () => {
-    switch (activeTab) {
-      case 'open':
-        deleteProduct.mutate(selectedProduct as Id, {
-          onSuccess: () => {
-            setSelectedProduct(null)
-            setDeleteModalOpen(false)
-          },
-          onError: (error) => {
-            console.error('Error deleting user:', error)
-            notifications.show({
-              title: 'Error',
-              message: 'Failed to delete product. Please try again.',
-              color: 'red',
-            })
-          },
-        })
-        break
-
-      // case 'closed':
-      //   deleteClosed.mutate(selectedClosedTransaction as Id, {
-      //     onSuccess: () => {
-      //       setSelectedClosedTransaction(null)
-      //       setDeleteModalOpen(false)
-      //     },
-      //     onError: (error) => {
-      //       console.error('Error deleting user:', error)
-      //       notifications.show({
-      //         title: 'Error',
-      //         message: 'Failed to delete user. Please try again.',
-      //         color: 'red',
-      //       })
-      //     },
-      //   })
-      //   break
-
-      case 'categories':
-        deleteCategories.mutate(selectedCategories as Id, {
-          onSuccess: () => {
-            setSelectedCategories(null)
-            setDeleteModalOpen(false)
-          },
-          onError: (error) => {
-            console.error('Error deleting user:', error)
-            notifications.show({
-              title: 'Error',
-              message: 'Failed to delete category. Please try again.',
-              color: 'red',
-            })
-          },
-        })
-        break
-
-      default:
-        console.log('Deleted')
-        break
-    }
-  }
-
-  const handleView = (itemId: Id, type?: string) => {
-    switch (type ?? activeTab) {
-      case 'open':
-        console.log('Viewing open listing:', itemId)
-        // navigate({ to: `/marketplace/open/${itemId}` })
-        navigate({ to: `/marketplace/${itemId}` })
-        break
-
-      case 'approval':
-        console.log('Viewing approval listing:', itemId)
-        // navigate({ to: `/marketplace/approval/${itemId}` })
-        navigate({ to: `/marketplace/${itemId}` })
-        break
-
-      case 'closed':
-        console.log('Viewing closed transaction:', itemId)
-        // navigate({ to: `/marketplace/closed/${itemId}` })
-        navigate({ to: `/marketplace/${itemId}` })
-        break
-
-      case 'categories':
-        console.log('Viewing category:', itemId)
-        // navigate({ to: `/marketplace/categories/${itemId}` })
-        navigate({ to: `/marketplace/${itemId}` })
-        break
-
-      default:
-        console.warn('Unknown type:', type)
-    }
-  }
-  // const handleView = (listingId: Id) => {
-  //   // navigate({ to: `/${}` })
-  //   console.log('View listing:', listingId)
-  // }
 
   return (
     <DashboardLayout>
@@ -335,7 +250,8 @@ function MarketPlace() {
                 handleView: (id) => handleView(id, 'open'),
                 handleDeleteClick,
                 buttonLayout: 'menu', // Menu style
-                showActions: ['view', 'edit', 'delete'],
+                // showActions: ['view', 'edit', 'delete'],
+                showActions: ['view', 'delete'],
               })}
               isLoading={listingIsloading}
               searchQuery={search}
@@ -377,7 +293,7 @@ function MarketPlace() {
               data={sortedApprovals}
               columns={listingColumns({
                 page,
-                handleView,
+                handleView: (id) => handleView(id, 'approval'),
                 handleApprove, // Make sure to define this function
                 handleReject, // Make sure to define this function
                 buttonLayout: 'horizontal', // Horizontal buttons
@@ -426,7 +342,7 @@ function MarketPlace() {
               data={sortedClosed}
               columns={listingColumns({
                 page,
-                handleView,
+                handleView: (id) => handleView(id, 'closed'),
                 handleDeleteClick,
                 buttonLayout: 'menu',
                 showActions: ['view', 'delete'],
@@ -454,6 +370,7 @@ function MarketPlace() {
               <ReusableTable<CategoryItem>
                 title="Categories"
                 // totalCount={totalCategories} // NOT available issues
+                totalCount={allCategoriesListing.length} // NOT available issues
                 data={sortedCategories}
                 columns={categoryColumns({
                   page,
@@ -479,18 +396,10 @@ function MarketPlace() {
                   <BaseButton
                     title="Add New"
                     showPlusIcon={true}
-                    modalTitle="Add Parent Category"
-                    fields={[
-                      { name: 'name', label: 'Name', type: 'text' },
-                      {
-                        name: 'description',
-                        label: 'Description',
-                        type: 'textarea',
-                      },
-                      { name: 'file', label: 'Pick a file', type: 'file' },
-                    ]}
-                    onSubmit={(data) => console.log('New Category:', data)}
-                    // onSubmit={handleAddCategory}
+                    modalTitle="Add Category"
+                    fields={[{ name: 'name', label: 'Name', type: 'text' }]}
+                    onClick={() => setOpenFormModal(true)}
+                    onSubmit={handleAddCategory}
                     className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
                   />
                 }
@@ -501,7 +410,7 @@ function MarketPlace() {
               opened={deleteModalOpen}
               onCancel={() => setDeleteModalOpen(false)}
               onConfirm={handleConfirmDelete}
-              title="Delete Transaction"
+              title="Delete Categories"
               message="Are you sure you want to delete this user? This action cannot be undone."
               loading={deleteCategories.isPending}
             />

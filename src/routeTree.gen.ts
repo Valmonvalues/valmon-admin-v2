@@ -18,12 +18,15 @@ import { Route as dashboardSkillsIndexRouteImport } from './routes/(dashboard)/s
 import { Route as dashboardSettingsIndexRouteImport } from './routes/(dashboard)/settings/index'
 import { Route as dashboardResolutionIndexRouteImport } from './routes/(dashboard)/resolution/index'
 import { Route as dashboardMarketPlaceIndexRouteImport } from './routes/(dashboard)/marketPlace/index'
+import { Route as dashboardCategoryRequestIndexRouteImport } from './routes/(dashboard)/categoryRequest/index'
 import { Route as dashboardAccountIndexRouteImport } from './routes/(dashboard)/account/index'
 import { Route as dashboardUsersUserIdRouteImport } from './routes/(dashboard)/users/$userId'
 import { Route as dashboardSkillsCategoryIdIndexRouteImport } from './routes/(dashboard)/skills/$categoryId/index'
 import { Route as dashboardMarketPlaceMarketPlaceIdIndexRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/index'
 import { Route as dashboardSkillsCategoryIdSubCategoryIdRouteImport } from './routes/(dashboard)/skills/$categoryId/$subCategoryId'
+import { Route as dashboardMarketPlaceMarketPlaceIdChatRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/chat'
 import { Route as dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
+import { Route as dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
@@ -72,6 +75,12 @@ const dashboardMarketPlaceIndexRoute =
     path: '/marketPlace/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const dashboardCategoryRequestIndexRoute =
+  dashboardCategoryRequestIndexRouteImport.update({
+    id: '/(dashboard)/categoryRequest/',
+    path: '/categoryRequest/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const dashboardAccountIndexRoute = dashboardAccountIndexRouteImport.update({
   id: '/(dashboard)/account/',
   path: '/account/',
@@ -100,10 +109,22 @@ const dashboardSkillsCategoryIdSubCategoryIdRoute =
     path: '/skills/$categoryId/$subCategoryId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const dashboardMarketPlaceMarketPlaceIdChatRoute =
+  dashboardMarketPlaceMarketPlaceIdChatRouteImport.update({
+    id: '/(dashboard)/marketPlace/$marketPlaceId/chat',
+    path: '/marketPlace/$marketPlaceId/chat',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute =
   dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport.update({
     id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId',
     path: '/marketPlace/$marketPlaceId/$marketPlaceId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute =
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport.update({
+    id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId',
+    path: '/marketPlace/$marketPlaceId/$marketPlaceChatId',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -112,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/getstarted': typeof GetstartedRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
+  '/categoryRequest': typeof dashboardCategoryRequestIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
   '/settings': typeof dashboardSettingsIndexRoute
@@ -119,7 +141,9 @@ export interface FileRoutesByFullPath {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
+  '/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
   '/marketPlace/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
   '/skills/$categoryId': typeof dashboardSkillsCategoryIdIndexRoute
@@ -129,6 +153,7 @@ export interface FileRoutesByTo {
   '/getstarted': typeof GetstartedRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
+  '/categoryRequest': typeof dashboardCategoryRequestIndexRoute
   '/marketPlace': typeof dashboardMarketPlaceIndexRoute
   '/resolution': typeof dashboardResolutionIndexRoute
   '/settings': typeof dashboardSettingsIndexRoute
@@ -136,7 +161,9 @@ export interface FileRoutesByTo {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
+  '/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
   '/marketPlace/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
   '/skills/$categoryId': typeof dashboardSkillsCategoryIdIndexRoute
@@ -147,6 +174,7 @@ export interface FileRoutesById {
   '/getstarted': typeof GetstartedRoute
   '/(dashboard)/users/$userId': typeof dashboardUsersUserIdRoute
   '/(dashboard)/account/': typeof dashboardAccountIndexRoute
+  '/(dashboard)/categoryRequest/': typeof dashboardCategoryRequestIndexRoute
   '/(dashboard)/marketPlace/': typeof dashboardMarketPlaceIndexRoute
   '/(dashboard)/resolution/': typeof dashboardResolutionIndexRoute
   '/(dashboard)/settings/': typeof dashboardSettingsIndexRoute
@@ -154,7 +182,9 @@ export interface FileRoutesById {
   '/(dashboard)/summary/': typeof dashboardSummaryIndexRoute
   '/(dashboard)/users/': typeof dashboardUsersIndexRoute
   '/(dashboard)/wallet/': typeof dashboardWalletIndexRoute
+  '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  '/(dashboard)/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/(dashboard)/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
   '/(dashboard)/marketPlace/$marketPlaceId/': typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
   '/(dashboard)/skills/$categoryId/': typeof dashboardSkillsCategoryIdIndexRoute
@@ -166,6 +196,7 @@ export interface FileRouteTypes {
     | '/getstarted'
     | '/users/$userId'
     | '/account'
+    | '/categoryRequest'
     | '/marketPlace'
     | '/resolution'
     | '/settings'
@@ -173,7 +204,9 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
+    | '/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/marketPlace/$marketPlaceId/chat'
     | '/skills/$categoryId/$subCategoryId'
     | '/marketPlace/$marketPlaceId'
     | '/skills/$categoryId'
@@ -183,6 +216,7 @@ export interface FileRouteTypes {
     | '/getstarted'
     | '/users/$userId'
     | '/account'
+    | '/categoryRequest'
     | '/marketPlace'
     | '/resolution'
     | '/settings'
@@ -190,7 +224,9 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
+    | '/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/marketPlace/$marketPlaceId/chat'
     | '/skills/$categoryId/$subCategoryId'
     | '/marketPlace/$marketPlaceId'
     | '/skills/$categoryId'
@@ -200,6 +236,7 @@ export interface FileRouteTypes {
     | '/getstarted'
     | '/(dashboard)/users/$userId'
     | '/(dashboard)/account/'
+    | '/(dashboard)/categoryRequest/'
     | '/(dashboard)/marketPlace/'
     | '/(dashboard)/resolution/'
     | '/(dashboard)/settings/'
@@ -207,7 +244,9 @@ export interface FileRouteTypes {
     | '/(dashboard)/summary/'
     | '/(dashboard)/users/'
     | '/(dashboard)/wallet/'
+    | '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
+    | '/(dashboard)/marketPlace/$marketPlaceId/chat'
     | '/(dashboard)/skills/$categoryId/$subCategoryId'
     | '/(dashboard)/marketPlace/$marketPlaceId/'
     | '/(dashboard)/skills/$categoryId/'
@@ -218,6 +257,7 @@ export interface RootRouteChildren {
   GetstartedRoute: typeof GetstartedRoute
   dashboardUsersUserIdRoute: typeof dashboardUsersUserIdRoute
   dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
+  dashboardCategoryRequestIndexRoute: typeof dashboardCategoryRequestIndexRoute
   dashboardMarketPlaceIndexRoute: typeof dashboardMarketPlaceIndexRoute
   dashboardResolutionIndexRoute: typeof dashboardResolutionIndexRoute
   dashboardSettingsIndexRoute: typeof dashboardSettingsIndexRoute
@@ -225,7 +265,9 @@ export interface RootRouteChildren {
   dashboardSummaryIndexRoute: typeof dashboardSummaryIndexRoute
   dashboardUsersIndexRoute: typeof dashboardUsersIndexRoute
   dashboardWalletIndexRoute: typeof dashboardWalletIndexRoute
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
+  dashboardMarketPlaceMarketPlaceIdChatRoute: typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   dashboardSkillsCategoryIdSubCategoryIdRoute: typeof dashboardSkillsCategoryIdSubCategoryIdRoute
   dashboardMarketPlaceMarketPlaceIdIndexRoute: typeof dashboardMarketPlaceMarketPlaceIdIndexRoute
   dashboardSkillsCategoryIdIndexRoute: typeof dashboardSkillsCategoryIdIndexRoute
@@ -296,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardMarketPlaceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)/categoryRequest/': {
+      id: '/(dashboard)/categoryRequest/'
+      path: '/categoryRequest'
+      fullPath: '/categoryRequest'
+      preLoaderRoute: typeof dashboardCategoryRequestIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(dashboard)/account/': {
       id: '/(dashboard)/account/'
       path: '/account'
@@ -331,11 +380,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardSkillsCategoryIdSubCategoryIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)/marketPlace/$marketPlaceId/chat': {
+      id: '/(dashboard)/marketPlace/$marketPlaceId/chat'
+      path: '/marketPlace/$marketPlaceId/chat'
+      fullPath: '/marketPlace/$marketPlaceId/chat'
+      preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId': {
       id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
       path: '/marketPlace/$marketPlaceId/$marketPlaceId'
       fullPath: '/marketPlace/$marketPlaceId/$marketPlaceId'
       preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId': {
+      id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
+      path: '/marketPlace/$marketPlaceId/$marketPlaceChatId'
+      fullPath: '/marketPlace/$marketPlaceId/$marketPlaceChatId'
+      preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -346,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   GetstartedRoute: GetstartedRoute,
   dashboardUsersUserIdRoute: dashboardUsersUserIdRoute,
   dashboardAccountIndexRoute: dashboardAccountIndexRoute,
+  dashboardCategoryRequestIndexRoute: dashboardCategoryRequestIndexRoute,
   dashboardMarketPlaceIndexRoute: dashboardMarketPlaceIndexRoute,
   dashboardResolutionIndexRoute: dashboardResolutionIndexRoute,
   dashboardSettingsIndexRoute: dashboardSettingsIndexRoute,
@@ -353,8 +417,12 @@ const rootRouteChildren: RootRouteChildren = {
   dashboardSummaryIndexRoute: dashboardSummaryIndexRoute,
   dashboardUsersIndexRoute: dashboardUsersIndexRoute,
   dashboardWalletIndexRoute: dashboardWalletIndexRoute,
+  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute:
+    dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute,
   dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute:
     dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute,
+  dashboardMarketPlaceMarketPlaceIdChatRoute:
+    dashboardMarketPlaceMarketPlaceIdChatRoute,
   dashboardSkillsCategoryIdSubCategoryIdRoute:
     dashboardSkillsCategoryIdSubCategoryIdRoute,
   dashboardMarketPlaceMarketPlaceIdIndexRoute:

@@ -26,6 +26,11 @@ export const useHandleDelete = ({
       onSuccess: () => {
         setSelectedId(null)
         setModalOpen(false)
+        notifications.show({
+          title: 'Deleted',
+          message: `${entityName} deleted successfully.`,
+          color: 'green',
+        })
       },
       onError: (error) => {
         console.error(`Error deleting ${entityName}:`, error)

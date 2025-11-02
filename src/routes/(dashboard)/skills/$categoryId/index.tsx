@@ -43,7 +43,7 @@ function RouteComponent() {
     handleConfirmDelete,
   } = useHandleDelete({
     mutation: deleteSubCategory,
-    entityName: 'aub-categories',
+    entityName: 'sub-categories',
   })
   const { initialData, setInitialData, setOpenFormModal } = useGlobalContext()
 
@@ -74,7 +74,7 @@ function RouteComponent() {
         await editSubCategory.mutateAsync(
           {
             id: initialData.id,
-            data: initialData,
+            data: subCategoryData,
           },
           {
             onSuccess: () => {
@@ -99,19 +99,17 @@ function RouteComponent() {
   const handleView = (subCategoryId: Id) => {
     navigate({ to: `/skills/${categoryId}/${subCategoryId}` })
   }
+
   const handleEditSubCategory = (data: SubCategory) => {
     setOpenFormModal(true)
     setInitialData(data)
-    // editSubCategory.mutate({ id, data: updatedData })
   }
-  // const handleDeleteClick = (id: Id) => console.log('Delete', id)
 
-  console.log(categoryId)
+  // console.log(categoryId)
 
   return (
     <DashboardLayout>
       <div className="py-5">
-        {categoryId}
         <BackButton color="black" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">

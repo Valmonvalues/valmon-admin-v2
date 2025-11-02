@@ -20,6 +20,7 @@ export interface CategoryItem {
   products_listed: string
   products_sold: number
   active_listings_cost: number
+  sold_amount: number
 }
 
 // export interface Approval {
@@ -60,9 +61,7 @@ export interface MarketplaceResponse {
 
 // For listing Id
 
-export interface MarketplaceListingIdResponse {
-  data: MarketplaceListingIdData
-}
+export type MarketplaceListingIdResponse = MarketplaceListingIdData
 
 export interface MarketplaceListingIdData {
   id: number

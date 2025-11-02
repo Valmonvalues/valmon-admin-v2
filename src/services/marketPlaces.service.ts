@@ -4,6 +4,7 @@ import type {
   CategoryItem,
   MarketplaceResponse,
 } from '@/types/marketPlaces.types'
+import { notifications } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useMarketPlaces = () => {
@@ -43,24 +44,44 @@ export const useMarketPlaces = () => {
     })
   }
 
-  // const addCategory = useMutation({
-  //   mutationFn: marketPlaces.addCategory,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['categories'] })
-  //     notifications.show({
-  //       title: 'Success',
-  //       message: 'Category added successfully',
-  //       color: 'green',
-  //     })
-  //   },
-  //   onError: (error: any) => {
-  //     notifications.show({
-  //       title: 'Error',
-  //       message: error.response?.data?.message || 'Failed to add category',
-  //       color: 'red',
-  //     })
-  //   },
-  // })
+  const chat = (id: Id) => {
+    return useQuery({
+      queryKey: ['conversation', id],
+      queryFn: () => marketPlaces.getChat(id),
+    })
+  }
+
+  const addCategory = useMutation({
+    mutationFn: marketPlaces.addCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+    },
+    onError: (error: any) => {
+      notifications.show({
+        title: 'Error',
+        message: error.response?.data?.message || 'Failed to add category',
+        color: 'red',
+      })
+    },
+  })
+
+  const approveListing = useMutation({
+    mutationFn: (id: Id) => marketPlaces.approveListing(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['approval'] })
+      queryClient.invalidateQueries({ queryKey: ['listing'] })
+    },
+  })
+
+  const denyListing = useMutation({
+    mutationFn: (id: Id) => marketPlaces.denyListing(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['approval'] })
+      queryClient.invalidateQueries({ queryKey: ['listing'] })
+    },
+  })
 
   const deleteProduct = useMutation({
     mutationFn: (id: Id) => marketPlaces.deleteProduct(id),
@@ -89,7 +110,10 @@ export const useMarketPlaces = () => {
     listingClosed,
     listingCategories,
     listingId,
-    // addCategory,
+    chat,
+    addCategory,
+    approveListing,
+    denyListing,
     deleteProduct,
     deleteClosed,
     deleteCategories,

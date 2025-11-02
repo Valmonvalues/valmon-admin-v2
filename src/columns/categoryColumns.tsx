@@ -10,6 +10,7 @@ export interface CategoryItem {
   products_listed: string
   products_sold: number
   active_listings_cost: number
+  sold_amount: number
 }
 
 interface CategoryColumnHandlers {
@@ -58,7 +59,16 @@ export const categoryColumns = ({
     header: 'Active Listings Cost',
     render: (category): ReactNode => (
       <span className="font-medium text-gray-800">
-        ${category.active_listings_cost.toLocaleString()}
+        NGN {category.active_listings_cost.toLocaleString()}
+      </span>
+    ),
+  },
+  {
+    key: 'sold_amount',
+    header: 'Sold Amount',
+    render: (category): ReactNode => (
+      <span className="font-medium text-gray-800">
+        NGN {category.sold_amount.toLocaleString()}
       </span>
     ),
   },

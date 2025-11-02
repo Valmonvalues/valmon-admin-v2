@@ -124,18 +124,30 @@ export function ReusableTable<T extends { id: Id }>({
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {data?.map((item, index) => (
-                <Table.Tr key={item.id} className="text-gray-800">
-                  {columns.map((column) => (
-                    <Table.Td
-                      key={String(column.key)}
-                      className="whitespace-nowrap"
-                    >
-                      {column.render(item, index)}
-                    </Table.Td>
-                  ))}
+              {!isLoading && data.length === 0 ? (
+                <Table.Tr>
+                  <Table.Td colSpan={columns.length}>
+                    <div className="flex justify-center items-center h-40">
+                      <Text ta="center" c="dimmed">
+                        Listing not found
+                      </Text>
+                    </div>
+                  </Table.Td>
                 </Table.Tr>
-              ))}
+              ) : (
+                data?.map((item, index) => (
+                  <Table.Tr key={item.id} className="text-gray-800">
+                    {columns.map((column) => (
+                      <Table.Td
+                        key={String(column.key)}
+                        className="whitespace-nowrap"
+                      >
+                        {column.render(item, index)}
+                      </Table.Td>
+                    ))}
+                  </Table.Tr>
+                ))
+              )}
             </Table.Tbody>
           </Table>
           {/* </div> */}

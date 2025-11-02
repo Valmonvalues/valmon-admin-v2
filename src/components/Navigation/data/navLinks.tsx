@@ -1,6 +1,7 @@
 import {
   IconBuildingStore,
   IconCalendarDot,
+  IconCirclePlus,
   IconCoin,
   IconLayout2,
   IconMessageUser,
@@ -48,6 +49,13 @@ export const navLinks = [
     label: 'Conflict Resolution',
     icon: <IconCalendarDot />,
     route: '/resolution',
+    // allowedRoles: ['user'],
+    allowedRoles: ['super_admin'],
+  },
+  {
+    label: 'Category Request',
+    icon: <IconCirclePlus />,
+    route: '/categoryRequest',
     // allowedRoles: ['user'],
     allowedRoles: ['super_admin'],
   },

@@ -93,13 +93,13 @@ export const categoriesColumns = ({
           >
             View
           </Menu.Item>
-          {/* <Menu.Item
+          <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
             onClick={() => handleDeleteClick(category.id)}
           >
             Delete
-          </Menu.Item> */}
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     ),

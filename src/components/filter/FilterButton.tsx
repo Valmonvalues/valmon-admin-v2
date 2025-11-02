@@ -1,4 +1,4 @@
-import { Button, Divider, Menu, Select, TextInput } from '@mantine/core'
+import { Button, Menu, Select, TextInput } from '@mantine/core'
 import { IconFilter2 } from '@tabler/icons-react'
 import { useState } from 'react'
 
@@ -20,7 +20,7 @@ export default function FilterButton({ onApplyFilters }: FilterButtonProps) {
   //   filters = [],
   //   onApplyFilters,
   // }: FilterButtonProps) {
-  const [filters, setFilters] = useState<Record<string, any>>({})
+  const [filters] = useState<Record<string, any>>({})
 
   const handleApply = () => {
     onApplyFilters?.(filters)

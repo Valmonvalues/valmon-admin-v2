@@ -48,6 +48,8 @@ const AddModal = ({
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { initialData } = useGlobalContext()
 
+  console.log(initialData)
+
   useEffect(() => {
     if (!opened) {
       setFormData({})
@@ -71,8 +73,6 @@ const AddModal = ({
 
   const handleSubmit = () => {
     onSubmit(formData)
-    // onClose()
-    // setFormData({})
   }
 
   useEffect(() => {

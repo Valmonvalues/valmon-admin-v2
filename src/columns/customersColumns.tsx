@@ -1,15 +1,6 @@
 import type { ReactNode } from 'react'
-import {
-  ActionIcon,
-  Menu,
-  Image,
-  Text,
-  Badge,
-  Group,
-  Stack,
-} from '@mantine/core'
+import { Image, Text, Badge, Stack } from '@mantine/core'
 import type { ColumnDef } from '@/components/table/ReusableTable'
-// import type { Id } from '@/types/global.type'
 import type { Customers } from '@/types/skills.types'
 
 // interface CustomerColumnHandlers {
@@ -94,16 +85,6 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
     header: 'Type',
     sortable: true,
     render: (customer): ReactNode => customer.type,
-    // <Badge
-    //   color="blue"
-    //   variant="light"
-    //   style={{
-    //     whiteSpace: 'wrap',
-    //     flexShrink: 0,
-    //   }}
-    // >
-    //   {customer.type}
-    // </Badge>
   },
   {
     key: 'last_seen_at',

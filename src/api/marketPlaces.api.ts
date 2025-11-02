@@ -33,19 +33,41 @@ export const marketPlaces = {
     return response.data
   },
 
-  // addCategory: async (categoryData: {
-  //   name: string
-  //   description?: string
-  //   image?: File | string
-  // }) => {
-  //   const response = await apiClient.post('/create/category', categoryData)
-  //   console.log(categoryData)
-  //   console.log(response)
+  // : Promise<MarketplaceListingIdResponse>
+  getChat: async (id: Id) => {
+    const response = await apiClient.get(`/listings/conversations/${id}`)
+    return response.data
+  },
+
+  addCategory: async (categoryData: FormData) => {
+    const response = await apiClient.post(
+      '/marketplace/listing-category',
+      categoryData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      },
+    )
+    return response.data
+  },
+
+  // approveListing: async (id: Id) => {
+  //   const response = await apiClient.put(`/listings/${id}/approve`)
   //   return response.data
   // },
+  approveListing: async (id: Id): Promise<{ message: string }> => {
+    const response = await apiClient.put(`/listings/${id}/approve`)
+    return response.data
+  },
+  denyListing: async (id: Id): Promise<{ message: string }> => {
+    const response = await apiClient.put(`/listings/${id}/deny`)
+    return response.data
+  },
 
   deleteProduct: async (id: Id) =>
-    await apiClient.delete(`/listings/summary/${id}`),
+    // await apiClient.delete(`/listings/summary/${id}`),
+
+    // Gotten from v1
+    await apiClient.delete(`/listings/${id}`),
 
   // deleteApproval: async (id: Id) =>
   //   await apiClient.delete(`/listings/awaiting${id}`),
@@ -54,5 +76,5 @@ export const marketPlaces = {
     await apiClient.delete(`/listings/closed/${id}`),
 
   deleteCategories: async (id: Id) =>
-    await apiClient.delete(`/listings/categories/${id}`),
+    await apiClient.delete(`/categories/${id}`),
 }

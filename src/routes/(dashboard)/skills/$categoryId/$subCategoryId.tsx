@@ -1,6 +1,5 @@
 import { customersColumns } from '@/columns/customersColumns'
 import { BackButton } from '@/components/BackButton'
-import BaseButton from '@/components/BaseButton'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
@@ -57,11 +56,6 @@ function RouteComponent() {
           title="Customers"
           totalCount={customersData.length}
           data={sortedCustomers}
-          //   columns={customersColumns({
-          //     // page,
-          //     // handleView,
-          //     // handleDeleteClick,
-          //   })}
           columns={customersColumns()}
           isLoading={customersIsLoading}
           searchQuery={search}

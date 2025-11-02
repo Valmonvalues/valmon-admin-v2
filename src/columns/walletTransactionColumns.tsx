@@ -1,28 +1,48 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Badge, Menu } from '@mantine/core'
-import {
-  IconDotsVertical,
-  IconEye,
-  IconArrowDown,
-  IconArrowUp,
-} from '@tabler/icons-react'
+import { Badge } from '@mantine/core'
+import { IconArrowDown, IconArrowUp } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
-import type { Id } from '@/types/global.type'
 import type { WalletTransaction } from '@/types/wallet.types'
 import { formatDate } from '@/components/utils/helper'
 
-interface WalletTransactionColumnHandlers {
-  handleView: (id: Id) => void
-}
+// interface WalletTransactionColumnHandlers {
+//   handleView: (id: Id) => void
+// }
 
-export const walletTransactionColumns = ({
-  handleView,
-}: WalletTransactionColumnHandlers): ColumnDef<WalletTransaction>[] => [
+// export const walletTransactionColumns = ({
+//   handleView,
+// }: WalletTransactionColumnHandlers): ColumnDef<WalletTransaction>[] => [
+export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
   {
     key: 'sn',
     header: 'SN',
     sortable: false,
     render: (_, index): ReactNode => index + 1,
+  },
+  {
+    key: 'amount',
+    header: 'Amount',
+    render: (txn): ReactNode =>
+      `${txn.currency} ${Number(txn.amount).toLocaleString()}`,
+  },
+  {
+    key: 'time',
+    header: 'Time',
+    render: (txn): ReactNode => {
+      console.log(txn)
+      return '14:34'
+    },
+  },
+  {
+    key: 'created_at',
+    header: 'Date',
+    render: (txn): ReactNode => formatDate(txn.created_at),
+  },
+  {
+    key: 'to',
+    header: 'To',
+    render: (txn): ReactNode =>
+      txn.bank_name ? `${txn.bank_name} - ${txn.account_number}` : '-',
   },
   {
     key: 'type',
@@ -40,12 +60,6 @@ export const walletTransactionColumns = ({
         </div>
       )
     },
-  },
-  {
-    key: 'amount',
-    header: 'Amount',
-    render: (txn): ReactNode =>
-      `${txn.currency} ${Number(txn.amount).toLocaleString()}`,
   },
   {
     key: 'status',
@@ -66,31 +80,26 @@ export const walletTransactionColumns = ({
       </Badge>
     ),
   },
-  {
-    key: 'created_at',
-    header: 'Date',
-    render: (txn): ReactNode => formatDate(txn.created_at),
-  },
-  {
-    key: 'actions',
-    header: '',
-    sortable: false,
-    render: (txn): ReactNode => (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="subtle" color="gray">
-            <IconDotsVertical size={18} stroke={2} />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            leftSection={<IconEye size={16} />}
-            onClick={() => handleView(txn.id)}
-          >
-            View
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    ),
-  },
+  // {
+  //   key: 'actions',
+  //   header: '',
+  //   sortable: false,
+  //   render: (txn): ReactNode => (
+  //     <Menu>
+  //       <Menu.Target>
+  //         <ActionIcon variant="subtle" color="gray">
+  //           <IconDotsVertical size={18} stroke={2} />
+  //         </ActionIcon>
+  //       </Menu.Target>
+  //       <Menu.Dropdown>
+  //         <Menu.Item
+  //           leftSection={<IconEye size={16} />}
+  //           onClick={() => handleView(txn.id)}
+  //         >
+  //           View
+  //         </Menu.Item>
+  //       </Menu.Dropdown>
+  //     </Menu>
+  //   ),
+  // },
 ]

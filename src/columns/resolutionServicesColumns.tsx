@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Menu, Image, Badge } from '@mantine/core'
+import { ActionIcon, Menu, Badge } from '@mantine/core'
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Ticket } from '@/types/resolution.types'
@@ -80,21 +80,6 @@ export const resolutionServicesColumns = ({
       >
         {ticket.status}
       </Badge>
-    ),
-  },
-  {
-    key: 'image',
-    header: 'Image',
-    sortable: false,
-    render: (ticket): ReactNode => (
-      <Image
-        src={ticket.image}
-        alt="ticket image"
-        width={40}
-        height={40}
-        radius="sm"
-        className="object-cover"
-      />
     ),
   },
   {

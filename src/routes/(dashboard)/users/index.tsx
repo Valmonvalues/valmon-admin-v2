@@ -32,7 +32,7 @@ function Users() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<null | Id>(null)
   const users = data?.users ?? []
-  const summary = usersSummary?.data ?? []
+  // const summary = usersSummary?.data ?? []
   const totalUsers = data?.pagination?.total ?? 0
   const totalPages = Math.ceil(totalUsers / perpage)
 
