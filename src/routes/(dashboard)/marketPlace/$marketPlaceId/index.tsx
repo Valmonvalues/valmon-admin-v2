@@ -46,13 +46,17 @@ function MarketPlaceProduct() {
 
   // if (!listing) return
 
-  // console.log(listing)
-
   const seller = listing?.user
   // const profile = seller?.profile
 
   const handleView = () => {
     navigate({ to: `/marketPlace/${marketPlaceId}/chat` })
+  }
+
+  const handleViewProfile = () => {
+    if (seller?.id) {
+      navigate({ to: `/users/${seller.id}` })
+    }
   }
 
   return (
@@ -168,7 +172,12 @@ function MarketPlaceProduct() {
                     </Group>
                   </Stack>
                 </Group>
-                <Button variant="outline" color="dark" radius="md">
+                <Button
+                  variant="outline"
+                  color="dark"
+                  radius="md"
+                  onClick={handleViewProfile}
+                >
                   Profile
                 </Button>
               </div>

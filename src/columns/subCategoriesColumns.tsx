@@ -10,15 +10,6 @@ import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { SubCategory } from '@/types/skills.types'
 
-// export interface SubCategory {
-//   id: number
-//   name: string
-//   total_users: number
-//   total_transactions: number
-//   transacted_value: number | string
-//   valmon_earning: number | string
-// }
-
 interface SubCategoriesColumnHandlers {
   handleView: (id: Id) => void
   handleEditSubCategory: (subCategory: SubCategory) => void
@@ -50,17 +41,10 @@ export const subCategoriesColumns = ({
     sortable: true,
     render: (subCategory): ReactNode => subCategory.total_users ?? 0,
   },
-  // {
-  //   key: 'desc',
-  //   header: 'desc',
-  //   sortable: true,
-  //   render: (subCategory): ReactNode => subCategory.description ?? 0,
-  // },
   {
     key: 'total_transactions',
     header: 'Transactions',
     sortable: true,
-    // render: (subCategory): ReactNode => subCategory.total_tansactions ?? 0,
     render: (subCategory): ReactNode => subCategory.total_transactions ?? 0,
   },
   {
@@ -69,10 +53,6 @@ export const subCategoriesColumns = ({
     sortable: true,
     render: (subCategory): ReactNode =>
       `NGN ${Number(subCategory.transacted_value).toFixed(2)}`,
-
-    // subCategory.transacted_value
-    //   ? `$${Number(subCategory.transacted_value).toFixed(2)}`
-    //   : '—',
   },
   {
     key: 'valmon_earning',
@@ -80,10 +60,6 @@ export const subCategoriesColumns = ({
     sortable: true,
     render: (subCategory): ReactNode =>
       `NGN ${Number(subCategory.valmon_earning).toFixed(2)}`,
-
-    // subCategory.valmon_earning
-    //   ? `$${Number(subCategory.valmon_earning).toFixed(2)}`
-    //   : '—',
   },
   {
     key: 'actions',

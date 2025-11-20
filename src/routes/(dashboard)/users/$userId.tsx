@@ -137,7 +137,7 @@ function RouteComponent() {
       <div className="flex gap-3 items-start">
         <div
           className="size-8 flex items-center justify-center rounded-full bg-white"
-          onClick={() => router({ to: '..' })}
+          onClick={() => window.history.back()}
         >
           <IconArrowLeft className="h-6 w-6" />
         </div>

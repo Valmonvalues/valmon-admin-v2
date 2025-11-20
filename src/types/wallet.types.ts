@@ -13,8 +13,6 @@ export interface PercentageIncrease {
 }
 
 export interface AccountNumber {
-  // Add fields here if account number objects are not just strings or empty
-  // For now, using `any` to allow empty array or unknown structure
   [key: string]: any
 }
 
@@ -30,4 +28,34 @@ export interface WalletTransaction {
   bank_name: string | null
   account_number: string | null
   bank_code: string | null
+}
+
+export interface Bank {
+  id: number
+  name: string
+  slug: string
+  code: string
+  longcode: string
+  country: string
+  currency: string
+  type: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface BankApiResponse {
+  status_code: number
+  success: boolean
+  message: string
+  data: Bank[]
+}
+
+export type BankList = Bank[]
+
+export interface WithdrawalPayload {
+  account_number: number
+  amount: number
+  bank: string | undefined
+  otp: number
+  bank_code: string
 }

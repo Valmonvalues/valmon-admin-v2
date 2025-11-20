@@ -28,8 +28,8 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
   {
     key: 'time',
     header: 'Time',
-    render: (txn): ReactNode => {
-      console.log(txn)
+    render: (): ReactNode => {
+      // console.log(txn)
       return '14:34'
     },
   },

@@ -120,7 +120,6 @@ export const listingColumns = ({
     },
   ]
 
-  // Only add this separate “Status” column when buttonLayout is 'menu'
   if (buttonLayout === 'menu') {
     columns.push({
       key: 'status',

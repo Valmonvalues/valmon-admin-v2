@@ -17,10 +17,25 @@ import { useGlobalContext } from '@/contexts/GlobalContext'
 export interface Field {
   name: string
   label: string
-  type: 'text' | 'textarea' | 'email' | 'radio' | 'select' | 'file'
+  type:
+    | 'text'
+    | 'textarea'
+    | 'email'
+    | 'radio'
+    | 'select'
+    | 'file'
+    | 'button'
+    | 'otp'
+    | 'number'
+  // inputMode?: 'text' | 'email' | 'search' | 'none' | 'tel' | 'url' | 'numeric' | 'decimal'
+
   placeholder?: string
   options?: { label: string; value: string }[]
   variant?: 'default' | 'image-upload' | 'profile_picture-upload'
+  onClick?: () => void
+  buttonText?: string
+  scrollAreaProps?: {}
+  maxLength?: number
 }
 
 export interface AddModalProps {
@@ -43,12 +58,11 @@ const AddModal = ({
   loading = false,
   submitLabel = 'Save',
 }: AddModalProps) => {
-  //   const formData: Record<string, any> = {};
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { initialData } = useGlobalContext()
 
-  console.log(initialData)
+  // console.log(initialData)
 
   useEffect(() => {
     if (!opened) {
@@ -94,7 +108,7 @@ const AddModal = ({
       opened={opened}
       onClose={onClose}
       title={
-        <div className="text-lg font-semibold text-[#7E7BA9]">{title}</div>
+        <div className="text-lg font-semibold text-[#1e1e1e]">{title}</div>
       }
       centered
       overlayProps={{
@@ -107,36 +121,6 @@ const AddModal = ({
       }}
     >
       <div className="flex flex-col gap-4">
-        {/* {fileField && (
-          <div className="flex flex-col items-center mb-4">
-            <label
-              htmlFor="upload-image"
-              className="cursor-pointer text-center"
-            >
-              {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-32 h-32 object-cover rounded-full border border-gray-300"
-                />
-              ) : (
-                <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-sm border border-gray-300">
-                  Upload Image
-                </div>
-              )}
-              Upload Photo
-            </label>
-
-            <FileInput
-              id="upload-image"
-              style={{ display: 'none' }}
-              onChange={(file) => handleChange(fileField.name, file)}
-              radius="md"
-              className="mt-2"
-            />
-          </div>
-        )} */}
-
         {fileField && fileField.variant === 'image-upload' && (
           <div className="flex flex-col items-center mb-4">
             <Text fw={500} size="sm" className="text-[#7E7BA9] mb-3 self-start">
@@ -218,10 +202,15 @@ const AddModal = ({
         )}
 
         {otherFields.map((field) => {
-          if (field.type === 'text' || field.type === 'email') {
+          if (
+            field.type === 'text' ||
+            field.type === 'email' ||
+            field.type === 'number'
+          ) {
             return (
               <TextInput
                 key={field.name}
+                type={field.type}
                 label={field.label}
                 placeholder={field.placeholder}
                 value={formData[field.name] || ''}
@@ -256,6 +245,7 @@ const AddModal = ({
               />
             )
           }
+
           if (field.type === 'file') {
             return (
               <FileInput
@@ -272,6 +262,7 @@ const AddModal = ({
               />
             )
           }
+
           if (field.type === 'radio') {
             return (
               <Radio.Group
@@ -295,6 +286,7 @@ const AddModal = ({
               </Radio.Group>
             )
           }
+
           if (field.type === 'select') {
             return (
               <Select
@@ -306,6 +298,7 @@ const AddModal = ({
                     value,
                   })) || []
                 }
+                scrollAreaProps={field.scrollAreaProps}
                 value={formData[field.name] || ''}
                 onChange={(value) => handleChange(field.name, value)}
                 classNames={{
@@ -313,6 +306,55 @@ const AddModal = ({
                 }}
                 radius="md"
               />
+            )
+          }
+
+          if (field.type === 'button') {
+            return (
+              <Button
+                mt="sm"
+                variant="outline"
+                color="blue"
+                onClick={field.onClick}
+              >
+                {field.buttonText}
+              </Button>
+            )
+          }
+
+          if (field.type === 'otp') {
+            return (
+              <div key={field.name} className="flex flex-col gap-1">
+                <label className="text-[#7E7BA9] font-medium">
+                  {field.label}
+                </label>
+
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    placeholder={field.placeholder}
+                    value={formData[field.name] || ''}
+                    onChange={(e) => {
+                      if (
+                        field.maxLength &&
+                        e.target.value.length > field.maxLength
+                      )
+                        return
+                      handleChange(field.name, e.target.value)
+                    }}
+                    maxLength={field.maxLength}
+                    className="w-full border rounded-xl px-4 py-3 text-lg outline-none border-gray-300 focus:border-[#7E7BA9]"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={field.onClick}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1A1A2E] underline"
+                  >
+                    {field.buttonText || 'Get OTP'}
+                  </button>
+                </div>
+              </div>
             )
           }
 

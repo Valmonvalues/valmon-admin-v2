@@ -14,6 +14,22 @@ import { createFileRoute } from '@tanstack/react-router'
 // import DashboardStatsCard from './DashboardStatsCard'
 // import { summary } from '@/services/summary'
 import DashboardLayout from '@/layout/DashboardLayout'
+import StatCard from '@/components/StatCard'
+import { formatNumber } from '@/utils/formatters'
+import { AreaChart } from '@mantine/charts'
+
+export const data = [
+  { date: '2024-01-01', Apples: 20 },
+  { date: '2024-01-02', Apples: 35 },
+  { date: '2024-01-03', Apples: 50 },
+  { date: '2024-01-04', Apples: 30 },
+  { date: '2024-01-05', Apples: 70 },
+  { date: '2024-01-06', Apples: 90 },
+  { date: '2024-01-07', Apples: 55 },
+  { date: '2024-01-08', Apples: 65 },
+  { date: '2024-01-09', Apples: 40 },
+  { date: '2024-01-10', Apples: 80 },
+]
 
 // interface PlatformOverview {
 //   [key: string]: number | { value: number; percentage?: number }
@@ -331,6 +347,39 @@ function Dashboard() {
       </div>
       </div> */}
       <div className="">Coming Soon</div>
+      <AreaChart
+        h={300}
+        data={data}
+        dataKey="date"
+        yAxisProps={{ domain: [0, 100] }}
+        series={[{ name: 'Apples', color: 'indigo.6' }]}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
+        <StatCard
+          title="All Reports"
+          value={0}
+          color="bg-pink-100"
+          // image={profile}
+        />
+        <StatCard
+          title="Resolved Reports"
+          value={formatNumber(0)}
+          color="bg-purple-100"
+          // image={cardblack}
+        />
+        <StatCard
+          title="In-Escrow"
+          value={formatNumber(0)}
+          color="bg-dark-gold"
+          // image={cardwhite}
+        />
+        <StatCard
+          title="In-Escrow Value"
+          value={formatNumber(0)}
+          color="bg-green-100"
+          // image={earningImage}
+        />
+      </div>
     </DashboardLayout>
   )
 }

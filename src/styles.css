@@ -100,6 +100,20 @@ code {
   transition: all 0.3s ease;
 }
 
+.slide {
+  color: linear-gradient(
+    16.86deg,
+    #efe687 5.8%,
+    #c09742 34.83%,
+    #ac7729 59.61%,
+    #ad7a22 84.28%,
+    #ad7a22 84.28%,
+    #ad7a22 84.28%,
+    #ad7a22 94.28%
+  );
+  /* color: white; */
+}
+
 .btn {
   box-shadow: none !important;
 }
@@ -116,4 +130,9 @@ code {
 
 .btn-gold:hover {
   background-color: var(--color-bright-gold);
+}
+
+.bg-black-custom {
+  background-color: #000000;
+  color: #ffffff;
 }

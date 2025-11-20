@@ -1,5 +1,6 @@
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import AddModal, { type Field } from './modals/AddModal'
+import { Image } from '@mantine/core'
 
 interface BaseButtonProps {
   title: string
@@ -13,10 +14,7 @@ interface BaseButtonProps {
   alt?: string
   showPlusIcon?: boolean
   fields?: Field[]
-
-  // showModal?: boolean
   modalTitle?: string
-  // modalFields?: Field[]
   onSubmit?: (data: Record<string, any>) => void
   onClose?: () => void
   initialData?: {} | null
@@ -33,13 +31,11 @@ export default function BaseButton({
   onClick,
   className = '',
   showPlusIcon = false,
-  // showModal = false,
   modalTitle = '',
-  // modalFields = [],
   onSubmit,
   onClose,
   initialData,
-  // opened = false,
+  src,
 }: BaseButtonProps) {
   const { openFormModal, setOpenFormModal } = useGlobalContext()
 
@@ -55,10 +51,6 @@ export default function BaseButton({
     color: textColor || (outline ? color : '#fff'),
     border: outline && color ? `1.5px solid ${color}` : undefined,
   }
-
-  // const handleButtonClick = () => {
-  //   setOpened(!opened)
-  // }
 
   return (
     <>
@@ -84,6 +76,18 @@ export default function BaseButton({
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
+        )}
+        {src && (
+          <Image
+            radius="md"
+            w={30}
+            h={30}
+            fit="contain"
+            src={src}
+            alt={''}
+            mx="5px"
+            // className="!text-white"
+          />
         )}
       </button>
 

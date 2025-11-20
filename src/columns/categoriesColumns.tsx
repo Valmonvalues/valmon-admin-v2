@@ -70,10 +70,6 @@ export const categoriesColumns = ({
     header: 'Valmon Earning',
     render: (category): ReactNode =>
       `NGN ${Number(category.valmon_earning).toFixed(2)}`,
-
-    // category.valmon_earning != null
-    //   ? `$${Number(category.valmon_earning).toFixed(2)}`
-    //   : '—',
   },
   {
     key: 'actions',

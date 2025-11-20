@@ -11,18 +11,14 @@ interface BackButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   iconSize?: number
   className?: string
-  //   bg?: string
   onClick?: () => void
 }
 
 export const BackButton: React.FC<BackButtonProps> = ({
-  //   label = '',
   color = 'gray',
   variant = 'light',
-  //   withIcon = true,
   size = 'md',
   iconSize = 18,
-  //   bg,
   onClick,
 }) => {
   const navigate = useNavigate()

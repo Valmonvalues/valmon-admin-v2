@@ -30,8 +30,8 @@ interface ReusableTableProps<T> {
   data: T[]
   columns: ColumnDef<T>[]
   isLoading: boolean
-  searchQuery: string
-  onSearchChange: (value: string) => void
+  searchQuery?: string
+  onSearchChange?: (value: string) => void
   sortConfig: SortConfig<T>
   onSort: (key: keyof T) => void
   headerActions?: React.ReactNode
@@ -78,7 +78,7 @@ export function ReusableTable<T extends { id: Id }>({
         </div>
 
         <div className="flex gap-3 items-center">
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <input
               type="text"
               placeholder="Search..."
@@ -86,7 +86,18 @@ export function ReusableTable<T extends { id: Id }>({
               onChange={(e) => onSearchChange(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
+          </div> */}
+          {searchQuery !== undefined && onSearchChange && (
+            <div className="flex-1">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          )}
 
           <FilterButton onApplyFilters={(filters) => console.log(filters)} />
 
@@ -102,7 +113,6 @@ export function ReusableTable<T extends { id: Id }>({
         </Group>
       ) : (
         <ScrollArea h={700} offsetScrollbars scrollbarSize={8}>
-          {/* <div className="min-w-[1000px]"> */}
           <Table highlightOnHover>
             <Table.Thead className="text-[12px]">
               <Table.Tr className="text-gray-500">
@@ -150,7 +160,6 @@ export function ReusableTable<T extends { id: Id }>({
               )}
             </Table.Tbody>
           </Table>
-          {/* </div> */}
         </ScrollArea>
       )}
     </Paper>

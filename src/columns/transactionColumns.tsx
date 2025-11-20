@@ -4,7 +4,6 @@ import { IconDotsVertical, IconEye } from '@tabler/icons-react'
 import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
-// import { perPage } from '@/constant/config'
 import { formatDate } from '@/components/utils/helper'
 import { formatNumber } from '@/utils/formatters'
 
@@ -58,17 +57,6 @@ export const transactionColumns = ({
     header: 'To Valmon',
     render: (txn): ReactNode => `NGN ${formatNumber(txn.to_valmon)}`,
   },
-  // {
-  //   key: 'job_created_at',
-  //   header: 'Job Created',
-  //   render: (txn): ReactNode => formatDate(txn.job_created_at),
-  // },
-  // {
-  //   key: 'job_completed_at',
-  //   header: 'Job Completed',
-  //   render: (txn): ReactNode =>
-  //     txn.job_completed_at ? formatDate(txn.job_completed_at) : '—',
-  // },
   {
     key: 'date',
     header: 'Date',
