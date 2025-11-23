@@ -14,9 +14,12 @@ import withdrawLight from '@/assets/icons/export-light.svg'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import BaseButton from '@/components/BaseButton'
 import type { Field } from '@/components/modals/AddModal'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/wallet/')({
   component: Wallet,
+  loader: () => routeGaurd(allowedRoles.wallet),
 })
 
 function Wallet() {

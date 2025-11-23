@@ -14,9 +14,12 @@ import ServicesSection from '@/components/user/ServiceSection'
 import ReviewsSection from '@/components/user/ReviewSection'
 import { notifications } from '@mantine/notifications'
 import { useConfirmModal } from '@/providers/ModalProvider'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/users/$userId')({
   component: RouteComponent,
+  loader: () => routeGaurd(allowedRoles.users),
 })
 
 function RouteComponent() {

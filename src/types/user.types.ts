@@ -170,6 +170,7 @@ export interface StatCardProps {
   title: string
   value?: string | number
   color?: string
+  trend?: string | number
   image?: string | ReactNode
   showImage?: boolean
   imageSize?: number

@@ -100,7 +100,7 @@ code {
   transition: all 0.3s ease;
 }
 
-.slide {
+/* .slide {
   color: linear-gradient(
     16.86deg,
     #efe687 5.8%,
@@ -111,8 +111,8 @@ code {
     #ad7a22 84.28%,
     #ad7a22 94.28%
   );
-  /* color: white; */
-}
+} */
+/* color: white; */
 
 .btn {
   box-shadow: none !important;

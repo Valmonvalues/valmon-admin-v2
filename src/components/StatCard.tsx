@@ -1,4 +1,4 @@
-import { Card } from '@mantine/core'
+import { Card, Group, Text } from '@mantine/core'
 import { type StatCardProps } from '@/types/user.types'
 import { Image } from '@mantine/core'
 
@@ -7,6 +7,7 @@ const StatCard = ({
   value,
   color,
   image,
+  trend,
   showImage = true,
   imageSize = 30,
   imageClassName = '',
@@ -57,6 +58,14 @@ const StatCard = ({
             )}
           </div>
         </div>
+
+        {trend && (
+          <Group gap={4} mt="xs">
+            <Text size="xs" c="teal" fw={500}>
+              📈 {trend}% Up from last week
+            </Text>
+          </Group>
+        )}
       </div>
     </Card>
   )

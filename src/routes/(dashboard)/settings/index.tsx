@@ -19,9 +19,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { storage } from '@/constant/config'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/settings/')({
   component: Settings,
+  loader: () => routeGaurd(allowedRoles.settings),
 })
 
 type NotificationKey =

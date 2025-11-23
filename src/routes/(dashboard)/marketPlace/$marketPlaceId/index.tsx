@@ -1,4 +1,6 @@
 import { BackButton } from '@/components/BackButton'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useMarketPlaces } from '@/services/marketPlaces.service'
 import {
@@ -18,6 +20,7 @@ export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/',
 )({
   component: MarketPlaceProduct,
+  loader: () => routeGaurd(allowedRoles.marketPlace),
 })
 
 interface InfoRowProps {

@@ -10,11 +10,13 @@ import type { AccountManager } from '@/types/accountManagers.types'
 import type { Id } from '@/types/global.type'
 import { accountManagerColumns } from '@/columns/accountManagersColumns'
 import { useHandleDelete } from '@/hook/useHandleDelete'
-import { roles } from '@/data/roles'
+import { allowedRoles, roles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
+import { routeGaurd } from '@/components/utils/routeGuard'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
+  loader: () => routeGaurd(allowedRoles.marketPlace),
 })
 
 function Account() {

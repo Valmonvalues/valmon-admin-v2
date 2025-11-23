@@ -30,3 +30,15 @@ export const roles = [
   //     permissions: [],
   //   },
 ]
+
+export const allowedRoles = {
+  summary: ['all'],
+  users: ['super_admin', 'admin'],
+  skills: ['super_admin', 'admin'],
+  marketPlace: ['super_admin', 'admin'],
+  wallet: ['super_admin', 'admin'],
+  resolution: ['super_admin', 'admin'],
+  categoryRequest: ['super_admin', 'admin'],
+  settings: ['all'],
+  account: ['super_admin'],
+}

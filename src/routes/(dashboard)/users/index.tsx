@@ -16,10 +16,12 @@ import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 import profile from '@/assets/icons/cardprofile.svg'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
-  // loader: () => 'a' === 2,
+  loader: () => routeGaurd(allowedRoles.users),
 })
 
 function Users() {

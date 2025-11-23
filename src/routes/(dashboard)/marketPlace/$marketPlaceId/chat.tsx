@@ -2,11 +2,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Avatar, Badge, Card, Group, Image, Text } from '@mantine/core'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useMarketPlaces } from '@/services/marketPlaces.service'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/chat',
 )({
   component: ChatView,
+  loader: () => routeGaurd(allowedRoles.marketPlace),
 })
 
 type Message = {

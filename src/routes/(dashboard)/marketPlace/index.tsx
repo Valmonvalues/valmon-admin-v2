@@ -22,9 +22,12 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
 import { useGlobalContext } from '@/contexts/GlobalContext'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
+  loader: () => routeGaurd(allowedRoles.marketPlace),
 })
 
 function MarketPlace() {

@@ -1,6 +1,8 @@
 import { customersColumns } from '@/columns/customersColumns'
 import { BackButton } from '@/components/BackButton'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import DashboardLayout from '@/layout/DashboardLayout'
@@ -13,6 +15,7 @@ export const Route = createFileRoute(
   '/(dashboard)/skills/$categoryId/$subCategoryId',
 )({
   component: RouteComponent,
+  loader: () => routeGaurd(allowedRoles.skills),
 })
 
 function RouteComponent() {

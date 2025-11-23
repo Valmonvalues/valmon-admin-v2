@@ -26,7 +26,6 @@ import { Route as dashboardMarketPlaceMarketPlaceIdIndexRouteImport } from './ro
 import { Route as dashboardSkillsCategoryIdSubCategoryIdRouteImport } from './routes/(dashboard)/skills/$categoryId/$subCategoryId'
 import { Route as dashboardMarketPlaceMarketPlaceIdChatRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/chat'
 import { Route as dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
-import { Route as dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
 
 const GetstartedRoute = GetstartedRouteImport.update({
   id: '/getstarted',
@@ -121,12 +120,6 @@ const dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute =
     path: '/marketPlace/$marketPlaceId/$marketPlaceId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute =
-  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport.update({
-    id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId',
-    path: '/marketPlace/$marketPlaceId/$marketPlaceChatId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -141,7 +134,6 @@ export interface FileRoutesByFullPath {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
-  '/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
   '/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
@@ -161,7 +153,6 @@ export interface FileRoutesByTo {
   '/summary': typeof dashboardSummaryIndexRoute
   '/users': typeof dashboardUsersIndexRoute
   '/wallet': typeof dashboardWalletIndexRoute
-  '/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
   '/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
@@ -182,7 +173,6 @@ export interface FileRoutesById {
   '/(dashboard)/summary/': typeof dashboardSummaryIndexRoute
   '/(dashboard)/users/': typeof dashboardUsersIndexRoute
   '/(dashboard)/wallet/': typeof dashboardWalletIndexRoute
-  '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId': typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
   '/(dashboard)/marketPlace/$marketPlaceId/chat': typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   '/(dashboard)/skills/$categoryId/$subCategoryId': typeof dashboardSkillsCategoryIdSubCategoryIdRoute
@@ -204,7 +194,6 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
-    | '/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/marketPlace/$marketPlaceId/$marketPlaceId'
     | '/marketPlace/$marketPlaceId/chat'
     | '/skills/$categoryId/$subCategoryId'
@@ -224,7 +213,6 @@ export interface FileRouteTypes {
     | '/summary'
     | '/users'
     | '/wallet'
-    | '/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/marketPlace/$marketPlaceId/$marketPlaceId'
     | '/marketPlace/$marketPlaceId/chat'
     | '/skills/$categoryId/$subCategoryId'
@@ -244,7 +232,6 @@ export interface FileRouteTypes {
     | '/(dashboard)/summary/'
     | '/(dashboard)/users/'
     | '/(dashboard)/wallet/'
-    | '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
     | '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId'
     | '/(dashboard)/marketPlace/$marketPlaceId/chat'
     | '/(dashboard)/skills/$categoryId/$subCategoryId'
@@ -265,7 +252,6 @@ export interface RootRouteChildren {
   dashboardSummaryIndexRoute: typeof dashboardSummaryIndexRoute
   dashboardUsersIndexRoute: typeof dashboardUsersIndexRoute
   dashboardWalletIndexRoute: typeof dashboardWalletIndexRoute
-  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute
   dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute
   dashboardMarketPlaceMarketPlaceIdChatRoute: typeof dashboardMarketPlaceMarketPlaceIdChatRoute
   dashboardSkillsCategoryIdSubCategoryIdRoute: typeof dashboardSkillsCategoryIdSubCategoryIdRoute
@@ -394,13 +380,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId': {
-      id: '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceChatId'
-      path: '/marketPlace/$marketPlaceId/$marketPlaceChatId'
-      fullPath: '/marketPlace/$marketPlaceId/$marketPlaceChatId'
-      preLoaderRoute: typeof dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -417,8 +396,6 @@ const rootRouteChildren: RootRouteChildren = {
   dashboardSummaryIndexRoute: dashboardSummaryIndexRoute,
   dashboardUsersIndexRoute: dashboardUsersIndexRoute,
   dashboardWalletIndexRoute: dashboardWalletIndexRoute,
-  dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute:
-    dashboardMarketPlaceMarketPlaceIdMarketPlaceChatIdRoute,
   dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute:
     dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute,
   dashboardMarketPlaceMarketPlaceIdChatRoute:

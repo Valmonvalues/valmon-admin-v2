@@ -12,9 +12,12 @@ import TabHeader from '@/components/TabHeader'
 import { SimpleGrid } from '@mantine/core'
 import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/resolution/')({
   component: Resolution,
+  loader: () => routeGaurd(allowedRoles.resolution),
 })
 
 function Resolution() {

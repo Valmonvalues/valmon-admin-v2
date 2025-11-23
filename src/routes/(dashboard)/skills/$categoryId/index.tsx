@@ -4,7 +4,9 @@ import BaseButton from '@/components/BaseButton'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import { routeGaurd } from '@/components/utils/routeGuard'
 import { useGlobalContext } from '@/contexts/GlobalContext'
+import { allowedRoles } from '@/data/roles'
 import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useHandleDelete } from '@/hook/useHandleDelete'
@@ -18,6 +20,7 @@ import { useState } from 'react'
 
 export const Route = createFileRoute('/(dashboard)/skills/$categoryId/')({
   component: RouteComponent,
+  loader: () => routeGaurd(allowedRoles.skills),
 })
 
 function RouteComponent() {

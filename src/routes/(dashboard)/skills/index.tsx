@@ -21,9 +21,12 @@ import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
+import { routeGaurd } from '@/components/utils/routeGuard'
+import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
+  loader: () => routeGaurd(allowedRoles.skills),
 })
 
 function Skills() {

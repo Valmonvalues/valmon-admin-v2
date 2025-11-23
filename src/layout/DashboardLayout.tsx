@@ -146,7 +146,11 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       <AppShell.Navbar px="md" py="xl" bg="var(--color-layout)">
         <AppShell.Section grow component={ScrollArea} scrollbarSize={1}>
           {navLinks
-            .filter((nav) => nav.allowedRoles.includes(me?.role || ''))
+            .filter(
+              (nav) =>
+                nav.allowedRoles.includes('all') ||
+                nav.allowedRoles.includes(me?.role || ''),
+            )
             .map((navlink, idx) => {
               return (
                 <Link
