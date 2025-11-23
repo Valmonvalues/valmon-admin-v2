@@ -13,6 +13,7 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { allowedRoles, roles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
+import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
@@ -38,8 +39,8 @@ function Account() {
     entityName: 'admin',
   })
 
-  console.log(managers)
-  const [search, setSearch] = useState('')
+  // console.log(managers)
+  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const [page] = useState(1)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof AccountManager
@@ -51,7 +52,14 @@ function Account() {
     direction: 'asc' | 'desc'
   }>({ key: 'id', direction: 'asc' })
 
-  const sortedManagers = useSortedData(managers, sortConfig)
+  const filteredManagers =
+    debouncedSearch.trim() === ''
+      ? managers
+      : managers.filter((man: any) =>
+          man.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+        )
+
+  const sortedManagers = useSortedData(filteredManagers, sortConfig)
 
   const handleSort = (key: keyof AccountManager) => {
     setSortConfig((prev) => ({
@@ -103,7 +111,7 @@ function Account() {
           })}
           isLoading={managersLoading}
           searchQuery={search}
-          onSearchChange={setSearch}
+          onSearchChange={handleSearch}
           sortConfig={managersSortConfig}
           onSort={handleSort}
           headerActions={
