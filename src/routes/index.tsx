@@ -27,7 +27,9 @@ function App() {
     setUserData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSignIn = () => {
+  const handleSignIn = (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+
     login.mutate(userData, {
       onSuccess: () => {
         navigate({ to: '/summary' })
@@ -42,52 +44,56 @@ function App() {
       },
     })
   }
+
   return (
     <div className="w-full min-h-screen bg-white flex items-center justify-center">
       <div className="w-full lg:w-1/2 flex justify-center items-center">
         <div className="w-1/2">
-          <div className="mb-9">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
-          </div>
+          <form onSubmit={handleSignIn}>
+            <div className="mb-9">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
+            </div>
 
-          <TextInput
-            label="Email"
-            name="email"
-            type="email"
-            placeholder="Johndoe@mail.com"
-            value={userData.email}
-            onChange={handleChange}
-            className="mb-6"
-            required
-            size="md"
-            radius={'md'}
-          />
+            <TextInput
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="Johndoe@mail.com"
+              value={userData.email}
+              onChange={handleChange}
+              className="mb-6"
+              required
+              size="md"
+              radius={'md'}
+            />
 
-          <PasswordInput
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            value={userData.password}
-            onChange={handleChange}
-            className="mb-6"
-            required
-            size="md"
-            radius={'md'}
-          />
+            <PasswordInput
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              value={userData.password}
+              onChange={handleChange}
+              className="mb-6"
+              required
+              size="md"
+              radius={'md'}
+            />
 
-          <Button
-            loading={login.isLoading}
-            loaderProps={{ type: 'bars', color: 'white', size: 'sm' }}
-            onClick={handleSignIn}
-            className="my-5 background"
-            fullWidth
-            size="md"
-            // color="#8B6914"
-            radius={'md'}
-          >
-            Sign In
-          </Button>
+            <Button
+              type="submit"
+              loading={login.isLoading}
+              loaderProps={{ type: 'bars', color: 'white', size: 'sm' }}
+              onClick={handleSignIn}
+              className="my-5 background"
+              fullWidth
+              size="md"
+              // color="#8B6914"
+              radius={'md'}
+            >
+              Sign In
+            </Button>
+          </form>
         </div>
       </div>
     </div>
