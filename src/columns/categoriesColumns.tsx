@@ -38,7 +38,11 @@ export const categoriesColumns = ({
     key: 'name',
     header: 'Name',
     sortable: true,
-    render: (category): ReactNode => <Text fw={500}>{category.name}</Text>,
+    render: (category): ReactNode => (
+      <Text className="capitalize" fw={500}>
+        {category.name}
+      </Text>
+    ),
   },
   {
     key: 'sub_categories_count',

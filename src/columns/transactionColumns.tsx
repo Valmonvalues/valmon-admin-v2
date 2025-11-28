@@ -1,20 +1,17 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Badge, Menu } from '@mantine/core'
-import { IconDotsVertical, IconEye } from '@tabler/icons-react'
-import type { Id } from '@/types/global.type'
+import { Badge } from '@mantine/core'
+// import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
 import { formatDate } from '@/components/utils/helper'
 import { formatNumber } from '@/utils/formatters'
 
-interface TransactionColumnHandlers {
-  handleView: (id: Id) => void
-  handleDeleteClick: (id: Id) => void
-}
+// interface TransactionColumnHandlers {
+//   handleView: (id: Id) => void
+//   handleDeleteClick: (id: Id) => void
+// }
 
-export const transactionColumns = ({
-  handleView,
-}: TransactionColumnHandlers): ColumnDef<Transaction>[] => [
+export const transactionColumns = (): ColumnDef<Transaction>[] => [
   {
     key: 'sn',
     header: 'SN',
@@ -25,12 +22,16 @@ export const transactionColumns = ({
     key: 'employer_name',
     header: 'Employer',
     sortable: true,
-    render: (txn): ReactNode => txn.employer_name,
+    render: (txn): ReactNode => (
+      <p className="capitalize">{txn.employer_name}</p>
+    ),
   },
   {
     key: 'employee_name',
     header: 'Employee',
-    render: (txn): ReactNode => txn.employee_name,
+    render: (txn): ReactNode => (
+      <p className="capitalize">{txn.employee_name}</p>
+    ),
   },
   {
     key: 'category',
@@ -84,33 +85,33 @@ export const transactionColumns = ({
       </Badge>
     ),
   },
-  {
-    key: 'actions',
-    header: 'Actions',
-    sortable: false,
-    render: (txn): ReactNode => (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="subtle" color="gray">
-            <IconDotsVertical size={18} stroke={2} />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            leftSection={<IconEye size={16} />}
-            onClick={() => handleView(txn.id)}
-          >
-            View
-          </Menu.Item>
-          {/* <Menu.Item
-            color="red"
-            leftSection={<IconTrash size={16} />}
-            onClick={() => handleDeleteClick(txn.id)}
-          >
-            Delete
-          </Menu.Item> */}
-        </Menu.Dropdown>
-      </Menu>
-    ),
-  },
+  // {
+  //   key: 'actions',
+  //   header: 'Actions',
+  //   sortable: false,
+  //   render: (txn): ReactNode => (
+  //     <Menu>
+  //       <Menu.Target>
+  //         <ActionIcon variant="subtle" color="gray">
+  //           <IconDotsVertical size={18} stroke={2} />
+  //         </ActionIcon>
+  //       </Menu.Target>
+  //       <Menu.Dropdown>
+  //         <Menu.Item
+  //           leftSection={<IconEye size={16} />}
+  //           onClick={() => handleView(txn.id)}
+  //         >
+  //           View
+  //         </Menu.Item>
+  //         <Menu.Item
+  //           color="red"
+  //           leftSection={<IconTrash size={16} />}
+  //           onClick={() => handleDeleteClick(txn.id)}
+  //         >
+  //           Delete
+  //         </Menu.Item>
+  //       </Menu.Dropdown>
+  //     </Menu>
+  //   ),
+  // },
 ]

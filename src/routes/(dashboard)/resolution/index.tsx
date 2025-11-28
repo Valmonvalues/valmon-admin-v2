@@ -14,6 +14,7 @@ import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/resolution/')({
   component: Resolution,
@@ -43,7 +44,10 @@ function Resolution() {
     direction: 'asc' | 'desc'
   }>({ key: 'employer', direction: 'asc' })
 
-  const sortedTServices = useSortedData(services, sortConfig)
+  const sortedTServices = useSortedData(
+    capitalizeKey(services, 'employer'),
+    sortConfig,
+  )
   const [page] = useState(1)
 
   const handleSort = (key: keyof Ticket) => {

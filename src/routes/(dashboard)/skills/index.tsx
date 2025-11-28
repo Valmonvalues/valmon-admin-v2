@@ -23,6 +23,7 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -89,7 +90,10 @@ function Skills() {
           t.employer_name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedTransaction = useSortedData(filteredTransactions, sortConfig)
+  const sortedTransaction = useSortedData(
+    capitalizeKey(filteredTransactions, 'employer_name'),
+    sortConfig,
+  )
 
   const filteredCategories =
     debouncedSearch.trim() === ''
@@ -98,7 +102,10 @@ function Skills() {
           c.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedCategories = useSortedData(filteredCategories, sortConfigParent)
+  const sortedCategories = useSortedData(
+    capitalizeKey(filteredCategories, 'name'),
+    sortConfigParent,
+  )
 
   useEffect(() => {
     const leftOffValue = localStorage.getItem('leftOffSkill')
@@ -186,11 +193,13 @@ function Skills() {
                 title="Transactions"
                 totalCount={transaction.length}
                 data={sortedTransaction}
-                columns={transactionColumns({
-                  // handleView,
-                  handleView: (id) => handleView(id, 'skill transactions'),
-                  handleDeleteClick,
-                })}
+                columns={transactionColumns()
+                //   {
+                //   // handleView,
+                //   handleView: (id) => handleView(id, 'skill transactions'),
+                //   handleDeleteClick,
+                // }
+                }
                 isLoading={skillDataLoader}
                 searchQuery={search}
                 onSearchChange={handleSearch}
@@ -217,7 +226,7 @@ function Skills() {
             <ReusableTable
               title="Parent Category List"
               totalCount={categoriesData?.length}
-              data={sortedCategories}
+              data={sortedCategories as any}
               columns={categoriesColumns({
                 // handleView,
                 handleView: (id) => handleView(id, 'skill parent'),

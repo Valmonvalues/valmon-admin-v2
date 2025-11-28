@@ -52,9 +52,9 @@ function MarketPlaceProduct() {
   const seller = listing?.user
   // const profile = seller?.profile
 
-  const handleView = () => {
-    navigate({ to: `/marketPlace/${marketPlaceId}/chat` })
-  }
+  // const handleView = () => {
+  //   navigate({ to: `/marketPlace/${marketPlaceId}/chat` })
+  // }
 
   const handleViewProfile = () => {
     if (seller?.id) {
@@ -184,9 +184,9 @@ function MarketPlaceProduct() {
                   Profile
                 </Button>
               </div>
-              <Button color="dark" onClick={handleView}>
+              {/* <Button color="dark" onClick={handleView}>
                 View Chat
-              </Button>
+              </Button> */}
             </Card>
           </div>
         </div>

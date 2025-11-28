@@ -62,7 +62,9 @@ export const listingColumns = ({
     {
       key: 'name',
       header: 'Product Name',
-      render: (listing): ReactNode => listing.name,
+      render: (listing): ReactNode => (
+        <p className="capitalize">{listing.name}</p>
+      ),
     },
     {
       key: 'condition',

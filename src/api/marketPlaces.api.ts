@@ -76,5 +76,5 @@ export const marketPlaces = {
     await apiClient.delete(`/listings/closed/${id}`),
 
   deleteCategories: async (id: Id) =>
-    await apiClient.delete(`/categories/${id}`),
+    await apiClient.delete(`/marketplace/listing-category/${id}`),
 }

@@ -50,7 +50,9 @@ export const accountManagerColumns = ({
     // sortable: false,
     render: (manager): ReactNode => (
       <div>
-        <p className="text-sm font-medium text-gray-900">{manager.name}</p>
+        <p className="text-sm font-medium text-gray-900 capitalize">
+          {manager.name}
+        </p>
         <p className="text-xs text-gray-500">{manager.email}</p>
       </div>
     ),

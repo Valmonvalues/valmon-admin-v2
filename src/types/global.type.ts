@@ -8,8 +8,9 @@ export interface Pagination {
 }
 
 export interface Params {
-  page: number
-  perpage: number
+  page?: number
+  perpage?: number
+  period?: string
 }
 
 export type Id = number | string

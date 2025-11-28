@@ -14,6 +14,7 @@ import { allowedRoles, roles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
+import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
@@ -59,7 +60,10 @@ function Account() {
           man.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedManagers = useSortedData(filteredManagers, sortConfig)
+  const sortedManagers = useSortedData(
+    capitalizeKey(filteredManagers, 'name'),
+    sortConfig,
+  )
 
   const handleSort = (key: keyof AccountManager) => {
     setSortConfig((prev) => ({

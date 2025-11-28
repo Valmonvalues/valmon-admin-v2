@@ -36,7 +36,11 @@ export const userColumns = ({
       />
     ),
   },
-  { key: 'name', header: 'Name', render: (user): ReactNode => user.name },
+  {
+    key: 'name',
+    header: 'Name',
+    render: (user): ReactNode => <p className="capitalize">{user.name}</p>,
+  },
   { key: 'email', header: 'Email', render: (user): ReactNode => user.email },
   {
     key: 'listings_count',
@@ -53,7 +57,12 @@ export const userColumns = ({
     header: 'Times Reported',
     render: (user): ReactNode => user.reported_count,
   },
-  { key: 'type', header: 'Types', render: (user): ReactNode => user.type },
+  {
+    key: 'type',
+    header: 'Types',
+    render: (user): ReactNode =>
+      user.type === 'Normal User' ? 'Client' : user.type,
+  },
   {
     key: 'last_seen_at',
     header: 'Last Seen',

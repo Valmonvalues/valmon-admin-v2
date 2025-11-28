@@ -10,7 +10,6 @@ import {
 } from '@mantine/core'
 import { IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import { type Id } from '@/types/global.type'
-import FilterButton from '../filter/FilterButton'
 
 export type SortConfig<T> = {
   key: keyof T
@@ -99,7 +98,7 @@ export function ReusableTable<T extends { id: Id }>({
             </div>
           )}
 
-          <FilterButton onApplyFilters={(filters) => console.log(filters)} />
+          {/* <FilterButton onApplyFilters={(filters) => console.log(filters)} /> */}
 
           {headerActions && (
             <div className="flex-shrink-0">{headerActions}</div>

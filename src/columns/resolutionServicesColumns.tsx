@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Menu, Badge } from '@mantine/core'
+import { ActionIcon, Menu, Badge, Text } from '@mantine/core'
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Ticket } from '@/types/resolution.types'
@@ -26,7 +26,9 @@ export const resolutionServicesColumns = ({
   {
     key: 'employer',
     header: 'Employer',
-    render: (ticket): ReactNode => ticket.employer,
+    render: (ticket): ReactNode => (
+      <Text className="capitalize">{ticket.employer}</Text>
+    ),
   },
   {
     key: 'provider',

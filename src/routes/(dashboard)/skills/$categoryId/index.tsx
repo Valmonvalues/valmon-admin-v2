@@ -4,6 +4,7 @@ import BaseButton from '@/components/BaseButton'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import { capitalizeKey } from '@/components/utils/helper'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { allowedRoles } from '@/data/roles'
@@ -62,7 +63,10 @@ function RouteComponent() {
           category.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedParentCategory = useSortedData(filteredParentCategory, sortConfig)
+  const sortedParentCategory = useSortedData(
+    capitalizeKey(filteredParentCategory, 'name'),
+    sortConfig,
+  )
 
   const handleSort = (key: keyof SubCategory) => {
     setSortConfig((prev) => ({

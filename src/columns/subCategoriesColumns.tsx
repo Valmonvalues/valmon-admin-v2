@@ -32,7 +32,9 @@ export const subCategoriesColumns = ({
     header: 'Subcategory Name',
     sortable: true,
     render: (subCategory): ReactNode => (
-      <Text fw={500}>{subCategory.name}</Text>
+      <Text className="capitalize" fw={500}>
+        {subCategory.name}
+      </Text>
     ),
   },
   {

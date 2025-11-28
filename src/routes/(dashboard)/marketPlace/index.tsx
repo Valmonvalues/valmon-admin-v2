@@ -24,6 +24,7 @@ import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
@@ -137,7 +138,10 @@ function MarketPlace() {
       : allOpenListing.filter((aol) =>
           aol.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
-  const sortedListings = useSortedData(filteredOpenListings, sortConfig)
+  const sortedListings = useSortedData(
+    capitalizeKey(filteredOpenListings, 'name'),
+    sortConfig,
+  )
 
   const filteredApprovalListings =
     debouncedSearch.trim() === ''
@@ -145,7 +149,10 @@ function MarketPlace() {
       : allApprovalListing.filter((apl) =>
           apl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
-  const sortedApprovals = useSortedData(filteredApprovalListings, sortConfig)
+  const sortedApprovals = useSortedData(
+    capitalizeKey(filteredApprovalListings, 'name'),
+    sortConfig,
+  )
 
   const filteredCLosedListings =
     debouncedSearch.trim() === ''
@@ -153,7 +160,10 @@ function MarketPlace() {
       : allCLosedListing.filter((acl) =>
           acl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
-  const sortedClosed = useSortedData(filteredCLosedListings, sortConfig)
+  const sortedClosed = useSortedData(
+    capitalizeKey(filteredCLosedListings, 'name'),
+    sortConfig,
+  )
 
   const filteredCategoriesListings =
     debouncedSearch.trim() === ''
@@ -162,7 +172,7 @@ function MarketPlace() {
           acll.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
   const sortedCategories = useSortedData(
-    filteredCategoriesListings,
+    capitalizeKey(filteredCategoriesListings, 'name'),
     categorySortConfig,
   )
 

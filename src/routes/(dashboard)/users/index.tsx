@@ -18,6 +18,7 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import profile from '@/assets/icons/cardprofile.svg'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
@@ -50,7 +51,10 @@ function Users() {
           user.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedUsers = useSortedData(filteredUsers, sortConfig)
+  const sortedUsers = useSortedData(
+    capitalizeKey(filteredUsers, 'name'),
+    sortConfig,
+  )
 
   const handleSort = (key: keyof UserListType) => {
     setSortConfig((prev) => ({

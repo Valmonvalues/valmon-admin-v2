@@ -1,6 +1,7 @@
 import { customersColumns } from '@/columns/customersColumns'
 import { BackButton } from '@/components/BackButton'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import { capitalizeKey } from '@/components/utils/helper'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import useSortedData from '@/hook/sortData'
@@ -39,7 +40,10 @@ function RouteComponent() {
           customer.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
 
-  const sortedCustomers = useSortedData(filteredCustomers, sortConfig)
+  const sortedCustomers = useSortedData(
+    capitalizeKey(filteredCustomers, 'name'),
+    sortConfig,
+  )
 
   const handleSort = (key: keyof Customers) => {
     setSortConfig((prev) => ({

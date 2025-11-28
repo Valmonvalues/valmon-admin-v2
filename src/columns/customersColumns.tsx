@@ -40,10 +40,11 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
     header: 'User',
     sortable: true,
     render: (customer): ReactNode => {
-      // console.log(customer)
       return (
         <Stack gap={0} style={{ lineHeight: 1.2 }}>
-          <Text fw={500}>{customer.name}</Text>
+          <Text className="capitalize" fw={500}>
+            {customer.name}
+          </Text>
           <Text size="sm" c="dimmed">
             {customer.email}
           </Text>
