@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Text, Badge, Stack, Button, Group } from '@mantine/core'
+import { Text, Button, Group } from '@mantine/core'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { CategoryRequest } from '@/types/categoryRequest.types'
 
