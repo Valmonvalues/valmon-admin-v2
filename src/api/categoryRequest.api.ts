@@ -1,5 +1,11 @@
-import type { Params } from '@/types/global.type'
+import type { Id, Params } from '@/types/global.type'
 import { apiClient } from './apiClient'
+
+interface ActionPayload {
+  request_ids: Id[]
+  action: 'approve' | 'reject'
+  reason?: string // Required if action is 'reject'
+}
 
 export const categoryRequestApi = {
   listCategoryRequest: async (params?: Params) => {
@@ -8,16 +14,15 @@ export const categoryRequestApi = {
   },
 
   //   category-requests/action
-  approveCategoryRequest: async (): Promise<{ message: string }> => {
-    const response = await apiClient.put(`/category-requests/approve`)
-    return response.data
-  },
-  denyCategoryRequest: async (): Promise<{ message: string }> => {
-    const response = await apiClient.put(`/category-requests/deny`)
+  actionCategoryRequest: async (
+    payload: ActionPayload,
+  ): Promise<{ message: string }> => {
+    const response = await apiClient.post(`/category-requests/action`, payload)
     return response.data
   },
 }
 
+// API DOCUMENTATION:
 // POST —  /request-service
 // Sample :
 // {

@@ -28,7 +28,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
   const { data: me } = getMe()
 
-  console.log(me)
+  // console.log(me)
   const { pathname } = useLocation()
 
   const getRouteName = () => {

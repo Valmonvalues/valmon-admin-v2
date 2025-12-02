@@ -25,6 +25,7 @@ export interface ColumnDef<T> {
 
 interface ReusableTableProps<T> {
   title: string
+  subtitle?: string
   totalCount?: number
   data: T[]
   columns: ColumnDef<T>[]
@@ -38,6 +39,7 @@ interface ReusableTableProps<T> {
 
 export function ReusableTable<T extends { id: Id }>({
   title,
+  subtitle,
   totalCount,
   data,
   columns,
@@ -49,7 +51,6 @@ export function ReusableTable<T extends { id: Id }>({
   headerActions,
 }: ReusableTableProps<T>) {
   const renderSortIcon = (columnKey: string, sortable?: boolean) => {
-    // if (!sortable) return null
     if (sortable === false) return null
 
     if (sortConfig.key !== columnKey) {
@@ -68,24 +69,15 @@ export function ReusableTable<T extends { id: Id }>({
           <Text fw={600}>
             {title}{' '}
             <Text span c="yellow" ml="sm">
-              {totalCount} Registered
-            </Text>
+              {totalCount} Registered{' '}
+            </Text>{' '}
           </Text>
           <Text size="sm" c="dimmed">
-            List Of All {title} on The Platform
+            {subtitle || `List Of All ${title} on The Platform`}
           </Text>
         </div>
 
         <div className="flex gap-3 items-center">
-          {/* <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div> */}
           {searchQuery !== undefined && onSearchChange && (
             <div className="flex-1">
               <input
@@ -97,8 +89,6 @@ export function ReusableTable<T extends { id: Id }>({
               />
             </div>
           )}
-
-          {/* <FilterButton onApplyFilters={(filters) => console.log(filters)} /> */}
 
           {headerActions && (
             <div className="flex-shrink-0">{headerActions}</div>
@@ -120,11 +110,15 @@ export function ReusableTable<T extends { id: Id }>({
                     key={String(column.key)}
                     className="whitespace-nowrap cursor-pointer"
                     onClick={() => {
-                      // if (!column.sortable) return
-                      onSort(column.key)
+                      if (column.sortable !== false) {
+                        onSort(column.key)
+                      }
+                    }}
+                    style={{
+                      cursor: column.sortable === false ? 'default' : 'pointer',
                     }}
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-1">
                       <div>{column.header}</div>
                       {renderSortIcon(String(column.key), column.sortable)}
                     </div>
@@ -138,7 +132,7 @@ export function ReusableTable<T extends { id: Id }>({
                   <Table.Td colSpan={columns.length}>
                     <div className="flex justify-center items-center h-40">
                       <Text ta="center" c="dimmed">
-                        Listing not found
+                        No requests found
                       </Text>
                     </div>
                   </Table.Td>
