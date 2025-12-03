@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { IconLogout } from '@tabler/icons-react'
 import { storage } from '@/constant/config'
 import { useUser } from '@/services/user.service'
+import Notifications from './Notifications'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -94,26 +95,32 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
                   </button>
 
                   {notificationOpen && (
-                    <div className="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
-                      <div className="px-4 py-3 border-b font-semibold text-gray-700 bg-gray-50">
-                        Unread Notifications
-                      </div>
-                      <ul className="divide-y max-h-72 overflow-y-auto">
-                        {unreadNotifications.map((note) => (
-                          <li
-                            key={note.id}
-                            className="px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 transition"
-                          >
-                            {note.message}
-                          </li>
-                        ))}
-                        {unreadNotifications.length === 0 && (
-                          <li className="px-4 py-5 text-center text-gray-500 text-sm">
-                            No unread notifications
-                          </li>
-                        )}
-                      </ul>
-                    </div>
+                    // <div className="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
+                    //   <div className="px-4 py-3 border-b font-semibold text-gray-700 bg-gray-50">
+                    //     <Group justify="space-between">
+                    //       <Text fw={700}>Notifications</Text>
+                    //       <Text fw={700} c="red">
+                    //         Clear
+                    //       </Text>
+                    //     </Group>
+                    //   </div>
+                    //   <ul className="divide-y max-h-72 overflow-y-auto">
+                    //     {unreadNotifications.map((note) => (
+                    //       <li
+                    //         key={note.id}
+                    //         className="px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 transition"
+                    //       >
+                    //         {note.message}
+                    //       </li>
+                    //     ))}
+                    //     {unreadNotifications.length === 0 && (
+                    //       <li className="px-4 py-5 text-center text-gray-500 text-sm">
+                    //         No unread notifications
+                    //       </li>
+                    //     )}
+                    //   </ul>
+                    // </div>
+                    <Notifications />
                   )}
                 </div>
 
