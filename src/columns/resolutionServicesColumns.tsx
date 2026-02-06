@@ -9,13 +9,13 @@ import { perPage } from '@/constant/config'
 interface ResolutionColumnHandlers {
   page: number
   handleView: (id: number) => void
-  handleDeleteClick: (id: number) => void
+  // handleDeleteClick?: (id: number) => void
 }
 
 export const resolutionServicesColumns = ({
   page,
   handleView,
-  handleDeleteClick,
+  // handleDeleteClick,
 }: ResolutionColumnHandlers): ColumnDef<Ticket>[] => [
   {
     key: 'sn',
@@ -107,13 +107,13 @@ export const resolutionServicesColumns = ({
           >
             View
           </Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
             onClick={() => handleDeleteClick(ticket.id)}
           >
             Delete
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Dropdown>
       </Menu>
     ),

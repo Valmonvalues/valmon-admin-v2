@@ -1,42 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Avatar, Badge, Card, Group, Image, Text } from '@mantine/core'
-import DashboardLayout from '@/layout/DashboardLayout'
-// import { useMarketPlaces } from '@/services/marketPlaces.service'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import DashboardLayout from '@/layout/DashboardLayout'
+import { useResolution } from '@/services/resolution.service'
+import { Avatar, Badge, Button, Card, Group, Image, Text } from '@mantine/core'
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute(
-  '/(dashboard)/marketPlace/$marketPlaceId/chat',
-)({
+export const Route = createFileRoute('/(dashboard)/resolution/$ticketId')({
   component: ChatView,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () => routeGaurd(allowedRoles.resolution),
 })
 
-type Message = {
-  id: number
-  text: string
-  time: string
-  sender: 'buyer' | 'seller'
-  edited?: boolean
-  replies?: number
-  emoji?: string
-}
-
-type ListingInfo = {
-  title: string
-  price: number
-  image: string
-  proofImage: string
-}
-
 function ChatView() {
-  // const { marketPlaceId } = Route.useParams()
-  // const { chat } = useMarketPlaces()
-  // console.log('marketPlaceId:', marketPlaceId)
+  const { ticketId } = Route.useParams()
+  const { ticketsById, listMessages } = useResolution()
+  const { data } = ticketsById(ticketId)
+  const { data: message } = listMessages(ticketId)
 
-  // const { data } = chat(marketPlaceId)
-  // console.log(data)
-  const messages: Message[] = [
+  console.log('ticketId:', ticketId)
+  console.log('ticketsById:', data)
+  console.log('listMessages:', message)
+
+  const messages = [
     {
       id: 1,
       text: 'Lorem ipsum dolor sit amet consectetur. Tortor a eget egestas vel nibh enim vestibulum nibh molestie.',
@@ -60,7 +44,7 @@ function ChatView() {
     },
   ]
 
-  const listing: ListingInfo = {
+  const listing = {
     title: 'Mercedes Benz AMG',
     price: 195799,
     image:
@@ -68,9 +52,11 @@ function ChatView() {
     proofImage:
       'https://images.unsplash.com/photo-1613211739580-df0e8c7a0b1c?auto=format&fit=crop&w=800&q=60',
   }
+
   return (
     <DashboardLayout>
-      <div className="flex flex-col lg:flex-row gap-6 p-6 bg-gray-100 min-h-screen">
+      Hello "/(dashboard)/resolution/$ticketId"!
+      <div className="flex flex-col lg:flex-row gap-6 p-6 bg-gray-100">
         {/* LEFT CHAT SECTION */}
         <div className="flex-1 bg-white rounded-xl p-6 shadow-sm">
           <div className="flex justify-between mb-4">
@@ -88,15 +74,6 @@ function ChatView() {
               <Badge color="gray" variant="light">
                 Buyer
               </Badge>
-            </Group>
-            <Group>
-              <Badge color="gray" variant="light">
-                Seller
-              </Badge>
-              <Avatar
-                src="https://randomuser.me/api/portraits/men/45.jpg"
-                radius="xl"
-              />
             </Group>
           </div>
 
@@ -151,31 +128,26 @@ function ChatView() {
         {/* RIGHT DETAILS SECTION */}
         <div className="w-full lg:w-[320px] flex flex-col gap-5">
           <Card radius="md" shadow="sm" className="bg-white">
-            <Image src={listing.image} radius="md" height={160} fit="cover" />
             <Text fw={600} mt="md">
-              {listing.title}
+              Service Cost
             </Text>
-            <div className="mt-3">
-              <Text fw={600}>Listing Cost</Text>
-              <Text
-                size="xl"
-                fw={700}
-                className="bg-gray-100 rounded-md px-3 py-1 mt-1 text-gray-800"
-              >
-                NGN {listing.price.toLocaleString()}
-              </Text>
-            </div>
+            <Button>NGN 450.00</Button>
+            <Button>NGN 450.00</Button>
+            <Button>NGN 450.00</Button>
           </Card>
 
           <Card radius="md" shadow="sm" className="bg-white">
             <Text fw={600} mb="xs">
-              Proof Of Delivery
+              Reasons
             </Text>
-            <Text size="sm" c="blue">
-              Seller Proof Of Delivery
+            <Text size="sm" c="">
+              {data?.reason}
+            </Text>
+            <Text size="sm" c="">
+              {data?.description}
             </Text>
             <Image
-              src={listing.proofImage}
+              src={data?.image_url}
               radius="md"
               height={140}
               fit="cover"

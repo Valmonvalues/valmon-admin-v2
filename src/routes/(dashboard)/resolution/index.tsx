@@ -2,12 +2,12 @@ import { useState } from 'react'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import { useResolution } from '@/services/resolution.service'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { Ticket } from '@/types/resolution.types'
 import useSortedData from '@/hook/sortData'
 import type { Id } from '@/types/global.type'
 import { resolutionServicesColumns } from '@/columns/resolutionServicesColumns'
-import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
+// import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import TabHeader from '@/components/TabHeader'
 import { SimpleGrid } from '@mantine/core'
 import StatCard from '@/components/StatCard'
@@ -22,6 +22,7 @@ export const Route = createFileRoute('/(dashboard)/resolution/')({
 })
 
 function Resolution() {
+  const navigate = useNavigate()
   const { listingServices, listingMarketPlace } = useResolution()
   const { data: serviceData, isLoading: servicesLoading } = listingServices()
   const { data: marketplaceData, isLoading: marketplaceLoading } =
@@ -36,9 +37,9 @@ function Resolution() {
   console.log(marketplaceData)
 
   const [search, setSearch] = useState('')
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('services')
-  const [selectedService, setSelectedService] = useState<null | Id>(null)
+  // const [selectedService, setSelectedService] = useState<null | Id>(null)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Ticket
     direction: 'asc' | 'desc'
@@ -57,36 +58,36 @@ function Resolution() {
     }))
   }
 
-  const handleView = (transactionId: Id) => {
-    // navigate({ to: `/users/${transactionId}` })
-    console.log(transactionId)
+  const handleView = (id: Id) => {
+    navigate({ to: `/resolution/${id}` })
+    console.log(id)
   }
 
-  const handleDeleteClick = (transactionId: Id) => {
-    console.log(transactionId)
+  // const handleDeleteClick = (transactionId: Id) => {
+  //   console.log(transactionId)
 
-    setSelectedService(transactionId)
-    setDeleteModalOpen(true)
-  }
+  //   setSelectedService(transactionId)
+  //   setDeleteModalOpen(true)
+  // }
 
-  const handleConfirmDelete = () => {
-    // delete.mutate(selectedService as Id, {
-    //   onSuccess: () => {
-    //     setSelectedService(null)
-    //     setDeleteModalOpen(false)
-    //   },
-    //   onError: (error) => {
-    //     console.error('Error deleting user:', error)
-    //     notifications.show({
-    //       title: 'Error',
-    //       message: 'Failed to delete user. Please try again.',
-    //       color: 'red',
-    //     })
-    //   },
-    // })
-    console.log(selectedService)
-    console.log(marketplaceLoading)
-  }
+  // const handleConfirmDelete = () => {
+  //   // delete.mutate(selectedService as Id, {
+  //   //   onSuccess: () => {
+  //   //     setSelectedService(null)
+  //   //     setDeleteModalOpen(false)
+  //   //   },
+  //   //   onError: (error) => {
+  //   //     console.error('Error deleting user:', error)
+  //   //     notifications.show({
+  //   //       title: 'Error',
+  //   //       message: 'Failed to delete user. Please try again.',
+  //   //       color: 'red',
+  //   //     })
+  //   //   },
+  //   // })
+  //   console.log(selectedService)
+  //   console.log(marketplaceLoading)
+  // }
 
   return (
     <DashboardLayout>
@@ -140,7 +141,7 @@ function Resolution() {
                 columns={resolutionServicesColumns({
                   page,
                   handleView,
-                  handleDeleteClick,
+                  // handleDeleteClick,
                 })}
                 isLoading={servicesLoading}
                 searchQuery={search}
@@ -150,14 +151,14 @@ function Resolution() {
               />
             </div>
 
-            <ConfirmDeleteModal
+            {/* <ConfirmDeleteModal
               opened={deleteModalOpen}
               onCancel={() => setDeleteModalOpen(false)}
               onConfirm={handleConfirmDelete}
               title="Delete resolution"
               message="Are you sure you want to delete this service? This action cannot be undone."
               // loading={deleteClosed.isPending}
-            />
+            /> */}
           </div>
         </>
       )}

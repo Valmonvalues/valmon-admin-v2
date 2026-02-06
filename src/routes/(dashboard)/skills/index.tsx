@@ -24,6 +24,7 @@ import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import { capitalizeKey } from '@/components/utils/helper'
+import TopCategoriesStat from '@/components/TopCategoriesStat'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -57,6 +58,7 @@ function Skills() {
   const { data: skillsData, isLoading: skillDataLoader } = listSkills()
   const { data: categoriesData } = listCategories()
   const transaction = skillsData?.all_transactions || []
+  const topCategories = skillsData?.top_categories || []
   const categories = categoriesData || []
 
   const [sortConfig, setSortConfig] = useState<{
@@ -128,11 +130,8 @@ function Skills() {
       formData.append('description', categoryData.description)
       // formData.append('email', categoryData.email)
 
-      console.log('category: ', categoryData)
-
       if (categoryData.image instanceof File) {
         formData.append('category_image', categoryData.image)
-        console.log(categoryData.image)
       }
 
       await addCategory.mutateAsync(formData, {
@@ -179,12 +178,10 @@ function Skills() {
               color="bg-dark-gold"
               image={cardwhite}
             />
-            <StatCard
-              title="Top Categories"
-              // value={formatNumber(skillsData?.valmon_earning)}
-              // color="bg-green-100"
-              // image={earningImage}
-            />
+
+            <StatCard title="Top Categories">
+              <TopCategoriesStat categories={topCategories} />
+            </StatCard>
           </div>
 
           <div className="">
@@ -193,12 +190,13 @@ function Skills() {
                 title="Transactions"
                 totalCount={transaction.length}
                 data={sortedTransaction}
-                columns={transactionColumns()
-                //   {
-                //   // handleView,
-                //   handleView: (id) => handleView(id, 'skill transactions'),
-                //   handleDeleteClick,
-                // }
+                columns={
+                  transactionColumns()
+                  //   {
+                  //   // handleView,
+                  //   handleView: (id) => handleView(id, 'skill transactions'),
+                  //   handleDeleteClick,
+                  // }
                 }
                 isLoading={skillDataLoader}
                 searchQuery={search}

@@ -21,6 +21,7 @@ import { Route as dashboardMarketPlaceIndexRouteImport } from './routes/(dashboa
 import { Route as dashboardCategoryRequestIndexRouteImport } from './routes/(dashboard)/categoryRequest/index'
 import { Route as dashboardAccountIndexRouteImport } from './routes/(dashboard)/account/index'
 import { Route as dashboardUsersUserIdRouteImport } from './routes/(dashboard)/users/$userId'
+import { Route as dashboardResolutionTicketIdRouteImport } from './routes/(dashboard)/resolution/$ticketId'
 import { Route as dashboardSkillsCategoryIdIndexRouteImport } from './routes/(dashboard)/skills/$categoryId/index'
 import { Route as dashboardMarketPlaceMarketPlaceIdIndexRouteImport } from './routes/(dashboard)/marketPlace/$marketPlaceId/index'
 import { Route as dashboardSkillsCategoryIdSubCategoryIdRouteImport } from './routes/(dashboard)/skills/$categoryId/$subCategoryId'
@@ -90,6 +91,12 @@ const dashboardUsersUserIdRoute = dashboardUsersUserIdRouteImport.update({
   path: '/users/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardResolutionTicketIdRoute =
+  dashboardResolutionTicketIdRouteImport.update({
+    id: '/(dashboard)/resolution/$ticketId',
+    path: '/resolution/$ticketId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const dashboardSkillsCategoryIdIndexRoute =
   dashboardSkillsCategoryIdIndexRouteImport.update({
     id: '/(dashboard)/skills/$categoryId/',
@@ -124,6 +131,7 @@ const dashboardMarketPlaceMarketPlaceIdMarketPlaceIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
+  '/resolution/$ticketId': typeof dashboardResolutionTicketIdRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/categoryRequest': typeof dashboardCategoryRequestIndexRoute
@@ -143,6 +151,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
+  '/resolution/$ticketId': typeof dashboardResolutionTicketIdRoute
   '/users/$userId': typeof dashboardUsersUserIdRoute
   '/account': typeof dashboardAccountIndexRoute
   '/categoryRequest': typeof dashboardCategoryRequestIndexRoute
@@ -163,6 +172,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/getstarted': typeof GetstartedRoute
+  '/(dashboard)/resolution/$ticketId': typeof dashboardResolutionTicketIdRoute
   '/(dashboard)/users/$userId': typeof dashboardUsersUserIdRoute
   '/(dashboard)/account/': typeof dashboardAccountIndexRoute
   '/(dashboard)/categoryRequest/': typeof dashboardCategoryRequestIndexRoute
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/getstarted'
+    | '/resolution/$ticketId'
     | '/users/$userId'
     | '/account'
     | '/categoryRequest'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/getstarted'
+    | '/resolution/$ticketId'
     | '/users/$userId'
     | '/account'
     | '/categoryRequest'
@@ -222,6 +234,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/getstarted'
+    | '/(dashboard)/resolution/$ticketId'
     | '/(dashboard)/users/$userId'
     | '/(dashboard)/account/'
     | '/(dashboard)/categoryRequest/'
@@ -242,6 +255,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GetstartedRoute: typeof GetstartedRoute
+  dashboardResolutionTicketIdRoute: typeof dashboardResolutionTicketIdRoute
   dashboardUsersUserIdRoute: typeof dashboardUsersUserIdRoute
   dashboardAccountIndexRoute: typeof dashboardAccountIndexRoute
   dashboardCategoryRequestIndexRoute: typeof dashboardCategoryRequestIndexRoute
@@ -345,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardUsersUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)/resolution/$ticketId': {
+      id: '/(dashboard)/resolution/$ticketId'
+      path: '/resolution/$ticketId'
+      fullPath: '/resolution/$ticketId'
+      preLoaderRoute: typeof dashboardResolutionTicketIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(dashboard)/skills/$categoryId/': {
       id: '/(dashboard)/skills/$categoryId/'
       path: '/skills/$categoryId'
@@ -386,6 +407,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GetstartedRoute: GetstartedRoute,
+  dashboardResolutionTicketIdRoute: dashboardResolutionTicketIdRoute,
   dashboardUsersUserIdRoute: dashboardUsersUserIdRoute,
   dashboardAccountIndexRoute: dashboardAccountIndexRoute,
   dashboardCategoryRequestIndexRoute: dashboardCategoryRequestIndexRoute,

@@ -1,4 +1,3 @@
-// utils/formatters.ts
 export const formatNumber = (
   value: number | string | undefined | null,
 ): string => {

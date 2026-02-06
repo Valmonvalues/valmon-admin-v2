@@ -175,6 +175,7 @@ export interface StatCardProps {
   showImage?: boolean
   imageSize?: number
   imageClassName?: string
+  children?: ReactNode
 }
 
 export interface UserResponseType {

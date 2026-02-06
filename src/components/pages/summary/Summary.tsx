@@ -1,6 +1,5 @@
 import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
-// import { AreaChart, BarChart } from '@mantine/charts'
 import {
   Bar,
   BarChart,

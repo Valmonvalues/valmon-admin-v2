@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Avatar, Badge, Menu, ActionIcon } from '@mantine/core'
-import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
+// IconEye,
+import { IconDotsVertical, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import { perPage } from '@/constant/config'
 import type { AccountManager } from '@/types/accountManagers.types'
@@ -13,7 +14,7 @@ interface AccountManagerColumnHandlers {
 
 export const accountManagerColumns = ({
   page,
-  handleView,
+  // handleView,
   handleDeleteClick,
 }: AccountManagerColumnHandlers): ColumnDef<AccountManager>[] => [
   {
@@ -22,20 +23,6 @@ export const accountManagerColumns = ({
     sortable: false,
     render: (_, index): ReactNode => (page - 1) * perPage + index + 1,
   },
-  //   {
-  //     key: 'name',
-  //     header: 'Name',
-  //     sortable: false,
-  //     render: (manager): ReactNode => (
-  //       <div className="flex items-center gap-3">
-  //         <Avatar src={manager.image} alt={manager.name} radius="xl" />
-  //         <div>
-  //           <p className="text-sm font-medium text-gray-900">{manager.name}</p>
-  //           <p className="text-xs text-gray-500">{manager.email}</p>
-  //         </div>
-  //       </div>
-  //     ),
-  //   },
   {
     key: 'image',
     header: 'Avatar',
@@ -104,12 +91,12 @@ export const accountManagerColumns = ({
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item
+          {/* <Menu.Item
             leftSection={<IconEye size={16} />}
             onClick={() => handleView(manager.id)}
           >
             View
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}

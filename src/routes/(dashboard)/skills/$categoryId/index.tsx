@@ -4,6 +4,7 @@ import BaseButton from '@/components/BaseButton'
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { capitalizeKey } from '@/components/utils/helper'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { useGlobalContext } from '@/contexts/GlobalContext'
@@ -39,6 +40,10 @@ function RouteComponent() {
     listParentSubCategory(categoryId)
   const parentSubCategory: SubCategory[] =
     parentSubCategoryResponse?.all_sub_categories ?? []
+
+  const TopSubCategory = parentSubCategoryResponse?.top_sub_categories ?? []
+
+  // console.log(parentSubCategoryResponse)
 
   const {
     modalOpen: deleteModalOpen,
@@ -112,14 +117,12 @@ function RouteComponent() {
     setInitialData(data)
   }
 
-  // console.log(categoryId)
-
   return (
     <DashboardLayout>
       <div className="py-5">
         <BackButton color="black" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1100px] mb-6">
         <StatCard
           title="Total Transactions"
           value={parentSubCategoryResponse?.total_tansactions}
@@ -138,12 +141,15 @@ function RouteComponent() {
           color="bg-dark-gold"
           image={''}
         />
-        <StatCard
+        {/* <StatCard
           title="Top Categories"
           // value={formatNumber(skillsData?.valmon_earning)}
           // color="bg-green-100"
           // image={earningImage}
-        />
+        /> */}
+        <StatCard title="Top Categories" showImage={false} image={''}>
+          <TopCategoriesStat categories={TopSubCategory} />
+        </StatCard>
       </div>
       <div className="">
         <ReusableTable

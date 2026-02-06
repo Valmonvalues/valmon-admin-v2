@@ -33,7 +33,7 @@ function Wallet() {
   const transaction = walletData?.transactions || []
   // console.log(walletData)
 
-  const [showBalance, setShowBalance] = useState(true)
+  const [showBalance, setShowBalance] = useState(false)
   // const [search, setSearch] = useState('')
   const [sortConfig, setSortConfig] = useState<{
     key: keyof WalletTransaction

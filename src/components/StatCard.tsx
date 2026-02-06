@@ -8,6 +8,7 @@ const StatCard = ({
   color,
   image,
   trend,
+  children,
   showImage = true,
   imageSize = 30,
   imageClassName = '',
@@ -42,21 +43,26 @@ const StatCard = ({
         <h3 className="text-[16px] font-medium text-gray-500">{title}</h3>
 
         <div className="flex justify-between items-center">
-          <p className="text-xl font-semibold text-gray-900">{value}</p>
-          <div
-            className={`flex h-12 w-12 justify-center items-center rounded-xl ${color}`}
-          >
-            {/* <img src={profile} alt="" /> */}
-            {/* h={20} w="auto"  */}
-            {/* <Image radius="md" h={30} w="auto" src={profile} /> */}
-            {showImage && image && (
-              <div
-                className={`flex h-12 w-12 justify-center items-center rounded-xl ${color}`}
-              >
-                {renderImage()}
-              </div>
-            )}
+          {/* <p className="text-xl font-semibold text-gray-900">{value}</p> */}
+          <div className="text-xl font-semibold text-gray-900">
+            {value !== undefined ? value : children}
           </div>
+          {showImage && (
+            <div
+              className={`flex h-12 w-12 justify-center items-center rounded-xl ${color}`}
+            >
+              {/* <img src={profile} alt="" /> */}
+              {/* h={20} w="auto"  */}
+              {/* <Image radius="md" h={30} w="auto" src={profile} /> */}
+              {showImage && image && (
+                <div
+                  className={`flex h-12 w-12 justify-center items-center rounded-xl ${color}`}
+                >
+                  {renderImage()}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {trend && (
