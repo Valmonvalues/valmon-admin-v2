@@ -44,18 +44,17 @@ function ChatView() {
     },
   ]
 
-  const listing = {
-    title: 'Mercedes Benz AMG',
-    price: 195799,
-    image:
-      'https://images.unsplash.com/photo-1606813902778-8b8b3d2a19e4?auto=format&fit=crop&w=800&q=60',
-    proofImage:
-      'https://images.unsplash.com/photo-1613211739580-df0e8c7a0b1c?auto=format&fit=crop&w=800&q=60',
-  }
+  // const listing = {
+  //   title: 'Mercedes Benz AMG',
+  //   price: 195799,
+  //   image:
+  //     'https://images.unsplash.com/photo-1606813902778-8b8b3d2a19e4?auto=format&fit=crop&w=800&q=60',
+  //   proofImage:
+  //     'https://images.unsplash.com/photo-1613211739580-df0e8c7a0b1c?auto=format&fit=crop&w=800&q=60',
+  // }
 
   return (
     <DashboardLayout>
-      Hello "/(dashboard)/resolution/$ticketId"!
       <div className="flex flex-col lg:flex-row gap-6 p-6 bg-gray-100">
         {/* LEFT CHAT SECTION */}
         <div className="flex-1 bg-white rounded-xl p-6 shadow-sm">

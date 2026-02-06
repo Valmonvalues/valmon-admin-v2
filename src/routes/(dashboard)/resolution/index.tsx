@@ -25,8 +25,8 @@ function Resolution() {
   const navigate = useNavigate()
   const { listingServices, listingMarketPlace } = useResolution()
   const { data: serviceData, isLoading: servicesLoading } = listingServices()
-  const { data: marketplaceData, isLoading: marketplaceLoading } =
-    listingMarketPlace()
+  // isLoading: marketplaceLoading
+  const { data: marketplaceData } = listingMarketPlace()
   const services = serviceData?.tickets || []
   const ticketCountServices = serviceData?.summary?.ticketCount
   const totalValueServices = serviceData?.summary?.ticketsAmount

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ActionIcon, Menu, Badge, Text } from '@mantine/core'
-import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
+import { IconDotsVertical, IconEye } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Ticket } from '@/types/resolution.types'
 import { formatDate } from '@/components/utils/helper'
@@ -109,7 +109,7 @@ export const resolutionServicesColumns = ({
           </Menu.Item>
           {/* <Menu.Item
             color="red"
-            leftSection={<IconTrash size={16} />}
+            leftSection= size={16} />}
             onClick={() => handleDeleteClick(ticket.id)}
           >
             Delete
