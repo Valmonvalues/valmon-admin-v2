@@ -16,11 +16,40 @@ import { notifications } from '@mantine/notifications'
 import { useConfirmModal } from '@/providers/ModalProvider'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
+import WorkGallery from '@/components/WorkGallery'
+import Services from '@/components/Services'
+import Reviews from '@/components/Reviews'
+import Listings from '@/components/Listings'
 
 export const Route = createFileRoute('/(dashboard)/users/$userId')({
   component: RouteComponent,
   loader: () => routeGaurd(allowedRoles.users),
 })
+
+const tabs = [
+  'Profile Brief',
+  'Work Gallery',
+  'Services',
+  'Reviews',
+  'Market Place Listings',
+]
+
+// const services = [
+//   {
+//     id: '1',
+//     category: 'Tailoring',
+//     title: 'Male Suit Top',
+//     pricingType: 'Per Unit',
+//     price: 'NGN 14,000',
+//   },
+//   {
+//     id: '2',
+//     category: 'Dress Fitting',
+//     title: 'Male Suit Top',
+//     pricingType: 'Per Day',
+//     price: 'NGN 14,000',
+//   },
+// ]
 
 function RouteComponent() {
   const [isOnline] = useState(false)
@@ -30,6 +59,8 @@ function RouteComponent() {
   const { userId } = Route.useParams()
   const { data: user } = getUser(userId)
   const { showConfirmModal } = useConfirmModal()
+
+  console.log(user)
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -43,26 +74,26 @@ function RouteComponent() {
         )
       case 'Work Gallery':
         return (
-          <div className="p-6 bg-white rounded-xl shadow-sm">
-            Work Gallery Content Here
-          </div>
+          <>
+            <WorkGallery gallery={user?.gallery} />
+          </>
         )
       case 'Services':
         return (
-          <div className="p-6 bg-white rounded-xl shadow-sm">
-            Services Content Here
-          </div>
+          <>
+            <Services services={user?.profile?.gigs} />
+          </>
         )
       case 'Reviews':
         return (
           <div className="p-6 bg-white rounded-xl shadow-sm">
-            Reviews Content Here
+            <Reviews reviews={user?.reviews} />
           </div>
         )
       case 'Market Place Listings':
         return (
           <div className="p-6 bg-white rounded-xl shadow-sm">
-            Market Place Listings Content Here
+            <Listings listings={user?.listings} />
           </div>
         )
       default:
@@ -310,11 +341,3 @@ function RouteComponent() {
     </DashboardLayout>
   )
 }
-
-const tabs = [
-  'Profile Brief',
-  'Work Gallery',
-  'Services',
-  'Reviews',
-  'Market Place Listings',
-]

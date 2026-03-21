@@ -15,8 +15,8 @@ function ReviewCard({
   return (
     <div className="flex items-start gap-3 border border-gray-200 p-4 rounded-lg">
       <Avatar src={avatar} size="md" alt={reviewerName} />
-      <div className="flex-grow">
-        <div className="flex justify-between items-center mb-1">
+      <div className="">
+        <div className="flex justify-between items-center mb-1 gap-6">
           <h4 className="font-semibold text-gray-800">{reviewerName}</h4>
           <StarRating rating={rating} size={16} />
         </div>

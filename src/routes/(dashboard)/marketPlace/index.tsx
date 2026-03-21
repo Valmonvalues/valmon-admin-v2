@@ -178,7 +178,6 @@ function MarketPlace() {
 
   useEffect(() => {
     const leftOffValue = localStorage.getItem('leftOff')
-    // console.log(leftOffValue)
     if (leftOffValue) {
       setActiveTab(leftOffValue)
     } else {

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Badge, Menu } from '@mantine/core'
+import { ActionIcon, Badge, Menu, Tooltip } from '@mantine/core'
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
@@ -72,19 +72,23 @@ export const userColumns = ({
     key: 'status',
     header: 'Status',
     render: (user): ReactNode => (
-      <Badge
-        color={
-          user.status.toLocaleLowerCase() === 'active' ? '#AD7A22' : 'gray'
-        }
-        variant="light"
+      <Tooltip
+        className="capitalize rounded-xl! text-sm"
+        label={user.status.toLowerCase()}
+        withArrow
       >
-        <div className="flex items-center gap-2">
-          <div
-            className={`size-2 ${user.status.toLocaleLowerCase() === 'active' ? 'bg-yellow-600' : 'bg-gray-800'} rounded-full`}
-          />
-          {user.status}
-        </div>
-      </Badge>
+        <Badge
+          color={user.status.toLowerCase() === 'active' ? '#AD7A22' : 'gray'}
+          variant="light"
+        >
+          <div className="flex items-center gap-2">
+            <div
+              className={`size-2 ${user.status.toLowerCase() === 'active' ? 'bg-yellow-600' : 'bg-gray-800'} rounded-full`}
+            />
+            {user.status}
+          </div>
+        </Badge>
+      </Tooltip>
     ),
   },
   {

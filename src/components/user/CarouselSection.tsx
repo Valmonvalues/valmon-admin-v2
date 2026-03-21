@@ -4,7 +4,6 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import type { GalleryItem } from '@/types/user.types'
 
 function CarouselSection({ gallery }: { gallery: GalleryItem[] | undefined }) {
-  console.log(gallery)
   const slides = gallery?.map((image) => (
     <Carousel.Slide key={image.id}>
       <Image
