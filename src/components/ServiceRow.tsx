@@ -1,5 +1,5 @@
 type ServiceRowProps = {
-  service: any // or ServiceDetails if you have the type
+  service: any
   title: string
   pricing_type: string
   price: string

@@ -10,7 +10,6 @@ function WorkGallery({ gallery }: { gallery?: GalleryItem[] }) {
 
   const handleSelect = (item: GalleryItem) => {
     setSelectedId(item.id.toString())
-    console.log(item)
   }
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">

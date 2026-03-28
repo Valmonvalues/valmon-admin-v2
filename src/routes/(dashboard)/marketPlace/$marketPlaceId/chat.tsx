@@ -9,7 +9,7 @@ export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/chat',
 )({
   component: ChatView,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () => routeGaurd(allowedRoles?.marketPlace),
 })
 
 type Message = {
@@ -151,9 +151,9 @@ function ChatView() {
         {/* RIGHT DETAILS SECTION */}
         <div className="w-full lg:w-[320px] flex flex-col gap-5">
           <Card radius="md" shadow="sm" className="bg-white">
-            <Image src={listing.image} radius="md" height={160} fit="cover" />
+            <Image src={listing?.image} radius="md" height={160} fit="cover" />
             <Text fw={600} mt="md">
-              {listing.title}
+              {listing?.title}
             </Text>
             <div className="mt-3">
               <Text fw={600}>Listing Cost</Text>
@@ -162,7 +162,7 @@ function ChatView() {
                 fw={700}
                 className="bg-gray-100 rounded-md px-3 py-1 mt-1 text-gray-800"
               >
-                NGN {listing.price.toLocaleString()}
+                NGN {listing?.price?.toLocaleString()}
               </Text>
             </div>
           </Card>
@@ -175,7 +175,7 @@ function ChatView() {
               Seller Proof Of Delivery
             </Text>
             <Image
-              src={listing.proofImage}
+              src={listing?.proofImage}
               radius="md"
               height={140}
               fit="cover"

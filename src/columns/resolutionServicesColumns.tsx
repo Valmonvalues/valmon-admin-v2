@@ -27,26 +27,26 @@ export const resolutionServicesColumns = ({
     key: 'employer',
     header: 'Employer',
     render: (ticket): ReactNode => (
-      <Text className="capitalize">{ticket.employer}</Text>
+      <Text className="capitalize">{ticket?.employer}</Text>
     ),
   },
   {
     key: 'provider',
     header: 'Provider',
     sortable: false,
-    render: (ticket): ReactNode => ticket.provider,
+    render: (ticket): ReactNode => ticket?.provider,
   },
   {
     key: 'complainer',
     header: 'Complainer',
-    render: (ticket): ReactNode => ticket.complainer,
+    render: (ticket): ReactNode => ticket?.complainer,
   },
   {
     key: 'amount',
     header: 'Amount',
     render: (ticket): ReactNode => (
       <span className="font-medium text-gray-800">
-        ₦{Number(ticket.amount).toLocaleString()}
+        ₦{Number(ticket?.amount)?.toLocaleString()}
       </span>
     ),
   },
@@ -54,7 +54,7 @@ export const resolutionServicesColumns = ({
     key: 'category',
     header: 'Category',
     render: (ticket): ReactNode => (
-      <span className="text-sm text-gray-700">{ticket.category}</span>
+      <span className="text-sm text-gray-700">{ticket?.category}</span>
     ),
   },
   {
@@ -62,7 +62,7 @@ export const resolutionServicesColumns = ({
     header: 'Reason',
     render: (ticket): ReactNode => (
       <span className="text-sm text-gray-600 max-w-[200px] line-clamp-2">
-        {ticket.reason}
+        {ticket?.reason}
       </span>
     ),
   },
@@ -73,21 +73,21 @@ export const resolutionServicesColumns = ({
       <Badge
         variant="light"
         color={
-          ticket.status === 'open'
+          ticket?.status === 'open'
             ? 'yellow'
-            : ticket.status === 'resolved'
+            : ticket?.status === 'resolved'
               ? 'green'
               : 'gray'
         }
       >
-        {ticket.status}
+        {ticket?.status}
       </Badge>
     ),
   },
   {
     key: 'created_at',
     header: 'Created At',
-    render: (ticket): ReactNode => formatDate(ticket.created_at),
+    render: (ticket): ReactNode => formatDate(ticket?.created_at),
   },
   {
     key: 'actions',
@@ -103,14 +103,14 @@ export const resolutionServicesColumns = ({
         <Menu.Dropdown>
           <Menu.Item
             leftSection={<IconEye size={16} />}
-            onClick={() => handleView(ticket.id)}
+            onClick={() => handleView(ticket?.id)}
           >
             View
           </Menu.Item>
           {/* <Menu.Item
             color="red"
             leftSection= size={16} />}
-            onClick={() => handleDeleteClick(ticket.id)}
+            onClick={() => handleDeleteClick(ticket?.id)}
           >
             Delete
           </Menu.Item> */}

@@ -31,7 +31,7 @@ function ProductCard({
         </Text>
         {/* ₦ */}
         <Text size="lg" fw={600} mt={4}>
-          NGN {Number(price).toLocaleString('en-NG')}
+          NGN {Number(price)?.toLocaleString('en-NG')}
         </Text>
       </div>
     </div>

@@ -28,7 +28,7 @@ export const serviceRequestColumns = ({
     sortable: true,
     render: (request): ReactNode => (
       <Text fw={500} size="sm">
-        {request.requester_name}
+        {request?.requester_name}
       </Text>
     ),
   },
@@ -38,7 +38,7 @@ export const serviceRequestColumns = ({
     sortable: true,
     render: (request): ReactNode => (
       <Text fw={500} size="sm" c="dimmed">
-        {request.category_name}
+        {request?.category_name}
       </Text>
     ),
   },
@@ -48,7 +48,7 @@ export const serviceRequestColumns = ({
     sortable: true,
     render: (request): ReactNode => (
       <Text size="sm" c="dimmed" lineClamp={1} maw={400}>
-        {request.category_description}
+        {request?.category_description}
       </Text>
     ),
   },
@@ -58,7 +58,7 @@ export const serviceRequestColumns = ({
     sortable: true,
     render: (request): ReactNode => (
       <Text size="sm">
-        {new Date(request.created_at).toLocaleDateString('en-US', {
+        {new Date(request?.created_at)?.toLocaleDateString('en-US', {
           month: '2-digit',
           day: '2-digit',
           year: 'numeric',

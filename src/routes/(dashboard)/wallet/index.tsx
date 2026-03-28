@@ -19,7 +19,7 @@ import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/wallet/')({
   component: Wallet,
-  loader: () => routeGaurd(allowedRoles.wallet),
+  loader: () => routeGaurd(allowedRoles?.wallet),
 })
 
 function Wallet() {
@@ -46,7 +46,8 @@ function Wallet() {
   const handleSort = (key: keyof WalletTransaction) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction:
+        prev?.key === key && prev?.direction === 'asc' ? 'desc' : 'asc',
     }))
   }
 
@@ -60,15 +61,15 @@ function Wallet() {
 
   const handleWithdraw = (formValues: any) => {
     const selectedBank = bankNames?.find(
-      (bank) => bank.code === formValues.bank,
+      (bank) => bank?.code === formValues?.bank,
     )
 
     const payload = {
-      account_number: formValues.account_number,
-      amount: Number(formValues.amount),
+      account_number: formValues?.account_number,
+      amount: Number(formValues?.amount),
       bank: selectedBank?.name,
-      otp: formValues.otp,
-      bank_code: formValues.bank,
+      otp: formValues?.otp,
+      bank_code: formValues?.bank,
     }
 
     console.log(payload)
@@ -101,8 +102,8 @@ function Wallet() {
         scrollAreaProps: { style: { maxHeight: 15 } },
         options:
           bankNames?.map((bank: any) => ({
-            label: bank.name,
-            value: bank.code,
+            label: bank?.name,
+            value: bank?.code,
           })) || [],
       },
       {
@@ -146,7 +147,7 @@ function Wallet() {
                     {showBalance
                       ? `NGN ${Number(
                           walletData?.wallet_balance ?? 0,
-                        ).toLocaleString('en-NG', {
+                        )?.toLocaleString('en-NG', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}`
@@ -210,7 +211,7 @@ function Wallet() {
                     </Text>
                     <Text fw={700} size="lg" mt="xs">
                       NGN
-                      {Number(walletData?.total_income ?? 0).toLocaleString(
+                      {Number(walletData?.total_income ?? 0)?.toLocaleString(
                         'en-NG',
                         {
                           minimumFractionDigits: 2,
@@ -252,13 +253,12 @@ function Wallet() {
                     </Text>
                     <Text fw={700} size="lg" mt="xs">
                       NGN
-                      {Number(walletData?.total_withdrawal ?? 0).toLocaleString(
-                        'en-NG',
-                        {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        },
-                      )}
+                      {Number(
+                        walletData?.total_withdrawal ?? 0,
+                      )?.toLocaleString('en-NG', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Text>
                   </div>
                 </div>

@@ -57,34 +57,34 @@ export const listingColumns = ({
     {
       key: 'image',
       header: 'Image',
-      render: (listing): ReactNode => <Avatar src={listing.image} size="md" />,
+      render: (listing): ReactNode => <Avatar src={listing?.image} size="md" />,
     },
     {
       key: 'name',
       header: 'Product Name',
       render: (listing): ReactNode => (
-        <p className="capitalize">{listing.name}</p>
+        <p className="capitalize">{listing?.name}</p>
       ),
     },
     {
       key: 'condition',
       header: 'Condition',
-      render: (listing): ReactNode => listing.condition,
+      render: (listing): ReactNode => listing?.condition,
     },
     {
       key: 'color',
       header: 'Color',
-      render: (listing): ReactNode => listing.color,
+      render: (listing): ReactNode => listing?.color,
     },
     {
       key: 'category',
       header: 'Category',
-      render: (listing): ReactNode => listing.category,
+      render: (listing): ReactNode => listing?.category,
     },
     {
       key: 'price',
       header: 'Price',
-      render: (listing): ReactNode => `NGN ${formatNumber(listing.price)}`,
+      render: (listing): ReactNode => `NGN ${formatNumber(listing?.price)}`,
     },
     {
       key: 'seller_image',
@@ -93,8 +93,8 @@ export const listingColumns = ({
         <div className="flex justify-center">
           <div className="w-9 h-9 flex-shrink-0">
             <img
-              src={listing.seller_image}
-              alt={listing.seller_name}
+              src={listing?.seller_image}
+              alt={listing?.seller_name}
               className="w-full h-full rounded-full object-cover"
             />
           </div>
@@ -107,10 +107,10 @@ export const listingColumns = ({
       render: (listing): ReactNode => (
         <div className="max-w-[180px]">
           <span
-            title={listing.seller_name}
+            title={listing?.seller_name}
             className="truncate text-sm font-medium"
           >
-            {listing.seller_name}
+            {listing?.seller_name}
           </span>
         </div>
       ),
@@ -118,7 +118,7 @@ export const listingColumns = ({
     {
       key: 'listing_date',
       header: 'Listed On',
-      render: (listing): ReactNode => formatDate(listing.listing_date),
+      render: (listing): ReactNode => formatDate(listing?.listing_date),
     },
   ]
 
@@ -128,18 +128,20 @@ export const listingColumns = ({
       header: 'Status',
       render: (listing): ReactNode => (
         <Badge
-          color={listing.status.toLowerCase() === 'active' ? '#AD7A22' : 'gray'}
+          color={
+            listing?.status?.toLowerCase() === 'active' ? '#AD7A22' : 'gray'
+          }
           variant="light"
         >
           <div className="flex items-center gap-2">
             <div
               className={`size-2 ${
-                listing.status.toLowerCase() === 'active'
+                listing?.status?.toLowerCase() === 'active'
                   ? 'bg-yellow-600'
                   : 'bg-gray-800'
               } rounded-full`}
             />
-            {listing.status}
+            {listing?.status}
           </div>
         </Badge>
       ),
@@ -171,7 +173,7 @@ export const listingColumns = ({
                   variant="light"
                   color="green"
                   leftSection={<IconCheck size={10} />}
-                  onClick={() => handleApprove?.(listing.id)}
+                  onClick={() => handleApprove?.(listing?.id)}
                 >
                   Approve
                 </Button>
@@ -182,7 +184,7 @@ export const listingColumns = ({
                   variant="light"
                   color="red"
                   leftSection={<IconX size={10} />}
-                  onClick={() => handleReject?.(listing.id)}
+                  onClick={() => handleReject?.(listing?.id)}
                 >
                   Reject
                 </Button>
@@ -192,7 +194,7 @@ export const listingColumns = ({
                   size="compact-xs"
                   variant="light"
                   leftSection={<IconEye size={10} />}
-                  onClick={() => handleView(listing.id)}
+                  onClick={() => handleView(listing?.id)}
                 >
                   View
                 </Button>
@@ -202,7 +204,7 @@ export const listingColumns = ({
                   size="compact-xs"
                   variant="light"
                   leftSection={<IconEdit size={10} />}
-                  onClick={() => handleView(listing.id)}
+                  onClick={() => handleView(listing?.id)}
                 >
                   Edit
                 </Button>
@@ -223,7 +225,7 @@ export const listingColumns = ({
             {showActions.includes('view') && (
               <Menu.Item
                 leftSection={<IconEye size={16} />}
-                onClick={() => handleView(listing.id)}
+                onClick={() => handleView(listing?.id)}
               >
                 View
               </Menu.Item>
@@ -231,7 +233,7 @@ export const listingColumns = ({
             {showActions.includes('edit') && (
               <Menu.Item
                 leftSection={<IconEdit size={16} />}
-                onClick={() => handleView(listing.id)}
+                onClick={() => handleView(listing?.id)}
               >
                 Edit
               </Menu.Item>
@@ -240,7 +242,7 @@ export const listingColumns = ({
               <Menu.Item
                 color="red"
                 leftSection={<IconTrash size={16} />}
-                onClick={() => handleDeleteClick(listing.id)}
+                onClick={() => handleDeleteClick(listing?.id)}
               >
                 Delete
               </Menu.Item>
@@ -249,7 +251,7 @@ export const listingColumns = ({
               <Menu.Item
                 leftSection={<IconCheck size={16} />}
                 color="green"
-                onClick={() => handleApprove(listing.id)}
+                onClick={() => handleApprove(listing?.id)}
               >
                 Approve
               </Menu.Item>
@@ -258,7 +260,7 @@ export const listingColumns = ({
               <Menu.Item
                 leftSection={<IconX size={16} />}
                 color="red"
-                onClick={() => handleReject(listing.id)}
+                onClick={() => handleReject(listing?.id)}
               >
                 Reject
               </Menu.Item>

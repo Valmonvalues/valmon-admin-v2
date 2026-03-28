@@ -23,11 +23,6 @@ export interface CategoryItem {
   sold_amount: number
 }
 
-// export interface Approval {
-//   total_awaiting: number
-//   awaiting_value: number
-// }
-
 export interface Markeplace {
   total_users: number
   service_providers: number
@@ -47,7 +42,9 @@ export interface Markeplace {
 }
 
 export interface MarketplaceResponse {
-  all_listings: ListingItem[]
+  all_listings: {
+    data: ListingItem[]
+  }
   totalListingCount: number
   totalListedValue: string
   In_Escrow_Value: number

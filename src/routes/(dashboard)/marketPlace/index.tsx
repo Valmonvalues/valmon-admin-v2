@@ -25,6 +25,7 @@ import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import { capitalizeKey } from '@/components/utils/helper'
+import { PaginationControls } from '@/components/table/PaginationControls'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
@@ -36,7 +37,7 @@ function MarketPlace() {
 
   const [activeTab, setActiveTab] = useState('open')
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
-  const [page] = useState(1)
+  const [page, setPage] = useState(1)
   const {
     listingSummary,
     listingApproval,
@@ -55,7 +56,6 @@ function MarketPlace() {
       // case 'closed':
       //   return deleteClosed
       case 'categories':
-        console.log('categories')
         return deleteCategories
       default:
         return deleteProduct
@@ -79,39 +79,49 @@ function MarketPlace() {
   const { data: listing, isLoading: listingIsloading } = listingSummary({
     page,
     perpage,
+    search: debouncedSearch || undefined,
   })
 
   const { data: approval, isLoading: approvalIsloading } = listingApproval({
     page,
     perpage,
+    search: debouncedSearch || undefined,
   })
 
   const { data: closed, isLoading: closedIsloading } = listingClosed({
     page,
     perpage,
+    search: debouncedSearch || undefined,
   })
 
   const { data: categories, isLoading: categoriesIsloading } =
     listingCategories({
       page,
       perpage,
+      search: debouncedSearch || undefined,
     })
+
+  // console.log('users raw listings:', listing)
 
   const allOpenListing = listing?.all_listings ?? []
   // const totalListings = listing?.pagination?.total ?? 0
   const totalListings = listing?.totalListingCount ?? 0
 
-  const allApprovalListing = approval?.all_listings ?? []
+  console.log(allOpenListing)
+
+  const allApprovalListing = approval?.all_listings?.data ?? []
   // const totalApprovals = approval?.pagination?.total ?? 0
   const totalApprovals = approval?.total_awaiting ?? 0
 
-  const allCLosedListing = closed?.all_listings ?? []
+  const allClosedListing = closed?.all_listings?.data ?? []
   const totalClosed = closed?.pagination?.total ?? 0
 
   const allCategoriesListing: CategoryItem[] = categories ?? []
   // const totalCategories = categories?.pagination?.total ?? 0
 
-  // const totalPages = Math.ceil(totalListings / perpage)
+  // const totalListingPages = Math.ceil(totalListings / perpage)
+  const totalApprovalPages = Math.ceil(totalApprovals / perpage)
+  // const totalClosedPages = Math.ceil(totalClosed / perpage)
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof ListingItem
@@ -122,8 +132,6 @@ function MarketPlace() {
     key: keyof CategoryItem
     direction: 'asc' | 'desc'
   }>({ key: 'name', direction: 'asc' })
-  //   const totalUsers = listing?.pagination?.total ?? 0
-  //   const totalPages = Math.ceil(totalUsers / perpage)
 
   const handleSort = (key: keyof ListingItem) => {
     setSortConfig((prev) => ({
@@ -132,47 +140,23 @@ function MarketPlace() {
     }))
   }
 
-  const filteredOpenListings =
-    debouncedSearch.trim() === ''
-      ? allOpenListing
-      : allOpenListing.filter((aol) =>
-          aol.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
   const sortedListings = useSortedData(
-    capitalizeKey(filteredOpenListings, 'name'),
+    capitalizeKey(allOpenListing as ListingItem[], 'name'),
     sortConfig,
   )
 
-  const filteredApprovalListings =
-    debouncedSearch.trim() === ''
-      ? allApprovalListing
-      : allApprovalListing.filter((apl) =>
-          apl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
   const sortedApprovals = useSortedData(
-    capitalizeKey(filteredApprovalListings, 'name'),
+    capitalizeKey(allApprovalListing, 'name'),
     sortConfig,
   )
 
-  const filteredCLosedListings =
-    debouncedSearch.trim() === ''
-      ? allCLosedListing
-      : allCLosedListing.filter((acl) =>
-          acl.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
   const sortedClosed = useSortedData(
-    capitalizeKey(filteredCLosedListings, 'name'),
+    capitalizeKey(allClosedListing, 'name'),
     sortConfig,
   )
 
-  const filteredCategoriesListings =
-    debouncedSearch.trim() === ''
-      ? allCategoriesListing
-      : allCategoriesListing.filter((acll) =>
-          acll.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
   const sortedCategories = useSortedData(
-    capitalizeKey(filteredCategoriesListings, 'name'),
+    capitalizeKey(allCategoriesListing, 'name'),
     categorySortConfig,
   )
 
@@ -185,8 +169,7 @@ function MarketPlace() {
     }
   }, [])
 
-  const handleView = (itemId: Id, type: string) => {
-    localStorage.setItem('leftOff', type)
+  const handleView = (itemId: Id) => {
     navigate({ to: `/marketPlace/${itemId}` })
   }
 
@@ -195,7 +178,7 @@ function MarketPlace() {
       const formData = new FormData()
       formData.append('name', categoryData.name)
 
-      console.log('category: ', categoryData)
+      // console.log('category: ', categoryData)
 
       await addCategory.mutateAsync(formData, {
         onSuccess: () => setOpenFormModal(false),
@@ -213,7 +196,10 @@ function MarketPlace() {
         <div className="mb-4">
           <TabHeader
             activeTab={activeTab}
-            onChange={setActiveTab}
+            onChange={(value) => {
+              localStorage.setItem('leftOff', value)
+              setActiveTab(value)
+            }}
             tabs={[
               { id: 'open', label: 'Open Listings' },
               { id: 'approval', label: 'Awaiting Approval' },
@@ -259,7 +245,7 @@ function MarketPlace() {
               columns={listingColumns({
                 page,
                 // handleView,
-                handleView: (id) => handleView(id, 'open'),
+                handleView: (id) => handleView(id),
                 handleDeleteClick,
                 buttonLayout: 'menu', // Menu style
                 // showActions: ['view', 'edit', 'delete'],
@@ -271,6 +257,14 @@ function MarketPlace() {
               sortConfig={sortConfig}
               onSort={handleSort}
             />
+
+            {/* {!listingIsloading && totalListingPages > 1 && (
+              <PaginationControls
+                currentPage={page}
+                totalPages={totalListingPages}
+                onPageChange={setPage}
+              />
+            )} */}
 
             <ConfirmDeleteModal
               opened={deleteModalOpen}
@@ -284,39 +278,49 @@ function MarketPlace() {
         )}
         {activeTab === 'approval' && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] mb-6">
-              <StatCard
-                title="Total Awaiting"
-                value={totalApprovals}
-                color="bg-icon-light-blue"
-                image={shop}
-              />
-              <StatCard
-                title="Awaiting Value"
-                value={`NGN ${formatNumber(approval?.awaiting_value)}`}
-                color="bg-green-100"
-                image={cardblack}
-              />
-            </div>
+            <div className="">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] mb-6">
+                <StatCard
+                  title="Total Awaiting"
+                  value={totalApprovals}
+                  color="bg-icon-light-blue"
+                  image={shop}
+                />
+                <StatCard
+                  title="Awaiting Value"
+                  value={`NGN ${formatNumber(approval?.awaiting_value)}`}
+                  color="bg-green-100"
+                  image={cardblack}
+                />
+              </div>
 
-            <ReusableTable<ListingItem>
-              title="Awaiting Approval"
-              totalCount={totalApprovals}
-              data={sortedApprovals}
-              columns={listingColumns({
-                page,
-                handleView: (id) => handleView(id, 'approval'),
-                handleApprove, // Make sure to define this function
-                handleReject, // Make sure to define this function
-                buttonLayout: 'horizontal', // Horizontal buttons
-                showActions: ['approve', 'reject', 'view'],
-              })}
-              isLoading={approvalIsloading}
-              searchQuery={search}
-              onSearchChange={handleSearch}
-              sortConfig={sortConfig}
-              onSort={handleSort}
-            />
+              <ReusableTable<ListingItem>
+                title="Awaiting Approval"
+                totalCount={totalApprovals}
+                data={sortedApprovals}
+                columns={listingColumns({
+                  page,
+                  handleView: (id) => handleView(id),
+                  handleApprove,
+                  handleReject,
+                  buttonLayout: 'horizontal',
+                  showActions: ['approve', 'reject', 'view'],
+                })}
+                isLoading={approvalIsloading}
+                searchQuery={search}
+                onSearchChange={handleSearch}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+              />
+
+              {!approvalIsloading && totalApprovalPages > 1 && (
+                <PaginationControls
+                  currentPage={page}
+                  totalPages={totalApprovalPages}
+                  onPageChange={setPage}
+                />
+              )}
+            </div>
           </>
         )}
         {activeTab === 'closed' && (
@@ -354,7 +358,7 @@ function MarketPlace() {
               data={sortedClosed}
               columns={listingColumns({
                 page,
-                handleView: (id) => handleView(id, 'closed'),
+                handleView: (id) => handleView(id),
                 handleDeleteClick,
                 buttonLayout: 'menu',
                 showActions: ['view', 'delete'],
@@ -387,7 +391,7 @@ function MarketPlace() {
                 columns={categoryColumns({
                   page,
                   // handleView,
-                  handleView: (id) => handleView(id, 'categories'),
+                  handleView: (id) => handleView(id),
                   handleDeleteClick,
                 })}
                 isLoading={categoriesIsloading}

@@ -14,18 +14,25 @@ import { allowedRoles, roles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/components/utils/routeGuard'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
+import { perPage as perpage } from '@/constant/config'
 import { capitalizeKey } from '@/components/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () => routeGaurd(allowedRoles?.marketPlace),
 })
 
 function Account() {
   const { openFormModal, setOpenFormModal } = useGlobalContext()
   const { listAccountManagers, addManager, deleteManager } =
     useAccountManagers()
-  const { data, isLoading: managersLoading } = listAccountManagers()
+  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
+  const [page] = useState(1)
+  const { data, isLoading: managersLoading } = listAccountManagers({
+    page,
+    perpage,
+    search: debouncedSearch || undefined,
+  })
   const managers = data || []
 
   // const [loading, setLoading] = useState(false)
@@ -40,9 +47,6 @@ function Account() {
     entityName: 'admin',
   })
 
-  // console.log(managers)
-  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
-  const [page] = useState(1)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof AccountManager
     direction: 'asc' | 'desc'
@@ -53,22 +57,23 @@ function Account() {
     direction: 'asc' | 'desc'
   }>({ key: 'id', direction: 'asc' })
 
-  const filteredManagers =
-    debouncedSearch.trim() === ''
-      ? managers
-      : managers.filter((man: any) =>
-          man.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
+  // const filteredManagers =
+  //   debouncedSearch.trim() === ''
+  //     ? managers
+  //     : managers.filter((man: any) =>
+  //         man.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+  //       )
 
   const sortedManagers = useSortedData(
-    capitalizeKey(filteredManagers, 'name'),
+    capitalizeKey(managers, 'name'),
     sortConfig,
   )
 
   const handleSort = (key: keyof AccountManager) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction:
+        prev?.key === key && prev?.direction === 'asc' ? 'desc' : 'asc',
     }))
   }
 
@@ -82,14 +87,13 @@ function Account() {
       // setLoading(true)
 
       const formData = new FormData()
-      formData.append('first_name', admin.firstName)
-      formData.append('last_name', admin.lastName)
-      formData.append('email', admin.email)
-      formData.append('role', admin.role)
+      formData.append('first_name', admin?.firstName)
+      formData.append('last_name', admin?.lastName)
+      formData.append('email', admin?.email)
+      formData.append('role', admin?.role)
 
       if (admin.file instanceof File) {
-        formData.append('image', admin.file)
-        console.log(admin.file)
+        formData.append('image', admin?.file)
       }
 
       await addManager.mutateAsync(formData)
@@ -135,11 +139,11 @@ function Account() {
                   label: 'Role',
                   type: 'select',
                   options: roles
-                    .filter((role) => role.name !== 'super_admin')
+                    .filter((role) => role?.name !== 'super_admin')
                     .map((role) => {
                       return {
-                        value: role.name,
-                        label: role.label,
+                        value: role?.name,
+                        label: role?.label,
                       }
                     }),
                 },
@@ -152,7 +156,7 @@ function Account() {
                 },
               ]}
               onSubmit={handleAddManager}
-              loading={addManager.isPending}
+              loading={addManager?.isPending}
               className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
             />
           }
@@ -165,7 +169,7 @@ function Account() {
         onConfirm={handleConfirmDelete}
         title="Delete Admin"
         message="Are you sure you want to delete this admin? This action cannot be undone."
-        loading={deleteManager.isPending}
+        loading={deleteManager?.isPending}
       />
     </DashboardLayout>
   )

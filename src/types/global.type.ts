@@ -11,6 +11,7 @@ export interface Params {
   page?: number
   perpage?: number
   period?: string
+  search?: string
 }
 
 export type Id = number | string

@@ -28,8 +28,8 @@ export const userColumns = ({
     header: 'Image',
     render: (user): ReactNode => (
       <img
-        src={user.image}
-        alt={user.name}
+        src={user?.image}
+        alt={user?.name}
         width={32}
         height={32}
         className="rounded-full object-cover"
@@ -39,34 +39,34 @@ export const userColumns = ({
   {
     key: 'name',
     header: 'Name',
-    render: (user): ReactNode => <p className="capitalize">{user.name}</p>,
+    render: (user): ReactNode => <p className="capitalize">{user?.name}</p>,
   },
-  { key: 'email', header: 'Email', render: (user): ReactNode => user.email },
+  { key: 'email', header: 'Email', render: (user): ReactNode => user?.email },
   {
     key: 'listings_count',
     header: 'Market Listing',
-    render: (user): ReactNode => user.listings_count,
+    render: (user): ReactNode => user?.listings_count,
   },
   {
     key: 'join_date',
     header: 'Joined Date',
-    render: (user): ReactNode => formatDate(user.join_date),
+    render: (user): ReactNode => formatDate(user?.join_date),
   },
   {
     key: 'reported_count',
     header: 'Times Reported',
-    render: (user): ReactNode => user.reported_count,
+    render: (user): ReactNode => user?.reported_count,
   },
   {
     key: 'type',
     header: 'Types',
     render: (user): ReactNode =>
-      user.type === 'Normal User' ? 'Client' : user.type,
+      user?.type === 'Normal User' ? 'Client' : user?.type,
   },
   {
     key: 'last_seen_at',
     header: 'Last Seen',
-    render: (user): ReactNode => user.last_seen_at,
+    render: (user): ReactNode => user?.last_seen_at,
   },
   {
     key: 'status',
@@ -74,18 +74,18 @@ export const userColumns = ({
     render: (user): ReactNode => (
       <Tooltip
         className="capitalize rounded-xl! text-sm"
-        label={user.status.toLowerCase()}
+        label={user?.status?.toLowerCase()}
         withArrow
       >
         <Badge
-          color={user.status.toLowerCase() === 'active' ? '#AD7A22' : 'gray'}
+          color={user?.status?.toLowerCase() === 'active' ? '#AD7A22' : 'gray'}
           variant="light"
         >
           <div className="flex items-center gap-2">
             <div
-              className={`size-2 ${user.status.toLowerCase() === 'active' ? 'bg-yellow-600' : 'bg-gray-800'} rounded-full`}
+              className={`size-2 ${user?.status?.toLowerCase() === 'active' ? 'bg-yellow-600' : 'bg-gray-800'} rounded-full`}
             />
-            {user.status}
+            {user?.status}
           </div>
         </Badge>
       </Tooltip>
@@ -104,14 +104,14 @@ export const userColumns = ({
         <Menu.Dropdown>
           <Menu.Item
             leftSection={<IconEye size={16} />}
-            onClick={() => handleView(user.id)}
+            onClick={() => handleView(user?.id)}
           >
             View
           </Menu.Item>
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
-            onClick={() => handleDeleteClick(user.id)}
+            onClick={() => handleDeleteClick(user?.id)}
           >
             Delete
           </Menu.Item>

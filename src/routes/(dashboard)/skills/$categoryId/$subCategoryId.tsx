@@ -16,7 +16,7 @@ export const Route = createFileRoute(
   '/(dashboard)/skills/$categoryId/$subCategoryId',
 )({
   component: RouteComponent,
-  loader: () => routeGaurd(allowedRoles.skills),
+  loader: () => routeGaurd(allowedRoles?.skills),
 })
 
 function RouteComponent() {
@@ -36,8 +36,10 @@ function RouteComponent() {
   const filteredCustomers =
     debouncedSearch.trim() === ''
       ? customersData
-      : customersData.filter((customer: any) =>
-          customer.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+      : customersData?.filter((customer: any) =>
+          customer?.name
+            ?.toLowerCase()
+            ?.includes(debouncedSearch?.toLowerCase()),
         )
 
   const sortedCustomers = useSortedData(
@@ -48,7 +50,8 @@ function RouteComponent() {
   const handleSort = (key: keyof Customers) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction:
+        prev?.key === key && prev?.direction === 'asc' ? 'desc' : 'asc',
     }))
   }
 
@@ -61,7 +64,7 @@ function RouteComponent() {
       <div className="">
         <ReusableTable
           title="Customers"
-          totalCount={customersData.length}
+          totalCount={customersData?.length}
           data={sortedCustomers}
           columns={customersColumns()}
           isLoading={customersIsLoading}

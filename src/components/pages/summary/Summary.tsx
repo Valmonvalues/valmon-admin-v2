@@ -31,7 +31,7 @@ function Summary() {
   const [selectedPeriod, setSelectedPeriod] = useState('Year')
   const { getSummary } = useSummary()
   const { data: summaryData, isLoading } = getSummary({
-    period: selectedPeriod.toLowerCase(),
+    period: selectedPeriod?.toLowerCase(),
   })
   // console.log(summaryData)
 
@@ -40,7 +40,7 @@ function Summary() {
       return (
         <div className="bg-orange-500 text-white px-3 py-2 rounded-md shadow-lg">
           <p className="text-sm font-semibold">
-            {payload[0].value.toLocaleString('en-NG', {
+            {payload[0]?.value?.toLocaleString('en-NG', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -58,41 +58,41 @@ function Summary() {
     })) || []
 
   const skilledEmploymentsData =
-    summaryData?.skilled_employments?.labels.map((label, index) => ({
+    summaryData?.skilled_employments?.labels?.map((label, index) => ({
       month: label,
       count: summaryData?.skilled_employments?.values[index],
     })) || []
 
   const marketplaceSalesData =
-    summaryData?.market_place_sales.labels.map((label, index) => ({
+    summaryData?.market_place_sales?.labels?.map((label, index) => ({
       month: label,
       sales: summaryData?.market_place_sales?.values[index],
     })) || []
 
   const allReports =
     formatNumber(
-      summaryData?.platform_overview?.all_reports.value.toLocaleString(),
+      summaryData?.platform_overview?.all_reports?.value?.toLocaleString(),
     ) || '0'
   const allReportsTrend =
-    summaryData?.platform_overview?.all_reports.percentage_increase.toLocaleString() ||
+    summaryData?.platform_overview?.all_reports?.percentage_increase?.toLocaleString() ||
     '0'
 
   const resolvedReports =
     formatNumber(
-      summaryData?.platform_overview?.resolved_reports.value.toLocaleString(),
+      summaryData?.platform_overview?.resolved_reports?.value?.toLocaleString(),
     ) || '0'
   const resolvedReportsTrend =
-    summaryData?.platform_overview?.resolved_reports.percentage_increase.toLocaleString() ||
+    summaryData?.platform_overview?.resolved_reports?.percentage_increase?.toLocaleString() ||
     '0'
 
   const inEscrowCount =
     formatNumber(
-      summaryData?.platform_overview?.in_escrow_count.toLocaleString(),
+      summaryData?.platform_overview?.in_escrow_count?.toLocaleString(),
     ) || '0'
 
   const inEscrowAmount =
     formatNumber(
-      summaryData?.platform_overview?.in_escrow_amount.toLocaleString(),
+      summaryData?.platform_overview?.in_escrow_amount?.toLocaleString(),
     ) || '0'
 
   if (isLoading) {
@@ -195,10 +195,10 @@ function Summary() {
                   Total Users
                 </Text>
                 <Text size="xl" fw={700} mt="xs">
-                  {summaryData?.total_users.value.toLocaleString()}
+                  {summaryData?.total_users?.value?.toLocaleString()}
                 </Text>
                 <Text size="xs" c="teal" fw={500} mt="xs">
-                  📈 {summaryData?.total_users.percentage_increase}% Up from
+                  📈 {summaryData?.total_users?.percentage_increase}% Up from
                   Last Year
                 </Text>
               </div>
@@ -213,7 +213,7 @@ function Summary() {
               Top Skill Categories
             </Text>
             <SimpleGrid cols={3} spacing="xs">
-              {summaryData?.top_skill_categories.length === 0 ? (
+              {summaryData?.top_skill_categories?.length === 0 ? (
                 <Text size="xs" c="dimmed">
                   No data available
                 </Text>
@@ -221,8 +221,8 @@ function Summary() {
                 summaryData?.top_skill_categories
                   .slice(0, 9)
                   .map((category, idx) => (
-                    <Text key={category.id} size="xs" c="dimmed">
-                      {idx + 1}. {category.name}
+                    <Text key={category?.id} size="xs" c="dimmed">
+                      {idx + 1}. {category?.name}
                     </Text>
                   ))
               )}
@@ -237,9 +237,9 @@ function Summary() {
               {summaryData?.top_marketplace_categories
                 .slice(0, 9)
                 .map((category, idx) => (
-                  <Text key={category.id} size="xs">
+                  <Text key={category?.id} size="xs">
                     <span className="text-dark-gold">{idx + 1}. </span>{' '}
-                    {category.name}
+                    {category?.name}
                   </Text>
                 ))}
             </SimpleGrid>

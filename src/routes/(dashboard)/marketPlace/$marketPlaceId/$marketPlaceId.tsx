@@ -7,7 +7,7 @@ export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/$marketPlaceId',
 )({
   component: ChatView,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () => routeGaurd(allowedRoles?.marketPlace),
 })
 
 type Message = {
@@ -101,34 +101,34 @@ function ChatView() {
         </Text>
 
         <div className="space-y-4 mt-6">
-          {messages.map((msg) => (
+          {messages?.map((msg) => (
             <div
-              key={msg.id}
+              key={msg?.id}
               className={`flex ${
-                msg.sender === 'buyer' ? 'justify-start' : 'justify-end'
+                msg?.sender === 'buyer' ? 'justify-start' : 'justify-end'
               }`}
             >
               <div
                 className={`max-w-[75%] rounded-lg p-3 ${
-                  msg.sender === 'buyer'
+                  msg?.sender === 'buyer'
                     ? 'bg-gray-100 text-gray-800'
                     : 'bg-yellow-100 text-gray-800'
                 }`}
               >
-                <Text size="sm">{msg.text}</Text>
+                <Text size="sm">{msg?.text}</Text>
                 <div className="flex justify-between mt-1 text-xs text-gray-500">
                   <span>
-                    {msg.edited && (
+                    {msg?.edited && (
                       <span className="italic text-blue-400 mr-1">Edited</span>
                     )}
                   </span>
                   <span>
-                    {msg.time} {msg.emoji}
+                    {msg?.time} {msg?.emoji}
                   </span>
                 </div>
-                {msg.replies && (
+                {msg?.replies && (
                   <Text size="xs" className="text-blue-600 mt-1">
-                    {msg.replies} Replies
+                    {msg?.replies} Replies
                   </Text>
                 )}
               </div>
@@ -142,7 +142,7 @@ function ChatView() {
         <Card radius="md" shadow="sm" className="bg-white">
           <Image src={listing.image} radius="md" height={160} fit="cover" />
           <Text fw={600} mt="md">
-            {listing.title}
+            {listing?.title}
           </Text>
           <div className="mt-3">
             <Text fw={600}>Listing Cost</Text>
@@ -151,7 +151,7 @@ function ChatView() {
               fw={700}
               className="bg-gray-100 rounded-md px-3 py-1 mt-1 text-gray-800"
             >
-              NGN {listing.price.toLocaleString()}
+              NGN {listing?.price?.toLocaleString()}
             </Text>
           </div>
         </Card>
@@ -164,7 +164,7 @@ function ChatView() {
             Seller Proof Of Delivery
           </Text>
           <Image
-            src={listing.proofImage}
+            src={listing?.proofImage}
             radius="md"
             height={140}
             fit="cover"

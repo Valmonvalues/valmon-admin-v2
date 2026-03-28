@@ -23,7 +23,7 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
     key: 'amount',
     header: 'Amount',
     render: (txn): ReactNode =>
-      `${txn.currency} ${Number(txn.amount).toLocaleString()}`,
+      `${txn?.currency} ${Number(txn?.amount)?.toLocaleString()}`,
   },
   {
     key: 'time',
@@ -36,19 +36,19 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
   {
     key: 'created_at',
     header: 'Date',
-    render: (txn): ReactNode => formatDate(txn.created_at),
+    render: (txn): ReactNode => formatDate(txn?.created_at),
   },
   {
     key: 'to',
     header: 'To',
     render: (txn): ReactNode =>
-      txn.bank_name ? `${txn.bank_name} - ${txn.account_number}` : '-',
+      txn?.bank_name ? `${txn?.bank_name} - ${txn?.account_number}` : '-',
   },
   {
     key: 'type',
     header: 'Type',
     render: (txn): ReactNode => {
-      const isFunding = txn.type === 'funding'
+      const isFunding = txn?.type === 'funding'
       return (
         <div className="flex items-center gap-1">
           {isFunding ? (
@@ -56,7 +56,7 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
           ) : (
             <IconArrowUp size={18} className="text-red-600" />
           )}
-          <span className="capitalize">{txn.type}</span>
+          <span className="capitalize">{txn?.type}</span>
         </div>
       )
     },
@@ -66,16 +66,16 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
     header: 'Status',
     render: (txn): ReactNode => (
       <Badge
-        color={txn.status === 'success' ? 'green' : 'gray'}
+        color={txn?.status === 'success' ? 'green' : 'gray'}
         variant="light"
       >
         <div className="flex items-center gap-2">
           <div
             className={`size-2 rounded-full ${
-              txn.status === 'success' ? 'bg-green-600' : 'bg-gray-500'
+              txn?.status === 'success' ? 'bg-green-600' : 'bg-gray-500'
             }`}
           />
-          {txn.status}
+          {txn?.status}
         </div>
       </Badge>
     ),
@@ -94,7 +94,7 @@ export const walletTransactionColumns = (): ColumnDef<WalletTransaction>[] => [
   //       <Menu.Dropdown>
   //         <Menu.Item
   //           leftSection={<IconEye size={16} />}
-  //           onClick={() => handleView(txn.id)}
+  //           onClick={() => handleView(txn?.id)}
   //         >
   //           View
   //         </Menu.Item>

@@ -34,22 +34,6 @@ const tabs = [
   'Market Place Listings',
 ]
 
-// const services = [
-//   {
-//     id: '1',
-//     category: 'Tailoring',
-//     title: 'Male Suit Top',
-//     pricingType: 'Per Unit',
-//     price: 'NGN 14,000',
-//   },
-//   {
-//     id: '2',
-//     category: 'Dress Fitting',
-//     title: 'Male Suit Top',
-//     pricingType: 'Per Day',
-//     price: 'NGN 14,000',
-//   },
-// ]
 
 function RouteComponent() {
   const [isOnline] = useState(false)

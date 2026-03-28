@@ -27,8 +27,8 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
     sortable: false,
     render: (customer): ReactNode => (
       <Image
-        src={customer.image}
-        alt={customer.name}
+        src={customer?.image}
+        alt={customer?.name}
         style={{ width: 35, height: 35, borderRadius: 8, objectFit: 'cover' }}
         radius="xl"
         fit="cover"
@@ -43,10 +43,10 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
       return (
         <Stack gap={0} style={{ lineHeight: 1.2 }}>
           <Text className="capitalize" fw={500}>
-            {customer.name}
+            {customer?.name}
           </Text>
           <Text size="sm" c="dimmed">
-            {customer.email}
+            {customer?.email}
           </Text>
         </Stack>
       )
@@ -68,41 +68,41 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
   {
     key: 'listings_count',
     header: 'Market Listings',
-    render: (customer): ReactNode => customer.listings_count,
+    render: (customer): ReactNode => customer?.listings_count,
   },
   {
     key: 'joined_date',
     header: 'Joined Date',
     render: (customer): ReactNode =>
-      new Date(customer.join_date).toLocaleDateString(),
+      new Date(customer?.join_date)?.toLocaleDateString(),
   },
   {
     key: 'reported_count',
     header: 'Times Reported',
-    render: (customer): ReactNode => customer.reported_count,
+    render: (customer): ReactNode => customer?.reported_count,
   },
   {
     key: 'type',
     header: 'Type',
     sortable: true,
-    render: (customer): ReactNode => customer.type,
+    render: (customer): ReactNode => customer?.type,
   },
   {
     key: 'last_seen_at',
     header: 'Last Seen',
     render: (customer): ReactNode =>
-      new Date(customer.last_seen_at).toLocaleDateString(),
-    // customer.last_seen_at,
+      new Date(customer?.last_seen_at)?.toLocaleDateString(),
+    // customer?.last_seen_at,
   },
   {
     key: 'status',
     header: 'Status',
     render: (customer): ReactNode => (
       <Badge
-        color={customer.status === 'ACTIVE' ? 'green' : 'red'}
+        color={customer?.status === 'ACTIVE' ? 'green' : 'red'}
         variant="light"
       >
-        {customer.status}
+        {customer?.status}
       </Badge>
     ),
   },

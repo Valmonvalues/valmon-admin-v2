@@ -30,7 +30,11 @@ function Users() {
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const [page, setPage] = useState(1)
   const { listUsers, getUsersSummary, deleteUser } = useUser()
-  const { data, isLoading } = listUsers({ page, perpage })
+  const { data, isLoading } = listUsers({
+    page,
+    perpage,
+    search: debouncedSearch || undefined,
+  })
   const { data: usersSummary } = getUsersSummary
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<null | Id>(null)
@@ -39,22 +43,13 @@ function Users() {
   const totalUsers = data?.pagination?.total ?? 0
   const totalPages = Math.ceil(totalUsers / perpage)
 
+  console.log(data)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof UserListType
     direction: 'asc' | 'desc'
   }>({ key: 'name', direction: 'asc' })
 
-  const filteredUsers =
-    debouncedSearch.trim() === ''
-      ? users
-      : users.filter((user) =>
-          user.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
-
-  const sortedUsers = useSortedData(
-    capitalizeKey(filteredUsers, 'name'),
-    sortConfig,
-  )
+  const sortedUsers = useSortedData(capitalizeKey(users, 'name'), sortConfig)
 
   const handleSort = (key: keyof UserListType) => {
     setSortConfig((prev) => ({

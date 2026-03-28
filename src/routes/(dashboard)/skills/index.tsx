@@ -11,6 +11,7 @@ import { useSkills } from '@/services/skills.service'
 import type { Id } from '@/types/global.type'
 import type { Transaction, CategoriesResponse } from '@/types/skills.types'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { perPage as perpage } from '@/constant/config'
 
 import { formatNumber } from '@/utils/formatters'
 
@@ -25,6 +26,7 @@ import { routeGaurd } from '@/components/utils/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import { capitalizeKey } from '@/components/utils/helper'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
+import { PaginationControls } from '@/components/table/PaginationControls'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -34,6 +36,7 @@ export const Route = createFileRoute('/(dashboard)/skills/')({
 function Skills() {
   const [activeTab, setActiveTab] = useState('skill transactions')
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
   const {
     listSkills,
     listCategories,
@@ -55,11 +58,23 @@ function Skills() {
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const { setOpenFormModal } = useGlobalContext()
 
-  const { data: skillsData, isLoading: skillDataLoader } = listSkills()
-  const { data: categoriesData } = listCategories()
-  const transaction = skillsData?.all_transactions || []
+  const { data: skillsData, isLoading: skillDataLoader } = listSkills({
+    page,
+    perpage,
+    search: debouncedSearch || undefined,
+  })
+  const { data: categoriesData } = listCategories({
+    page,
+    perpage,
+    search: debouncedSearch || undefined,
+  })
+  // const transaction = skillsData?.all_transactions || []
+  const transaction = skillsData?.data || []
   const topCategories = skillsData?.top_categories || []
   const categories = categoriesData || []
+
+  const totalTransactions = skillsData?.total ?? 0
+  const totalPages = Math.ceil(totalTransactions / perpage)
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Transaction
@@ -85,27 +100,13 @@ function Skills() {
     }))
   }
 
-  const filteredTransactions =
-    debouncedSearch.trim() === ''
-      ? transaction
-      : transaction.filter((t) =>
-          t.employer_name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
-
   const sortedTransaction = useSortedData(
-    capitalizeKey(filteredTransactions, 'employer_name'),
+    capitalizeKey(transaction, 'employer_name'),
     sortConfig,
   )
 
-  const filteredCategories =
-    debouncedSearch.trim() === ''
-      ? categories
-      : categories.filter((c: any) =>
-          c.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-        )
-
   const sortedCategories = useSortedData(
-    capitalizeKey(filteredCategories, 'name'),
+    capitalizeKey(categories, 'name'),
     sortConfigParent,
   )
 
@@ -118,8 +119,7 @@ function Skills() {
     }
   }, [])
 
-  const handleView = (categoryId: Id, type: string) => {
-    localStorage.setItem('leftOffSkill', type)
+  const handleView = (categoryId: Id) => {
     navigate({ to: `/skills/${categoryId}` })
   }
 
@@ -149,7 +149,10 @@ function Skills() {
       <div className="mb-4">
         <TabHeader
           activeTab={activeTab}
-          onChange={setActiveTab}
+          onChange={(value) => {
+            localStorage.setItem('leftOffSkill', value)
+            setActiveTab(value)
+          }}
           tabs={[
             { id: 'skill transactions', label: 'Skill Transactions' },
             { id: 'skill parent', label: 'Skill Parent Category' },
@@ -191,7 +194,7 @@ function Skills() {
                 totalCount={transaction.length}
                 data={sortedTransaction}
                 columns={
-                  transactionColumns()
+                  transactionColumns({ page })
                   //   {
                   //   // handleView,
                   //   handleView: (id) => handleView(id, 'skill transactions'),
@@ -204,6 +207,14 @@ function Skills() {
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
+
+              {!skillDataLoader && totalPages > 1 && (
+                <PaginationControls
+                  currentPage={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              )}
             </div>
 
             <ConfirmDeleteModal
@@ -227,7 +238,7 @@ function Skills() {
               data={sortedCategories as any}
               columns={categoriesColumns({
                 // handleView,
-                handleView: (id) => handleView(id, 'skill parent'),
+                handleView: (id) => handleView(id),
                 handleDeleteClick,
               })}
               isLoading={skillDataLoader}

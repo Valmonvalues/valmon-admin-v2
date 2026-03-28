@@ -5,38 +5,42 @@ import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
 import { formatDate } from '@/components/utils/helper'
 import { formatNumber } from '@/utils/formatters'
+import { perPage } from '@/constant/config'
 
-// interface TransactionColumnHandlers {
-//   handleView: (id: Id) => void
-//   handleDeleteClick: (id: Id) => void
-// }
+interface TransactionColumnHandlers {
+  page: number
+  // handleView: (id: Id) => void
+  // handleDeleteClick: (id: Id) => void
+}
 
-export const transactionColumns = (): ColumnDef<Transaction>[] => [
+export const transactionColumns = ({
+  page,
+}: TransactionColumnHandlers): ColumnDef<Transaction>[] => [
   {
     key: 'sn',
     header: 'SN',
     sortable: false,
-    render: (_, index): ReactNode => index + 1,
+    render: (_, index): ReactNode => (page - 1) * perPage + index + 1,
   },
   {
     key: 'employer_name',
     header: 'Employer',
     sortable: true,
     render: (txn): ReactNode => (
-      <p className="capitalize">{txn.employer_name}</p>
+      <p className="capitalize">{txn?.employer_name}</p>
     ),
   },
   {
     key: 'employee_name',
     header: 'Employee',
     render: (txn): ReactNode => (
-      <p className="capitalize">{txn.employee_name}</p>
+      <p className="capitalize">{txn?.employee_name}</p>
     ),
   },
   {
     key: 'category',
     header: 'Category',
-    render: (txn): ReactNode => txn.category || 'N/A',
+    render: (txn): ReactNode => txn?.category || 'N/A',
   },
   {
     key: 'skill',
@@ -51,17 +55,17 @@ export const transactionColumns = (): ColumnDef<Transaction>[] => [
   {
     key: 'amount',
     header: 'Amount',
-    render: (txn): ReactNode => `NGN ${formatNumber(txn.amount)}`,
+    render: (txn): ReactNode => `NGN ${formatNumber(txn?.amount)}`,
   },
   {
     key: 'to_valmon',
     header: 'To Valmon',
-    render: (txn): ReactNode => `NGN ${formatNumber(txn.to_valmon)}`,
+    render: (txn): ReactNode => `NGN ${formatNumber(txn?.to_valmon)}`,
   },
   {
     key: 'date',
     header: 'Date',
-    render: (txn): ReactNode => formatDate(txn.date),
+    render: (txn): ReactNode => formatDate(txn?.date),
   },
   {
     key: 'status',
@@ -69,18 +73,18 @@ export const transactionColumns = (): ColumnDef<Transaction>[] => [
     sortable: false,
     render: (txn): ReactNode => (
       <Badge
-        color={txn.status.toLowerCase() === 'completed' ? 'green' : 'gray'}
+        color={txn?.status?.toLowerCase() === 'completed' ? 'green' : 'gray'}
         variant="light"
       >
         <div className="flex items-center gap-2">
           <div
             className={`size-2 ${
-              txn.status.toLowerCase() === 'completed'
+              txn?.status?.toLowerCase() === 'completed'
                 ? 'bg-green-600'
                 : 'bg-gray-500'
             } rounded-full`}
           />
-          {txn.status}
+          {txn?.status}
         </div>
       </Badge>
     ),
@@ -99,14 +103,14 @@ export const transactionColumns = (): ColumnDef<Transaction>[] => [
   //       <Menu.Dropdown>
   //         <Menu.Item
   //           leftSection={<IconEye size={16} />}
-  //           onClick={() => handleView(txn.id)}
+  //           onClick={() => handleView(txn?.id)}
   //         >
   //           View
   //         </Menu.Item>
   //         <Menu.Item
   //           color="red"
   //           leftSection={<IconTrash size={16} />}
-  //           onClick={() => handleDeleteClick(txn.id)}
+  //           onClick={() => handleDeleteClick(txn?.id)}
   //         >
   //           Delete
   //         </Menu.Item>

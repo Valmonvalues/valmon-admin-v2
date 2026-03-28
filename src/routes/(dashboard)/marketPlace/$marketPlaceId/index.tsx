@@ -20,7 +20,7 @@ export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/',
 )({
   component: MarketPlaceProduct,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () => routeGaurd(allowedRoles?.marketPlace),
 })
 
 interface InfoRowProps {
@@ -58,7 +58,7 @@ function MarketPlaceProduct() {
 
   const handleViewProfile = () => {
     if (seller?.id) {
-      navigate({ to: `/users/${seller.id}` })
+      navigate({ to: `/users/${seller?.id}` })
     }
   }
 
@@ -138,7 +138,7 @@ function MarketPlaceProduct() {
                 <InfoRow
                   label="Price"
                   // ₦
-                  value={`NGN${Number(listing?.price).toLocaleString()}`}
+                  value={`NGN${Number(listing?.price)?.toLocaleString()}`}
                 />
                 <InfoRow
                   label="Negotiable"

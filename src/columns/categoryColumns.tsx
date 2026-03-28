@@ -36,10 +36,10 @@ export const categoryColumns = ({
     render: (category): ReactNode => (
       <div className="max-w-[200px]">
         <span
-          title={category.name}
+          title={category?.name}
           className="truncate text-sm font-medium text-gray-900"
         >
-          {category.name}
+          {category?.name}
         </span>
       </div>
     ),
@@ -47,19 +47,19 @@ export const categoryColumns = ({
   {
     key: 'products_listed',
     header: 'Products Listed',
-    render: (category): ReactNode => category.products_listed,
+    render: (category): ReactNode => category?.products_listed,
   },
   {
     key: 'products_sold',
     header: 'Products Sold',
-    render: (category): ReactNode => category.products_sold,
+    render: (category): ReactNode => category?.products_sold,
   },
   {
     key: 'active_listings_cost',
     header: 'Active Listings Cost',
     render: (category): ReactNode => (
       <span className="font-medium text-gray-800">
-        NGN {category.active_listings_cost.toLocaleString()}
+        NGN {category?.active_listings_cost?.toLocaleString()}
       </span>
     ),
   },
@@ -68,7 +68,7 @@ export const categoryColumns = ({
     header: 'Sold Amount',
     render: (category): ReactNode => (
       <span className="font-medium text-gray-800">
-        NGN {category.sold_amount.toLocaleString()}
+        NGN {category?.sold_amount?.toLocaleString()}
       </span>
     ),
   },
@@ -86,14 +86,14 @@ export const categoryColumns = ({
         <Menu.Dropdown>
           <Menu.Item
             leftSection={<IconEye size={16} />}
-            onClick={() => handleView(category.id)}
+            onClick={() => handleView(category?.id)}
           >
             View
           </Menu.Item>
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
-            onClick={() => handleDeleteClick(category.id)}
+            onClick={() => handleDeleteClick(category?.id)}
           >
             Delete
           </Menu.Item>

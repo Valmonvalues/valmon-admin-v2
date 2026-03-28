@@ -18,13 +18,15 @@ export interface Transaction {
 export interface TransactionResponse {
   // data: {
   transaction_count: number
-  all_transactions: Transaction[]
+  // all_transactions: Transaction[]
+  data: Transaction[]
   transaction_count_percentage: number
   transaction_value: number
   transaction_value_percentage: number
   valmon_earning: number
   valmon_earning_percentage: number
   top_categories: []
+  total?: number
   // }
 }
 

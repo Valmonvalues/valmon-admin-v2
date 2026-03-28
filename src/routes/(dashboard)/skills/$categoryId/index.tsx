@@ -22,7 +22,7 @@ import { useState } from 'react'
 
 export const Route = createFileRoute('/(dashboard)/skills/$categoryId/')({
   component: RouteComponent,
-  loader: () => routeGaurd(allowedRoles.skills),
+  loader: () => routeGaurd(allowedRoles?.skills),
 })
 
 function RouteComponent() {
@@ -64,8 +64,10 @@ function RouteComponent() {
   const filteredParentCategory =
     debouncedSearch.trim() === ''
       ? parentSubCategory
-      : parentSubCategory.filter((category) =>
-          category.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+      : parentSubCategory?.filter((category) =>
+          category.name
+            ?.toLowerCase()
+            ?.includes(debouncedSearch?.toLowerCase()),
         )
 
   const sortedParentCategory = useSortedData(
@@ -76,7 +78,8 @@ function RouteComponent() {
   const handleSort = (key: keyof SubCategory) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+      direction:
+        prev?.key === key && prev?.direction === 'asc' ? 'desc' : 'asc',
     }))
   }
 

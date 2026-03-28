@@ -19,9 +19,9 @@ export const useUser = () => {
   //     keepPreviousData: true, // keeps UI stable between pages
   //   })
 
-  const listUsers = (params?: Params & { search?: string }) =>
+  const listUsers = (params?: Params) =>
     useQuery<UserResponseType>({
-      queryKey: ['users', params?.page, params?.search],
+      queryKey: ['users', params],
       queryFn: () => userApi.list(params),
       // keepPreviousData: true,
     })
