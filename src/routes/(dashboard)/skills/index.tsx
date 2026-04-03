@@ -22,11 +22,12 @@ import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
-import { capitalizeKey } from '@/components/utils/helper'
+import { capitalizeKey } from '@/utils/helper'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { PaginationControls } from '@/components/table/PaginationControls'
+import { useSummary } from '@/services/summary.service'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -44,6 +45,10 @@ function Skills() {
     deleteTransaction,
     deleteParent,
   } = useSkills()
+  const { getSummary } = useSummary()
+  const { data: summaryData } = getSummary()
+  console.log(summaryData)
+
   const {
     // selectedId: selectedManager,
     modalOpen: deleteModalOpen,
@@ -70,7 +75,8 @@ function Skills() {
   })
   // const transaction = skillsData?.all_transactions || []
   const transaction = skillsData?.data || []
-  const topCategories = skillsData?.top_categories || []
+  // const topCategories = skillsData?.top_categories || []
+  const topCategories = summaryData?.top_skill_categories || []
   const categories = categoriesData || []
 
   const totalTransactions = skillsData?.total ?? 0

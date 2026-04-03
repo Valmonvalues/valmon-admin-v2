@@ -14,7 +14,7 @@ import ServicesSection from '@/components/user/ServiceSection'
 import ReviewsSection from '@/components/user/ReviewSection'
 import { notifications } from '@mantine/notifications'
 import { useConfirmModal } from '@/providers/ModalProvider'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import WorkGallery from '@/components/WorkGallery'
 import Services from '@/components/Services'
@@ -33,7 +33,6 @@ const tabs = [
   'Reviews',
   'Market Place Listings',
 ]
-
 
 function RouteComponent() {
   const [isOnline] = useState(false)

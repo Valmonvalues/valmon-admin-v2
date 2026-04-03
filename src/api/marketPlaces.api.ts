@@ -2,13 +2,18 @@ import type { Id, Params } from '@/types/global.type'
 import { apiClient } from './apiClient'
 import type {
   CategoryItem,
-  MarketplaceListingIdResponse,
+  ListingCategoryItemsResponse,
+  MarketplaceListingIdData,
   MarketplaceResponse,
 } from '@/types/marketPlaces.types'
 
 export const marketPlaces = {
+  // listingSummary: async (params?: Params): Promise<MarketplaceResponse> => {
+  //   const response = await apiClient.get('/listings/summary', { params })
+  //   return response.data
+  // },
   listingSummary: async (params?: Params): Promise<MarketplaceResponse> => {
-    const response = await apiClient.get('/listings/summary', { params })
+    const response = await apiClient.get('/listings/open', { params })
     return response.data
   },
 
@@ -22,14 +27,34 @@ export const marketPlaces = {
     return response.data
   },
 
+  // listingCategories: async (params?: Params): Promise<CategoryItem[]> => {
+  //   const response = await apiClient.get('/marketplace/listing-category', {
+  //     params,
+  //   })
+  //   // console.log(response.data)
+  //   return response.data
+  // },
   listingCategories: async (params?: Params): Promise<CategoryItem[]> => {
-    const response = await apiClient.get('/listings/categories', { params })
-    // console.log(response.data)
+    const response = await apiClient.get('/listings/categories', {
+      params,
+    })
     return response.data
   },
 
-  getListingId: async (id: Id): Promise<MarketplaceListingIdResponse> => {
+  getListingId: async (id: Id): Promise<MarketplaceListingIdData> => {
     const response = await apiClient.get(`/listings/${id}`)
+    return response.data
+  },
+
+  getListingByCategory: async (
+    params: Params,
+  ): Promise<ListingCategoryItemsResponse> => {
+    const response = await apiClient.get(`/listings`, { params })
+    return response.data
+  },
+
+  getListingByCategoryId: async (id: Id): Promise<CategoryItem> => {
+    const response = await apiClient.get(`/listings/categories/${id}`)
     return response.data
   },
 

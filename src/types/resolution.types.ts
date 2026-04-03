@@ -12,6 +12,8 @@ export interface Ticket {
   image: string
   status: 'open' | 'closed' | 'resolved' | string // add other possible statuses if needed
   created_at: string
+  buyer?: string
+  seller?: string
 }
 
 export interface Pagination {

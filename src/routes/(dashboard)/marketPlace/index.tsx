@@ -22,10 +22,12 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
 import { useGlobalContext } from '@/contexts/GlobalContext'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
-import { capitalizeKey } from '@/components/utils/helper'
+import { capitalizeKey } from '@/utils/helper'
 import { PaginationControls } from '@/components/table/PaginationControls'
+
+export type TypeProps = 'open' | 'approval' | 'closed' | 'categories'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
@@ -101,13 +103,9 @@ function MarketPlace() {
       search: debouncedSearch || undefined,
     })
 
-  // console.log('users raw listings:', listing)
-
-  const allOpenListing = listing?.all_listings ?? []
+  const allOpenListing = listing?.data ?? []
   // const totalListings = listing?.pagination?.total ?? 0
-  const totalListings = listing?.totalListingCount ?? 0
-
-  console.log(allOpenListing)
+  const totalListings = listing?.total ?? 0
 
   const allApprovalListing = approval?.all_listings?.data ?? []
   // const totalApprovals = approval?.pagination?.total ?? 0
@@ -170,15 +168,16 @@ function MarketPlace() {
   }, [])
 
   const handleView = (itemId: Id) => {
-    navigate({ to: `/marketPlace/${itemId}` })
+    navigate({
+      to: `/marketPlace/${itemId}`,
+      search: { type: activeTab as TypeProps, category: itemId },
+    })
   }
 
   const handleAddCategory = async (categoryData: any) => {
     try {
       const formData = new FormData()
       formData.append('name', categoryData.name)
-
-      // console.log('category: ', categoryData)
 
       await addCategory.mutateAsync(formData, {
         onSuccess: () => setOpenFormModal(false),
@@ -248,7 +247,6 @@ function MarketPlace() {
                 handleView: (id) => handleView(id),
                 handleDeleteClick,
                 buttonLayout: 'menu', // Menu style
-                // showActions: ['view', 'edit', 'delete'],
                 showActions: ['view', 'delete'],
               })}
               isLoading={listingIsloading}
@@ -344,12 +342,6 @@ function MarketPlace() {
                 color="bg-green-100"
                 image={cardblack}
               />
-              <StatCard
-                title=""
-                value={0}
-                color="bg-icon-light-pink"
-                image={convertShape}
-              />
             </div>
 
             <ReusableTable<ListingItem>
@@ -390,7 +382,6 @@ function MarketPlace() {
                 data={sortedCategories}
                 columns={categoryColumns({
                   page,
-                  // handleView,
                   handleView: (id) => handleView(id),
                   handleDeleteClick,
                 })}

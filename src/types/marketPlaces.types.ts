@@ -45,7 +45,9 @@ export interface MarketplaceResponse {
   all_listings: {
     data: ListingItem[]
   }
-  totalListingCount: number
+  data: ListingItem[]
+  // totalListingCount: number
+  total: number
   totalListedValue: string
   In_Escrow_Value: number
   In_Escrow_count: number
@@ -101,6 +103,25 @@ export interface MarketplaceListingIdUser {
   inbox_response_rate: number
   active_jobs_count: number
   profile: UserProfileListingId
+}
+
+export interface ListingCategoryItems {
+  id: number
+  image: string | null
+  name: string
+  condition: string
+  color: string
+  category: string
+  price: string
+  seller_name: string
+  seller_image: string
+  listing_date: string
+  status: string
+}
+
+export type ListingCategoryItemsResponse = {
+  data: ListingCategoryItems[]
+  total: number
 }
 
 export interface UserProfileListingId {

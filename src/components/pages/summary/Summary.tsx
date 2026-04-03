@@ -33,7 +33,6 @@ function Summary() {
   const { data: summaryData, isLoading } = getSummary({
     period: selectedPeriod?.toLowerCase(),
   })
-  // console.log(summaryData)
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {

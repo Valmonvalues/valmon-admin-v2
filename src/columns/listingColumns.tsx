@@ -1,5 +1,13 @@
 import type { ReactNode } from 'react'
-import { ActionIcon, Avatar, Badge, Button, Group, Menu } from '@mantine/core'
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Button,
+  Group,
+  Menu,
+  Tooltip,
+} from '@mantine/core'
 import {
   IconCheck,
   IconDotsVertical,
@@ -11,7 +19,7 @@ import {
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Id } from '@/types/global.type'
 import { perPage } from '@/constant/config'
-import { formatDate } from '@/components/utils/helper'
+import { formatDate } from '@/utils/helper'
 import { formatNumber } from '@/utils/formatters'
 
 export interface ListingItem {
@@ -127,23 +135,29 @@ export const listingColumns = ({
       key: 'status',
       header: 'Status',
       render: (listing): ReactNode => (
-        <Badge
-          color={
-            listing?.status?.toLowerCase() === 'active' ? '#AD7A22' : 'gray'
-          }
-          variant="light"
+        <Tooltip
+          className="capitalize rounded-xl! text-sm"
+          label={listing?.status?.toLowerCase()}
+          withArrow
         >
-          <div className="flex items-center gap-2">
-            <div
-              className={`size-2 ${
-                listing?.status?.toLowerCase() === 'active'
-                  ? 'bg-yellow-600'
-                  : 'bg-gray-800'
-              } rounded-full`}
-            />
-            {listing?.status}
-          </div>
-        </Badge>
+          <Badge
+            color={
+              listing?.status?.toLowerCase() === 'active' ? '#AD7A22' : 'gray'
+            }
+            variant="light"
+          >
+            <div className="flex items-center gap-2">
+              <div
+                className={`size-2 ${
+                  listing?.status?.toLowerCase() === 'active'
+                    ? 'bg-yellow-600'
+                    : 'bg-gray-800'
+                } rounded-full`}
+              />
+              {listing?.status}
+            </div>
+          </Badge>
+        </Tooltip>
       ),
     })
   }

@@ -7,14 +7,17 @@ import type { Ticket } from '@/types/resolution.types'
 import useSortedData from '@/hook/sortData'
 import type { Id } from '@/types/global.type'
 import { resolutionServicesColumns } from '@/columns/resolutionServicesColumns'
-// import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
+import { perPage as perpage } from '@/constant/config'
 import TabHeader from '@/components/TabHeader'
 import { SimpleGrid } from '@mantine/core'
 import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
-import { capitalizeKey } from '@/components/utils/helper'
+import { capitalizeKey } from '@/utils/helper'
+import { resolutionMarketplaceColumns } from '@/columns/resolutionMarketPlaceColumns'
+import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
+import { PaginationControls } from '@/components/table/PaginationControls'
 
 export const Route = createFileRoute('/(dashboard)/resolution/')({
   component: Resolution,
@@ -23,22 +26,25 @@ export const Route = createFileRoute('/(dashboard)/resolution/')({
 
 function Resolution() {
   const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('services')
+  const [page, setPage] = useState(1)
+  const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const { listingServices, listingMarketPlace } = useResolution()
   const { data: serviceData, isLoading: servicesLoading } = listingServices()
-  // isLoading: marketplaceLoading
-  const { data: marketplaceData } = listingMarketPlace()
+  const { data: marketplaceData, isLoading: marketPlaceLoading } =
+    listingMarketPlace({ page, perpage, search: debouncedSearch || undefined })
+  const marketplace = marketplaceData?.tickets || []
+  const totalMarketPlace = marketplaceData?.pagination?.total_items ?? 0
+  const totalMarketPlacePages = Math.ceil(totalMarketPlace / perpage)
+  // const totalMarketPlacePages = marketplaceData?.pagination?.total_pages ?? 0
+
   const services = serviceData?.tickets || []
-  const ticketCountServices = serviceData?.summary?.ticketCount
+  // const ticketCountServices = serviceData?.summary?.ticketCount
   const totalValueServices = serviceData?.summary?.ticketsAmount
   const resolvedTicketCountServices = serviceData?.summary?.resolvedTicketCount
   const resolvedTicketValueServices = serviceData?.summary?.resolvedTicketValue
 
-  const marketplace = marketplaceData?.tickets || []
-  console.log(marketplaceData)
-
-  const [search, setSearch] = useState('')
   // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('services')
   // const [selectedService, setSelectedService] = useState<null | Id>(null)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Ticket
@@ -49,7 +55,11 @@ function Resolution() {
     capitalizeKey(services, 'employer'),
     sortConfig,
   )
-  const [page] = useState(1)
+
+  const sortedMarketplace = useSortedData(
+    capitalizeKey(marketplace, 'buyer'),
+    sortConfig,
+  )
 
   const handleSort = (key: keyof Ticket) => {
     setSortConfig((prev) => ({
@@ -58,36 +68,21 @@ function Resolution() {
     }))
   }
 
+  // const {
+  //   // selectedId: selectedManager,
+  //   modalOpen: deleteModalOpen,
+  //   setModalOpen: setDeleteModalOpen,
+  //   handleDeleteClick,
+  //   handleConfirmDelete,
+  // } = useHandleDelete({
+  //   mutation: getDeleteMutation(),
+  //   entityName: 'marketplace',
+  // })
+
   const handleView = (id: Id) => {
     navigate({ to: `/resolution/${id}` })
     console.log(id)
   }
-
-  // const handleDeleteClick = (transactionId: Id) => {
-  //   console.log(transactionId)
-
-  //   setSelectedService(transactionId)
-  //   setDeleteModalOpen(true)
-  // }
-
-  // const handleConfirmDelete = () => {
-  //   // delete.mutate(selectedService as Id, {
-  //   //   onSuccess: () => {
-  //   //     setSelectedService(null)
-  //   //     setDeleteModalOpen(false)
-  //   //   },
-  //   //   onError: (error) => {
-  //   //     console.error('Error deleting user:', error)
-  //   //     notifications.show({
-  //   //       title: 'Error',
-  //   //       message: 'Failed to delete user. Please try again.',
-  //   //       color: 'red',
-  //   //     })
-  //   //   },
-  //   // })
-  //   console.log(selectedService)
-  //   console.log(marketplaceLoading)
-  // }
 
   return (
     <DashboardLayout>
@@ -107,8 +102,8 @@ function Resolution() {
           <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
             <StatCard
               title="All Reports"
-              // value={services.length}
-              value={ticketCountServices}
+              value={services.length}
+              // value={ticketCountServices}
               color="bg-pink-100"
               image={''}
             />
@@ -145,7 +140,7 @@ function Resolution() {
                 })}
                 isLoading={servicesLoading}
                 searchQuery={search}
-                onSearchChange={setSearch}
+                onSearchChange={handleSearch}
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
@@ -192,34 +187,42 @@ function Resolution() {
             />
           </SimpleGrid>
 
-          {/* <div className="">
+          <div className="">
             <div className="">
               <ReusableTable
                 title="Report"
                 totalCount={marketplace.length}
-                data={sortedTServices}
-                columns={resolutionServicesColumns({
+                data={sortedMarketplace}
+                columns={resolutionMarketplaceColumns({
                   page,
                   handleView,
-                  handleDeleteClick,
+                  // handleDeleteClick,
                 })}
-                isLoading={marketplaceLoading}
+                isLoading={marketPlaceLoading}
                 searchQuery={search}
-                onSearchChange={setSearch}
+                onSearchChange={handleSearch}
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
+
+              {!marketPlaceLoading && totalMarketPlacePages > 1 && (
+                <PaginationControls
+                  currentPage={page}
+                  totalPages={totalMarketPlacePages}
+                  onPageChange={setPage}
+                />
+              )}
             </div>
 
-            <ConfirmDeleteModal
+            {/* <ConfirmDeleteModal
               opened={deleteModalOpen}
               onCancel={() => setDeleteModalOpen(false)}
               onConfirm={handleConfirmDelete}
               title="Delete resolution"
               message="Are you sure you want to delete this service? This action cannot be undone."
               // loading={deleteClosed.isPending}
-            />
-          </div> */}
+            /> */}
+          </div>
         </>
       )}
     </DashboardLayout>

@@ -1,4 +1,4 @@
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useResolution } from '@/services/resolution.service'

@@ -1,6 +1,6 @@
 import { serviceRequestColumns } from '@/columns/serviceRequestColumns'
 import { ReusableTable } from '@/components/table/ReusableTable'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useCategoryRequest } from '@/services/categoryRequest.service'

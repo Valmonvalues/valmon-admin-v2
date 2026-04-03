@@ -12,6 +12,7 @@ export interface Params {
   perpage?: number
   period?: string
   search?: string
+  category?: Id
 }
 
 export type Id = number | string

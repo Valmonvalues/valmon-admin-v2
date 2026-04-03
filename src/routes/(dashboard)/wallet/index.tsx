@@ -14,7 +14,7 @@ import withdrawLight from '@/assets/icons/export-light.svg'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import BaseButton from '@/components/BaseButton'
 import type { Field } from '@/components/modals/AddModal'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute('/(dashboard)/wallet/')({
@@ -210,14 +210,14 @@ function Wallet() {
                       Total Income
                     </Text>
                     <Text fw={700} size="lg" mt="xs">
-                      NGN
-                      {Number(walletData?.total_income ?? 0)?.toLocaleString(
-                        'en-NG',
-                        {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        },
-                      )}
+                      {showBalance
+                        ? `NGN ${Number(
+                            walletData?.total_income ?? 0,
+                          )?.toLocaleString('en-NG', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}`
+                        : '••••••••'}
                     </Text>
                   </div>
                 </div>
@@ -252,13 +252,14 @@ function Wallet() {
                       Total Withdrawn
                     </Text>
                     <Text fw={700} size="lg" mt="xs">
-                      NGN
-                      {Number(
-                        walletData?.total_withdrawal ?? 0,
-                      )?.toLocaleString('en-NG', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                      {showBalance
+                        ? `NGN ${Number(
+                            walletData?.total_withdrawal ?? 0,
+                          )?.toLocaleString('en-NG', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}`
+                        : '••••••••'}
                     </Text>
                   </div>
                 </div>

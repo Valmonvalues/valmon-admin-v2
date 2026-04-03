@@ -9,13 +9,11 @@ import { perPage } from '@/constant/config'
 interface ResolutionColumnHandlers {
   page: number
   handleView: (id: number) => void
-  // handleDeleteClick?: (id: number) => void
 }
 
-export const resolutionServicesColumns = ({
+export const resolutionMarketplaceColumns = ({
   page,
   handleView,
-  // handleDeleteClick,
 }: ResolutionColumnHandlers): ColumnDef<Ticket>[] => [
   {
     key: 'sn',
@@ -24,29 +22,33 @@ export const resolutionServicesColumns = ({
     render: (_, index): ReactNode => (page - 1) * perPage + index + 1,
   },
   {
-    key: 'employer',
-    header: 'Employer',
+    key: 'buyer',
+    header: 'Buyer',
     render: (ticket): ReactNode => (
-      <Text className="capitalize">{ticket?.employer}</Text>
+      <Text className="capitalize">{ticket?.buyer}</Text>
     ),
   },
   {
-    key: 'provider',
-    header: 'Provider',
-    sortable: false,
-    render: (ticket): ReactNode => ticket?.provider,
+    key: 'seller',
+    header: 'Seller',
+    render: (ticket): ReactNode => (
+      <Text className="capitalize">{ticket?.seller}</Text>
+    ),
   },
   {
     key: 'complainer',
     header: 'Complainer',
-    render: (ticket): ReactNode => ticket?.complainer,
+    render: (ticket): ReactNode => (
+      <Text className="capitalize">{ticket?.complainer}</Text>
+    ),
   },
   {
     key: 'amount',
     header: 'Amount',
     render: (ticket): ReactNode => (
       <span className="font-medium text-gray-800">
-        ₦{Number(ticket?.amount)?.toLocaleString()}
+        {/* ₦ */}
+        NGN {Number(ticket?.amount)?.toLocaleString()}
       </span>
     ),
   },
@@ -107,13 +109,6 @@ export const resolutionServicesColumns = ({
           >
             View
           </Menu.Item>
-          {/* <Menu.Item
-            color="red"
-            leftSection= size={16} />}
-            onClick={() => handleDeleteClick(ticket?.id)}
-          >
-            Delete
-          </Menu.Item> */}
         </Menu.Dropdown>
       </Menu>
     ),

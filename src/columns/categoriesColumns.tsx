@@ -57,17 +57,13 @@ export const categoriesColumns = ({
   {
     key: 'total_transactionst',
     header: 'Transactions',
-    render: (category): ReactNode =>
-      `NGN ${Number(category.total_transactions).toFixed(2)}`,
+    render: (category): ReactNode => `${Number(category.total_transactions)}`,
   },
   {
     key: 'transaction_value',
     header: 'Transaction Value',
     render: (category): ReactNode =>
       `NGN ${Number(category.transacted_value).toFixed(2)}`,
-    // category.transaction_value != null
-    //   ? `NGN ${Number(category.transaction_value).toFixed(2)}`
-    //   : 'NGN 0',
   },
   {
     key: 'valmon_earning',

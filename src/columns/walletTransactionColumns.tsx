@@ -3,7 +3,7 @@ import { Badge } from '@mantine/core'
 import { IconArrowDown, IconArrowUp } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { WalletTransaction } from '@/types/wallet.types'
-import { formatDate } from '@/components/utils/helper'
+import { formatDate } from '@/utils/helper'
 
 // interface WalletTransactionColumnHandlers {
 //   handleView: (id: Id) => void

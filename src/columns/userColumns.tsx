@@ -5,7 +5,7 @@ import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { UserListType } from '@/types/user.types'
 import { perPage } from '@/constant/config'
-import { formatDate } from '@/components/utils/helper'
+import { formatDate } from '@/utils/helper'
 
 interface UserColumnHandlers {
   page: number

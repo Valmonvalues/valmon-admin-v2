@@ -16,9 +16,9 @@ import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 import profile from '@/assets/icons/cardprofile.svg'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { allowedRoles } from '@/data/roles'
-import { capitalizeKey } from '@/components/utils/helper'
+import { capitalizeKey } from '@/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
@@ -43,7 +43,6 @@ function Users() {
   const totalUsers = data?.pagination?.total ?? 0
   const totalPages = Math.ceil(totalUsers / perpage)
 
-  console.log(data)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof UserListType
     direction: 'asc' | 'desc'

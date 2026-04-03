@@ -1,4 +1,5 @@
 import { marketPlaces } from '@/api/marketPlaces.api'
+import type { TypeProps } from '@/routes/(dashboard)/marketPlace'
 import type { Id, Params } from '@/types/global.type'
 import type {
   CategoryItem,
@@ -37,10 +38,25 @@ export const useMarketPlaces = () => {
     })
   }
 
-  const listingId = (id: Id) => {
+  const listingId = (id: Id, type?: TypeProps) => {
     return useQuery({
       queryKey: ['listingId', id],
       queryFn: () => marketPlaces.getListingId(id),
+      enabled: type ? type !== 'categories' : true,
+    })
+  }
+
+  const listingByCategory = (id: Id, params: Params) => {
+    return useQuery({
+      queryKey: ['listingByCategory', id, params],
+      queryFn: () => marketPlaces.getListingByCategory(params),
+    })
+  }
+
+  const listingByCategoryId = (id: Id) => {
+    return useQuery({
+      queryKey: ['listingByCategoryId', id],
+      queryFn: () => marketPlaces.getListingByCategoryId(id),
     })
   }
 
@@ -110,6 +126,8 @@ export const useMarketPlaces = () => {
     listingClosed,
     listingCategories,
     listingId,
+    listingByCategory,
+    listingByCategoryId,
     chat,
     addCategory,
     approveListing,

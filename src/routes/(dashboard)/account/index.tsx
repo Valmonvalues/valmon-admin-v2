@@ -12,10 +12,10 @@ import { accountManagerColumns } from '@/columns/accountManagersColumns'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import { allowedRoles, roles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
-import { routeGaurd } from '@/components/utils/routeGuard'
+import { routeGaurd } from '@/middleware/routeGuard'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { perPage as perpage } from '@/constant/config'
-import { capitalizeKey } from '@/components/utils/helper'
+import { capitalizeKey } from '@/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,

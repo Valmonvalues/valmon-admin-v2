@@ -3,7 +3,7 @@ import { Badge } from '@mantine/core'
 // import type { Id } from '@/types/global.type'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import type { Transaction } from '@/types/skills.types'
-import { formatDate } from '@/components/utils/helper'
+import { formatDate } from '@/utils/helper'
 import { formatNumber } from '@/utils/formatters'
 import { perPage } from '@/constant/config'
 

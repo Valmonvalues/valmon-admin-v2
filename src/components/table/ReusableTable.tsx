@@ -32,8 +32,8 @@ interface ReusableTableProps<T> {
   isLoading: boolean
   searchQuery?: string
   onSearchChange?: (value: string) => void
-  sortConfig: SortConfig<T>
-  onSort: (key: keyof T) => void
+  sortConfig?: SortConfig<T>
+  onSort?: (key: keyof T) => void
   headerActions?: React.ReactNode
 }
 
@@ -53,10 +53,10 @@ export function ReusableTable<T extends { id: Id }>({
   const renderSortIcon = (columnKey: string, sortable?: boolean) => {
     if (sortable === false) return null
 
-    if (sortConfig.key !== columnKey) {
+    if (sortConfig?.key !== columnKey) {
       return <IconArrowDown stroke={1} size={15} />
     }
-    if (sortConfig.direction === 'asc') {
+    if (sortConfig?.direction === 'asc') {
       return <IconArrowUp stroke={1.5} size={15} />
     }
     return <IconArrowDown stroke={1.5} size={15} />
@@ -111,7 +111,7 @@ export function ReusableTable<T extends { id: Id }>({
                     className="whitespace-nowrap cursor-pointer"
                     onClick={() => {
                       if (column.sortable !== false) {
-                        onSort(column.key)
+                        onSort?.(column.key)
                       }
                     }}
                     style={{
