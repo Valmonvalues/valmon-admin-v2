@@ -32,6 +32,7 @@ export const listingCategoryColumns = ({
     {
       key: 'image',
       header: 'Image',
+      sortable: false,
       render: (listing): ReactNode => (
         <Avatar src={listing?.image ?? undefined} size="md" />
       ),
@@ -46,11 +47,13 @@ export const listingCategoryColumns = ({
     {
       key: 'condition',
       header: 'Condition',
+      sortable: false,
       render: (listing): ReactNode => listing?.condition,
     },
     {
       key: 'color',
       header: 'Color',
+      sortable: false,
       render: (listing): ReactNode => listing?.color,
     },
     {
@@ -61,11 +64,13 @@ export const listingCategoryColumns = ({
     {
       key: 'price',
       header: 'Price',
+      sortable: false,
       render: (listing): ReactNode => `NGN ${formatNumber(listing?.price)}`,
     },
     {
       key: 'seller_image',
       header: 'Seller Image',
+      sortable: false,
       render: (listing): ReactNode => (
         <Avatar
           src={listing?.seller_image}

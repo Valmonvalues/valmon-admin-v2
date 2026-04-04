@@ -39,14 +39,13 @@ export const Route = createFileRoute(
 function MarketPlaceProduct() {
   const { marketPlaceId } = Route.useParams()
   const { type, category } = Route.useSearch()
-  const [page, setPage] = useState(1)
+  const [page] = useState(1)
   const { listingId, listingByCategory, listingByCategoryId } =
     useMarketPlaces()
   const { data: listing } = listingId(marketPlaceId, type)
   const { data: listingCategory, isLoading: listingCategoryIsLoading } =
     listingByCategory(marketPlaceId, { page, category })
-  const { data: categoryListing, isLoading: listingCategoryIdIsLoading } =
-    listingByCategoryId(marketPlaceId)
+  const { data: categoryListing } = listingByCategoryId(marketPlaceId)
 
   function renderView() {
     switch (type) {
@@ -59,9 +58,8 @@ function MarketPlaceProduct() {
             categoryListing={categoryListing}
             listingCategoryIsLoading={listingCategoryIsLoading}
             listingCategory={listingCategory}
-            listingCategoryIdIsLoading={listingCategoryIdIsLoading}
             page={page}
-            setPage={setPage}
+            // setPage={setPage}
           />
         )
 

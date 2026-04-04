@@ -2,46 +2,61 @@ import { listingCategoryColumns } from '@/columns/listingCategoryColumns'
 import { BackButton } from '@/components/BackButton'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
+import useSortedData from '@/hook/sortData'
 import type { Id } from '@/types/global.type'
 import type {
   CategoryItem,
   ListingCategoryItems,
   ListingCategoryItemsResponse,
   ListingItem,
-  MarketplaceListingIdData,
-  MarketplaceListingIdResponse,
 } from '@/types/marketPlaces.types'
 import { formatNumber } from '@/utils/formatters'
+import { capitalizeKey } from '@/utils/helper'
+import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
 type MarketCategoryListingProps = {
   page: number
-  setPage: (page: number) => void
+  // setPage: (page: number) => void
   listingCategory?: ListingCategoryItemsResponse
   categoryListing?: CategoryItem
 
   listingCategoryIsLoading: boolean
-  listingCategoryIdIsLoading: boolean
 }
 
 function MarketCategoryListing({
   page,
-  setPage,
   listingCategory,
   categoryListing,
   listingCategoryIsLoading,
-  listingCategoryIdIsLoading,
 }: MarketCategoryListingProps) {
-  // const [sortConfig, setSortConfig] = useState<{
-  //   key: keyof ListingCategoryItems
-  //   direction: 'asc' | 'desc'
-  // }>({ key: 'product name', direction: 'asc' })
+  const navigate = useNavigate()
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof ListingCategoryItems
+    direction: 'asc' | 'desc'
+  }>({ key: 'name', direction: 'asc' })
 
-  const handleView = (id: Id) => {
-    console.log(id, 'View Page')
+  const handleSort = (key: keyof ListingItem) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+    }))
   }
 
-  console.log('View Page', listingCategory?.data)
+  const sortedListings = useSortedData(
+    capitalizeKey(
+      listingCategory?.data || ([] as ListingCategoryItems[]),
+      'name',
+    ),
+    sortConfig,
+  )
+
+  const handleView = (itemId: Id) => {
+    navigate({
+      to: `/marketPlace/${itemId}`,
+      // search: { type: activeTab as TypeProps, category: itemId },
+    })
+  }
 
   return (
     <div>
@@ -64,19 +79,17 @@ function MarketCategoryListing({
 
       <ReusableTable<ListingCategoryItems>
         title="All Products under this category on the platform"
-        totalCount={listingCategory?.total ?? 0}
-        data={listingCategory?.data ?? []}
+        totalCount={listingCategory?.data.length ?? 0}
+        data={sortedListings}
         columns={listingCategoryColumns({
           page,
           handleView,
-          // buttonLayout: 'horizontal',
-          // showActions: ['approve', 'reject', 'view'],
         })}
         isLoading={listingCategoryIsLoading}
         // searchQuery={search}
         // onSearchChange={handleSearch}
-        // sortConfig={sortConfig}
-        // onSort={handleSort}
+        sortConfig={sortConfig}
+        onSort={handleSort}
       />
     </div>
   )
