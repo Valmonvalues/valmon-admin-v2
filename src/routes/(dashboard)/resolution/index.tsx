@@ -68,17 +68,6 @@ function Resolution() {
     }))
   }
 
-  // const {
-  //   // selectedId: selectedManager,
-  //   modalOpen: deleteModalOpen,
-  //   setModalOpen: setDeleteModalOpen,
-  //   handleDeleteClick,
-  //   handleConfirmDelete,
-  // } = useHandleDelete({
-  //   mutation: getDeleteMutation(),
-  //   entityName: 'marketplace',
-  // })
-
   const handleView = (id: Id) => {
     navigate({ to: `/resolution/${id}` })
     console.log(id)
@@ -145,15 +134,6 @@ function Resolution() {
                 onSort={handleSort}
               />
             </div>
-
-            {/* <ConfirmDeleteModal
-              opened={deleteModalOpen}
-              onCancel={() => setDeleteModalOpen(false)}
-              onConfirm={handleConfirmDelete}
-              title="Delete resolution"
-              message="Are you sure you want to delete this service? This action cannot be undone."
-              // loading={deleteClosed.isPending}
-            /> */}
           </div>
         </>
       )}
@@ -179,12 +159,7 @@ function Resolution() {
               color="bg-dark-gold"
               image={''}
             />
-            <StatCard
-              title="Resolved Value"
-              // value={formatNumber(skillsData?.valmon_earning)}
-              // color="bg-green-100"
-              // image={earningImage}
-            />
+            <StatCard title="Resolved Value" />
           </SimpleGrid>
 
           <div className="">
@@ -213,15 +188,6 @@ function Resolution() {
                 />
               )}
             </div>
-
-            {/* <ConfirmDeleteModal
-              opened={deleteModalOpen}
-              onCancel={() => setDeleteModalOpen(false)}
-              onConfirm={handleConfirmDelete}
-              title="Delete resolution"
-              message="Are you sure you want to delete this service? This action cannot be undone."
-              // loading={deleteClosed.isPending}
-            /> */}
           </div>
         </>
       )}

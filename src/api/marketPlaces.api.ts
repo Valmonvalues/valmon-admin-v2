@@ -58,7 +58,6 @@ export const marketPlaces = {
     return response.data
   },
 
-  // : Promise<MarketplaceListingIdResponse>
   getChat: async (id: Id) => {
     const response = await apiClient.get(`/listings/conversations/${id}`)
     return response.data
@@ -75,10 +74,6 @@ export const marketPlaces = {
     return response.data
   },
 
-  // approveListing: async (id: Id) => {
-  //   const response = await apiClient.put(`/listings/${id}/approve`)
-  //   return response.data
-  // },
   approveListing: async (id: Id): Promise<{ message: string }> => {
     const response = await apiClient.put(`/listings/${id}/approve`)
     return response.data

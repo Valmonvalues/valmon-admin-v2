@@ -104,27 +104,6 @@ function Summary() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Header with filter */}
-      {/* <Group mb="xl" p={7} w={300} className="bg-black text-white">
-          <Text size="sm" fw={400}>
-            Show Result For
-          </Text>
-          <Select
-            value={selectedYear}
-            onChange={(value) => setSelectedYear(value || 'This Year')}
-            data={['This Year', 'Last Year', '2022', '2021']}
-            w={150}
-            styles={{
-              input: {
-                backgroundColor: '#000',
-                color: '#fff',
-                border: '1px solid #fff',
-                borderRadius: 6,
-              },
-            }}
-          />
-        </Group> */}
-
       <Paper
         p={5}
         mb="lg"
@@ -185,7 +164,6 @@ function Summary() {
           </ResponsiveContainer>
         </Card>
 
-        {/* Right side cards */}
         <Stack gap="lg">
           <Card shadow="xs" padding="lg" radius="md" className="bg-white">
             <Group justify="space-between" mb="xs">

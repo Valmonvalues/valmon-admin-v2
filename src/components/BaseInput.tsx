@@ -18,6 +18,7 @@ interface BaseInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   onPasswordVisible?: (visibility: boolean, id?: string) => void
   instanceId?: string
+  disabled?: boolean
   className?: string
 }
 
@@ -34,6 +35,7 @@ const BaseInput: React.FC<BaseInputProps> = ({
   onChange,
   onPasswordVisible,
   instanceId,
+  disabled,
   className,
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
@@ -91,7 +93,15 @@ const BaseInput: React.FC<BaseInputProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="block w-full py-2.5 text-[rgba(16,16,17,1)] placeholder-gray-400/70 bg-white border border-[rgba(0,0,0,0.4)] rounded-lg pl-5 pr-11 focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+          disabled={disabled}
+          // className="block w-full py-2.5 text-[rgba(16,16,17,1)] placeholder-gray-400/70 bg-white border border-[rgba(0,0,0,0.4)] rounded-lg pl-5 pr-11 focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+          className={`block w-full py-2.5 rounded-lg pl-5 pr-11 text-[rgba(16,16,17,1)] placeholder-gray-400/70 border focus:outline-none focus:ring
+            ${
+              disabled
+                ? 'bg-gray-100 text-gray-500 border-gray-200 cursor-not-allowed'
+                : 'bg-white border-[rgba(0,0,0,0.4)] focus:border-blue-400 focus:ring-blue-300'
+            }
+  `}
         />
         {icon && iconType === 'password' && (
           <button

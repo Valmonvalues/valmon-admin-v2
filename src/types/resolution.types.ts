@@ -10,7 +10,7 @@ export interface Ticket {
   reason: string
   description: string
   image: string
-  status: 'open' | 'closed' | 'resolved' | string // add other possible statuses if needed
+  status: 'open' | 'closed' | 'resolved' | string
   created_at: string
   buyer?: string
   seller?: string

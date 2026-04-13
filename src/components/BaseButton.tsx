@@ -42,8 +42,9 @@ export default function BaseButton({
   // const [opened, setOpened] = useState(false)
 
   const baseClass = `
-    btn flex items-center justify-center gap-2 px-4 py-3 rounded-md font-semibold text-base satoshiB transition w-full
+    btn flex items-center justify-center gap-2 px-4 py-3 rounded-md font-semibold text-base satoshiB transition 
   `
+  // w-full
   const variantClass = outline ? 'btn_outline' : 'bg_btn'
 
   const style: React.CSSProperties = {

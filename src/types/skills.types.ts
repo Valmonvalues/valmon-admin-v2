@@ -51,10 +51,6 @@ export interface SubCategory {
   valmon_earning: number | string
 }
 
-// export interface CustomersResponse {
-//   data: Customers[]
-// }
-
 export interface Customers {
   id: Id
   image: string

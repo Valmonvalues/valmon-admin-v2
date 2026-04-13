@@ -52,19 +52,6 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
       )
     },
   },
-  // {
-  //   key: 'email',
-  //   header: 'Email',
-  //   sortable: true,
-  //   render: (customer): ReactNode => (
-  //     <Stack gap={0} style={{ lineHeight: 1.2 }}>
-  //       <Text fw={500}>{customer.email}</Text>
-  //       <Text size="sm" c="dimmed">
-  //         {customer.id}
-  //       </Text>
-  //     </Stack>
-  //   ),
-  // },
   {
     key: 'listings_count',
     header: 'Market Listings',
@@ -92,7 +79,6 @@ export const customersColumns = (): ColumnDef<Customers>[] => [
     header: 'Last Seen',
     render: (customer): ReactNode =>
       new Date(customer?.last_seen_at)?.toLocaleDateString(),
-    // customer?.last_seen_at,
   },
   {
     key: 'status',

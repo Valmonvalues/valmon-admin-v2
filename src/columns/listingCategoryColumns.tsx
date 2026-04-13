@@ -150,12 +150,6 @@ export const listingCategoryColumns = ({
             >
               View
             </Menu.Item>
-            {/* <Menu.Item
-              onClick={() => handleView(listing.id)}
-              leftSection={<IconEye size={16} />}
-            >
-              View
-            </Menu.Item> */}
           </Menu.Dropdown>
         </Menu>
       )

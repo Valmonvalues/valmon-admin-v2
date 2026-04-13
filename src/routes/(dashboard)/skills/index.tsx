@@ -199,14 +199,7 @@ function Skills() {
                 title="Transactions"
                 totalCount={transaction.length}
                 data={sortedTransaction}
-                columns={
-                  transactionColumns({ page })
-                  //   {
-                  //   // handleView,
-                  //   handleView: (id) => handleView(id, 'skill transactions'),
-                  //   handleDeleteClick,
-                  // }
-                }
+                columns={transactionColumns({ page })}
                 isLoading={skillDataLoader}
                 searchQuery={search}
                 onSearchChange={handleSearch}
