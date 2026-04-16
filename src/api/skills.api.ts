@@ -8,7 +8,6 @@ import type { Id, Params } from '@/types/global.type'
 export const skillsApi = {
   listTransaction: async (params?: Params): Promise<TransactionResponse> => {
     const response = await apiClient.get('/skills/transactions', { params })
-    // console.log(response)
     return response.data
   },
 

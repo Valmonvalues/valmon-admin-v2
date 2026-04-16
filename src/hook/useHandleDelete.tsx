@@ -6,15 +6,17 @@ import type { UseMutationResult } from '@tanstack/react-query'
 interface UseDeleteOptions {
   mutation: UseMutationResult<any, unknown, Id>
   entityName?: string // Optional name to customize notification messages
+  reset?: () => void
 }
 
 export const useHandleDelete = ({
   mutation,
   entityName = 'item',
+  reset,
 }: UseDeleteOptions) => {
   const [selectedId, setSelectedId] = useState<Id | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
-
+  const { isPending } = mutation
   const handleDeleteClick = (id: Id) => {
     setSelectedId(id)
     setModalOpen(true)
@@ -22,10 +24,12 @@ export const useHandleDelete = ({
 
   const handleConfirmDelete = () => {
     if (!selectedId) return
+
     mutation.mutate(selectedId, {
       onSuccess: () => {
         setSelectedId(null)
         setModalOpen(false)
+        reset?.()
         notifications.show({
           title: 'Deleted',
           message: `${entityName} deleted successfully.`,
@@ -49,5 +53,6 @@ export const useHandleDelete = ({
     setModalOpen,
     handleDeleteClick,
     handleConfirmDelete,
+    isDeleting: isPending,
   }
 }

@@ -10,12 +10,14 @@ import type { AccountManager } from '@/types/accountManagers.types'
 import type { Id } from '@/types/global.type'
 import { accountManagerColumns } from '@/columns/accountManagersColumns'
 import { useHandleDelete } from '@/hook/useHandleDelete'
-import { allowedRoles, roles } from '@/data/roles'
+// roles
+import { allowedRoles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { perPage as perpage } from '@/constant/config'
 import { capitalizeKey } from '@/utils/helper'
+import { useRolePermissions } from '@/services/rolePermissions.service'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
@@ -33,9 +35,11 @@ function Account() {
     perpage,
     search: debouncedSearch || undefined,
   })
-  const managers = data || []
 
-  // const [loading, setLoading] = useState(false)
+  const { getAllRoles } = useRolePermissions()
+  const { data: roles } = getAllRoles()
+
+  const managers = data || []
 
   const {
     modalOpen: deleteModalOpen,
@@ -86,11 +90,20 @@ function Account() {
     try {
       // setLoading(true)
 
+      const selectedRole = roles?.find((e) => e.id === Number(admin.role))
+
+      console.log(selectedRole)
+
+      if (!selectedRole) return
+
       const formData = new FormData()
       formData.append('first_name', admin?.firstName)
       formData.append('last_name', admin?.lastName)
       formData.append('email', admin?.email)
-      formData.append('role', admin?.role)
+      formData.append('role', selectedRole?.name)
+      formData.append('role_id', admin?.role)
+
+      // return
 
       if (admin.file instanceof File) {
         formData.append('image', admin?.file)
@@ -139,11 +152,11 @@ function Account() {
                   label: 'Role',
                   type: 'select',
                   options: roles
-                    .filter((role) => role?.name !== 'super_admin')
+                    ?.filter((role) => role?.name !== 'super_admin')
                     .map((role) => {
                       return {
-                        value: role?.name,
-                        label: role?.label,
+                        value: String(role?.id),
+                        label: role?.name,
                       }
                     }),
                 },

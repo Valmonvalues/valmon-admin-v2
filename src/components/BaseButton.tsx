@@ -1,6 +1,6 @@
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import AddModal, { type Field } from './modals/AddModal'
-import { Image } from '@mantine/core'
+import { Image, Loader } from '@mantine/core'
 
 interface BaseButtonProps {
   title: string
@@ -19,11 +19,13 @@ interface BaseButtonProps {
   onClose?: () => void
   initialData?: {} | null
   opened?: boolean
+  disabled?: boolean
 }
 
 export default function BaseButton({
   title,
   loading = false,
+  disabled = false,
   color,
   textColor,
   outline = false,
@@ -38,6 +40,8 @@ export default function BaseButton({
   src,
 }: BaseButtonProps) {
   const { openFormModal, setOpenFormModal } = useGlobalContext()
+
+  const isDisabled = loading || disabled
 
   // const [opened, setOpened] = useState(false)
 
@@ -58,37 +62,44 @@ export default function BaseButton({
       <button
         onClick={onClick}
         // leftSection={icon ? "<Plus size={16} />" : null}
+        disabled={isDisabled}
         style={style}
-        className={`${baseClass} ${className} ${variantClass}`}
+        className={`${baseClass} ${className} ${variantClass} ${isDisabled ? 'opacity-70 cursor-not-allowed' : ''}`}
       >
-        {title}
-        {showPlusIcon && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-        )}
-        {src && (
-          <Image
-            radius="md"
-            w={30}
-            h={30}
-            fit="contain"
-            src={src}
-            alt={''}
-            mx="5px"
-            // className="!text-white"
-          />
+        {loading ? (
+          <Loader size="sm" color={textColor || 'white'} />
+        ) : (
+          <>
+            {title}
+            {showPlusIcon && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+            )}
+            {src && (
+              <Image
+                radius="md"
+                w={30}
+                h={30}
+                fit="contain"
+                src={src}
+                alt={''}
+                mx="5px"
+                // className="!text-white"
+              />
+            )}
+          </>
         )}
       </button>
 
