@@ -26,7 +26,27 @@ export const useAccountManagers = () => {
     onError: (error: any) => {
       notifications.show({
         title: 'Error',
-        message: error.response?.data?.message || 'Failed to add category',
+        message: error.response?.data?.message || 'Failed to add Admin',
+        color: 'red',
+      })
+    },
+  })
+
+  const updateManager = useMutation({
+    mutationFn: ({ id, updatedData }: { id: Id; updatedData: FormData }) =>
+      accountManagersApi.updateManager(id, updatedData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['accountManagers'] })
+      notifications.show({
+        title: 'Success',
+        message: 'Admin updated successfully',
+        color: 'green',
+      })
+    },
+    onError: (error: any) => {
+      notifications.show({
+        title: 'Error',
+        message: error.response?.data?.message || 'Failed to update admin',
         color: 'red',
       })
     },
@@ -41,5 +61,5 @@ export const useAccountManagers = () => {
     },
   })
 
-  return { listAccountManagers, addManager, deleteManager }
+  return { listAccountManagers, addManager, updateManager, deleteManager }
 }

@@ -21,21 +21,3 @@ export const categoryRequestApi = {
     return response.data
   },
 }
-
-// API DOCUMENTATION:
-// POST —  /request-service
-// Sample :
-// {
-//     "category_id"  : 1,
-//     "requester_name" : "Tobi",
-//     "custom_name" : "Lawyer",
-//     "custom_description" : "None"
-// }
-// GET - /get/category-requests      (ADMIN ROUTE)
-// POST — /category-requests/action.   (ADMIN ROUTE)
-// Sample
-// {
-//     "request_ids" : [1],
-//     "action" : "approve",     // approve or reject
-//     "reason" : "Some reason"      // required if reject
-// }

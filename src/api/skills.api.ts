@@ -1,7 +1,4 @@
-import type {
-  // CustomersResponse,
-  TransactionResponse,
-} from '@/types/skills.types'
+import type { TransactionResponse } from '@/types/skills.types'
 import { apiClient } from './apiClient'
 import type { Id, Params } from '@/types/global.type'
 

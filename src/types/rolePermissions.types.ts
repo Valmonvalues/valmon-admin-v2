@@ -17,6 +17,7 @@ export interface Role {
   created_at: string
   updated_at: string
   users_count: number
+  description?: string
   permissions: Permission[]
   access_level?: string
 }

@@ -6,6 +6,7 @@ import type { Id } from '@/types/global.type'
 type Role = {
   id: Id
   name: string
+  description?: string
   users_count?: number
 }
 
@@ -45,7 +46,7 @@ function RoleList({
               <Group justify="space-between" mb={5}>
                 <Group gap={6}>
                   <IconShield size={20} color="red" />
-                  <Text fw={500}>{role.name}</Text>
+                  <Text fw={600}>{role.name}</Text>
                 </Group>
 
                 <Group
@@ -57,6 +58,7 @@ function RoleList({
                   <Text size="xs">{role.users_count ?? 0}</Text>
                 </Group>
               </Group>
+              <Text fw={500}>{role.description}</Text>
             </div>
           ))}
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Avatar, Badge, Menu, ActionIcon } from '@mantine/core'
 // IconEye,
-import { IconDotsVertical, IconTrash } from '@tabler/icons-react'
+import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import { perPage } from '@/constant/config'
 import type { AccountManager } from '@/types/accountManagers.types'
@@ -9,12 +9,14 @@ import type { AccountManager } from '@/types/accountManagers.types'
 interface AccountManagerColumnHandlers {
   page: number
   handleView: (id: number) => void
+  handleEditManager: (manager: AccountManager) => void
   handleDeleteClick: (id: number) => void
 }
 
 export const accountManagerColumns = ({
   page,
-  // handleView,
+  handleView,
+  handleEditManager,
   handleDeleteClick,
 }: AccountManagerColumnHandlers): ColumnDef<AccountManager>[] => [
   {
@@ -91,12 +93,18 @@ export const accountManagerColumns = ({
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-          {/* <Menu.Item
+          <Menu.Item
             leftSection={<IconEye size={16} />}
             onClick={() => handleView(manager.id)}
           >
             View
-          </Menu.Item> */}
+          </Menu.Item>
+          <Menu.Item
+            leftSection={<IconEye size={16} />}
+            onClick={() => handleEditManager(manager)}
+          >
+            Edit
+          </Menu.Item>
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}

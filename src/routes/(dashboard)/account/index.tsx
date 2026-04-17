@@ -10,7 +10,6 @@ import type { AccountManager } from '@/types/accountManagers.types'
 import type { Id } from '@/types/global.type'
 import { accountManagerColumns } from '@/columns/accountManagersColumns'
 import { useHandleDelete } from '@/hook/useHandleDelete'
-// roles
 import { allowedRoles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
@@ -25,10 +24,12 @@ export const Route = createFileRoute('/(dashboard)/account/')({
 })
 
 function Account() {
-  const { openFormModal, setOpenFormModal } = useGlobalContext()
-  const { listAccountManagers, addManager, deleteManager } =
-    useAccountManagers()
+  const { openFormModal, setOpenFormModal, initialData, setInitialData } =
+    useGlobalContext()
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
+
+  const { listAccountManagers, addManager, updateManager, deleteManager } =
+    useAccountManagers()
   const [page] = useState(1)
   const { data, isLoading: managersLoading } = listAccountManagers({
     page,
@@ -86,13 +87,25 @@ function Account() {
     console.log('View listing:', listingId)
   }
 
+  const handleEditManager = (manager: AccountManager) => {
+    const selectedRole = roles?.find((e) => e.name === manager.role)
+
+    const data = {
+      ...manager,
+      firstName: manager.name.split(' ')[0],
+      lastName: manager.name.split(' ')[1],
+      file: manager.image,
+      role: String(selectedRole?.id),
+    }
+    setInitialData(data)
+    setOpenFormModal(true)
+  }
+
   const handleAddManager = async (admin: Record<string, any>) => {
     try {
       // setLoading(true)
 
       const selectedRole = roles?.find((e) => e.id === Number(admin.role))
-
-      console.log(selectedRole)
 
       if (!selectedRole) return
 
@@ -100,16 +113,23 @@ function Account() {
       formData.append('first_name', admin?.firstName)
       formData.append('last_name', admin?.lastName)
       formData.append('email', admin?.email)
-      formData.append('role', selectedRole?.name)
       formData.append('role_id', admin?.role)
-
-      // return
 
       if (admin.file instanceof File) {
         formData.append('image', admin?.file)
       }
 
-      await addManager.mutateAsync(formData)
+      if (!initialData.id) {
+        formData.append('role', selectedRole?.name)
+
+        await addManager.mutateAsync(formData)
+        return
+      }
+
+      await updateManager.mutateAsync({
+        id: initialData.id,
+        updatedData: formData,
+      })
       setOpenFormModal(false)
     } catch (error) {
       console.error('Error adding manager:', error)
@@ -128,6 +148,7 @@ function Account() {
           columns={accountManagerColumns({
             page,
             handleView,
+            handleEditManager,
             handleDeleteClick,
           })}
           isLoading={managersLoading}
@@ -142,7 +163,10 @@ function Account() {
               modalTitle="Add New Manager"
               opened={openFormModal}
               onClose={() => setOpenFormModal(false)}
-              onClick={() => setOpenFormModal(true)}
+              onClick={() => {
+                setInitialData(null)
+                setOpenFormModal(true)
+              }}
               fields={[
                 { name: 'firstName', label: 'First Name', type: 'text' },
                 { name: 'lastName', label: 'Last Name', type: 'text' },

@@ -38,7 +38,7 @@ function RoleManagement() {
     initialValues: {
       roleName: '',
       description: '',
-      color: '',
+      // color: '',
     },
     validate: {
       roleName: (value) =>
@@ -52,7 +52,7 @@ function RoleManagement() {
     if (roleById) {
       roleForm.setValues({
         roleName: roleById?.name || '',
-        // description: roleById?.description || '',
+        description: roleById?.description || '',
         // color: roleById?.color || '',
       })
 
@@ -62,7 +62,7 @@ function RoleManagement() {
 
     roleForm.setValues({
       roleName: '',
-      // description: '',
+      description: '',
       // color: '',
     })
     setRolePerm(new Set())
@@ -95,7 +95,7 @@ function RoleManagement() {
     const payload = {
       name: roleForm.values.roleName,
       description: roleForm.values.description,
-      color: roleForm.values.color,
+      // color: roleForm.values.color,
       permissions: Array.from(rolePerm),
     }
 

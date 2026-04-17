@@ -1,10 +1,5 @@
-import { Box, ColorInput, Group, Stack, Switch, Text } from '@mantine/core'
-import {
-  IconCheck,
-  IconShield,
-  IconShieldCheckered,
-  IconUsers,
-} from '@tabler/icons-react'
+import { Box, Group, Stack, Switch, Text } from '@mantine/core'
+import { IconCheck, IconShieldCheckered, IconUsers } from '@tabler/icons-react'
 
 import BaseButton from './BaseButton'
 import ConfirmDeleteModal from './modals/ConfirmDeleteModal'
@@ -59,8 +54,13 @@ function RoleDetails({
   onDelete,
   onConfirmDelete,
   onTogglePermission,
-  me,
 }: RoleDetailsProps) {
+  const formatPermissionName = (name: string) => {
+    return name
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase())
+  }
+
   return (
     <div className="flex-1 bg-white rounded-xl p-6 shadow-sm">
       <Group justify="space-between" mb="md">
@@ -97,15 +97,15 @@ function RoleDetails({
       </Group>
 
       <Stack gap="md">
-        <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-4">
-          <AppInput
-            label="Role Name"
-            size="md"
-            {...roleForm.getInputProps('roleName')}
-            readOnly={shouldDisable}
-          />
+        {/* <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-4"> */}
+        <AppInput
+          label="Role Name"
+          size="md"
+          {...roleForm.getInputProps('roleName')}
+          readOnly={shouldDisable}
+        />
 
-          <ColorInput
+        {/* <ColorInput
             label="Role Color"
             size="md"
             placeholder="Pick color"
@@ -122,8 +122,8 @@ function RoleDetails({
             disabled={shouldDisable}
             leftSection={<IconShield size={20} color="red" />}
             classNames={{ label: 'mb-2 font-medium' }}
-          />
-        </div>
+          /> */}
+        {/* </div> */}
 
         <AppInput
           label="Description"
@@ -169,7 +169,7 @@ function RoleDetails({
                   <IconCheck color="var(--color-dark-gold)" className="p-1" />
                 </div>
 
-                <Text size="sm">{perm.name}</Text>
+                <Text size="sm">{formatPermissionName(perm.name)}</Text>
               </Group>
               <Switch
                 checked={rolePerm.has(perm.id)}

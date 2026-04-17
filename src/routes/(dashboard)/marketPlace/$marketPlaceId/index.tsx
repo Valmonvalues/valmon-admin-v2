@@ -23,19 +23,6 @@ export const Route = createFileRoute(
   },
 })
 
-// function InfoRow({ label, value }: InfoRowProps) {
-//   return (
-//     <div className="flex justify-between items-center border-t border-gray-100 py-1">
-//       <Text fz="sm" fw={500}>
-//         {label}:
-//       </Text>
-//       <Text fz="sm" fw={500} c="dimmed">
-//         {value || '-'}
-//       </Text>
-//     </div>
-//   )
-// }
-
 function MarketPlaceProduct() {
   const { marketPlaceId } = Route.useParams()
   const { type, category } = Route.useSearch()

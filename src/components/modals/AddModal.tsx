@@ -44,7 +44,7 @@ export interface AddModalProps {
   opened: boolean
   onClose: () => void
   onSubmit: (data: Record<string, any>) => void
-  initialData?: {} | null
+  // initialData?: {} | null
   loading?: boolean
   submitLabel?: string
 }
@@ -62,12 +62,15 @@ const AddModal = ({
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { initialData } = useGlobalContext()
 
-  // console.log(initialData)
+  console.log('Initial Data', initialData)
 
   useEffect(() => {
     if (!opened) {
       setFormData({})
     } else if (opened && initialData) {
+      if (initialData.file && typeof initialData.file === 'string') {
+        setImagePreview(initialData.file)
+      }
       setFormData(initialData)
     }
   }, [opened, initialData])

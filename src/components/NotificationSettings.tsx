@@ -77,7 +77,7 @@ function NotificationSettings() {
                   {item.label}
                 </Text>
                 <Switch
-                  color="var(--color-bright-gold)"
+                  color="var(--color-dark-gold)"
                   checked={notificationSettings[item.key]}
                   onChange={(e) =>
                     setNotificationSettings((prev) => ({

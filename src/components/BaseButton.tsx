@@ -17,7 +17,7 @@ interface BaseButtonProps {
   modalTitle?: string
   onSubmit?: (data: Record<string, any>) => void
   onClose?: () => void
-  initialData?: {} | null
+  // initialData?: {} | null
   opened?: boolean
   disabled?: boolean
 }
@@ -36,7 +36,7 @@ export default function BaseButton({
   modalTitle = '',
   onSubmit,
   onClose,
-  initialData,
+  // initialData,
   src,
 }: BaseButtonProps) {
   const { openFormModal, setOpenFormModal } = useGlobalContext()
@@ -110,7 +110,7 @@ export default function BaseButton({
           onClose={() => onClose?.() ?? setOpenFormModal(false)}
           title={modalTitle || title}
           fields={fields}
-          initialData={initialData}
+          // initialData={initialData}
           onSubmit={onSubmit ?? (() => {})}
         />
       )}
