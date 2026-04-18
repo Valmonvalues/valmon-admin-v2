@@ -23,11 +23,12 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
+import { allowedRoles, userAccess } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import { useSummary } from '@/services/summary.service'
+import { notifications } from '@mantine/notifications'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -129,7 +130,18 @@ function Skills() {
     navigate({ to: `/skills/${categoryId}` })
   }
 
+  const { hasActionAccess } = userAccess('skill', 'manage')
+
   const handleAddCategory = async (categoryData: any) => {
+    if (!hasActionAccess) {
+      notifications.show({
+        title: 'Access Denied',
+        message:
+          'Yoou do not have access to the action. Please contact support',
+        color: 'red',
+      })
+      return
+    }
     try {
       const formData = new FormData()
       formData.append('name', categoryData.name)

@@ -119,17 +119,19 @@ function Account() {
         formData.append('image', admin?.file)
       }
 
-      if (!initialData.id) {
+      if (!initialData?.id) {
         formData.append('role', selectedRole?.name)
 
         await addManager.mutateAsync(formData)
-        return
       }
 
-      await updateManager.mutateAsync({
-        id: initialData.id,
-        updatedData: formData,
-      })
+      if (initialData?.id) {
+        await updateManager.mutateAsync({
+          id: initialData.id,
+          updatedData: formData,
+        })
+      }
+
       setOpenFormModal(false)
     } catch (error) {
       console.error('Error adding manager:', error)

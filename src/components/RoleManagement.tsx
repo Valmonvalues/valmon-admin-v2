@@ -9,6 +9,7 @@ import { useRolePermissions } from '@/services/rolePermissions.service'
 import { useUser } from '@/services/user.service'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import type { Id } from '@/types/global.type'
+import { accessManagement } from '@/data/roles'
 
 function RoleManagement() {
   const [selectedRoleId, setSelectedRoleId] = useState<Id>(1)
@@ -23,6 +24,8 @@ function RoleManagement() {
   } = useRolePermissions()
 
   const { getMe } = useUser()
+
+  accessManagement()
 
   const { data: me } = getMe()
   const { data: roles } = getAllRoles()

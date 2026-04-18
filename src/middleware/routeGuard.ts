@@ -14,7 +14,10 @@ export const routeGaurd = async (allowedRoles: string[]) => {
     throw redirect({ to: '/' })
   }
 
-  if (allowedRoles.includes('all') || allowedRoles.includes(me.role)) {
+  if (
+    allowedRoles.includes('all') ||
+    allowedRoles.includes(me.role.toLowerCase())
+  ) {
     return
   } else {
     throw redirect({ to: '/users' })

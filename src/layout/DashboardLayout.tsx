@@ -1,195 +1,3 @@
-// import { navLinks } from '@/components/Navigation/data/navLinks'
-// import { AppShell, Avatar, ScrollArea } from '@mantine/core'
-// import { useDisclosure } from '@mantine/hooks'
-// import { Link, useLocation } from '@tanstack/react-router'
-
-// import brandLogo from '@/assets/images/Logo/valmon.svg'
-// import bell from '@/assets/icons/notification-bing.svg'
-// import { useState } from 'react'
-// import { IconLogout } from '@tabler/icons-react'
-// import { storage } from '@/constant/config'
-// import { useUser } from '@/services/user.service'
-// import Notifications from './Notifications'
-
-// type LayoutProps = {
-//   children: React.ReactNode
-// }
-
-// const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
-//   const [opened] = useDisclosure()
-//   const [notificationOpen, setNotificationOpen] = useState(false)
-//   const [unreadNotifications] = useState([
-//     {
-//       id: 1,
-//       message: 'Anything goes',
-//     },
-//   ])
-
-//   const { getMe } = useUser()
-
-//   const { data: me } = getMe()
-
-//   // console.log(me)
-//   const { pathname } = useLocation()
-
-//   const getRouteName = () => {
-//     const routeName = pathname.split('-')
-//     if (routeName.length > 1) {
-//       return routeName[1].charAt(0).toUpperCase() + routeName[1].slice(1)
-//     }
-//     return ''
-//   }
-
-//   const handleLogout = () => {
-//     storage.removeItem('valmon_adminToken')
-//     window.location.replace('/')
-//   }
-
-//   return (
-//     <AppShell
-//       padding="lg"
-//       header={{ height: { base: 60, md: 70, lg: 80 } }}
-//       navbar={{
-//         width: { base: 100, md: 200, lg: 250 },
-//         breakpoint: 'sm',
-//         collapsed: { mobile: !opened },
-//       }}
-//       bg="var(--color-bg-primary)"
-//     >
-//       <AppShell.Header>
-//         <nav
-//           className="bg-stone-950 fixed w-full z-[1000]"
-//           style={{ fontFamily: 'satoshiB' }}
-//         >
-//           <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
-//             <div className="relative flex h-20 items-center justify-between">
-//               {/* Logo */}
-//               <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
-//                 <Link to="/" className="flex flex-shrink-0 items-center">
-//                   <img
-//                     className="w-auto"
-//                     src={brandLogo}
-//                     alt="Valmon Brand Logo"
-//                   />
-//                 </Link>
-//               </div>
-//               <span className="text-white ms-10 font-bold">
-//                 {getRouteName()}
-//               </span>
-
-//               {/* Right Section */}
-//               <div className="flex items-center justify-end flex-1 space-x-4">
-//                 {/* Notifications */}
-//                 <div className="relative">
-//                   <button
-//                     type="button"
-//                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-//                     onClick={() => setNotificationOpen(!notificationOpen)}
-//                   >
-//                     <img src={bell} alt="bell icon" />
-//                     {unreadNotifications.length > 0 && (
-//                       <span className="absolute -top-1 -right-1 w-5 h-5 text-xs bg-red-600 text-white font-semibold rounded-full flex items-center justify-center animate-pulse">
-//                         {unreadNotifications.length}
-//                       </span>
-//                     )}
-//                   </button>
-
-//                   {notificationOpen && (
-//                     // <div className="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
-//                     //   <div className="px-4 py-3 border-b font-semibold text-gray-700 bg-gray-50">
-//                     //     <Group justify="space-between">
-//                     //       <Text fw={700}>Notifications</Text>
-//                     //       <Text fw={700} c="red">
-//                     //         Clear
-//                     //       </Text>
-//                     //     </Group>
-//                     //   </div>
-//                     //   <ul className="divide-y max-h-72 overflow-y-auto">
-//                     //     {unreadNotifications.map((note) => (
-//                     //       <li
-//                     //         key={note.id}
-//                     //         className="px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 transition"
-//                     //       >
-//                     //         {note.message}
-//                     //       </li>
-//                     //     ))}
-//                     //     {unreadNotifications.length === 0 && (
-//                     //       <li className="px-4 py-5 text-center text-gray-500 text-sm">
-//                     //         No unread notifications
-//                     //       </li>
-//                     //     )}
-//                     //   </ul>
-//                     // </div>
-//                     <Notifications />
-//                   )}
-//                 </div>
-
-//                 <div className="relative ml-3">
-//                   <button
-//                     id="user-menu-button"
-//                     type="button"
-//                     className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-//                   >
-//                     <Avatar src={''} />
-//                   </button>
-//                 </div>
-
-//                 {/* Name + Role */}
-//                 <div className="hidden sm:block">
-//                   <div className="flex space-x-3 items-center">
-//                     <span className="font-medium text-white hover:bg-gray-700 hover:text-white">
-//                       {me?.name}
-//                     </span>
-//                     <div className="font-normal px-3 py-1 rounded-3xl bg-[#E1CD7182] text-white">
-//                       {me?.role || 'User'}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </nav>
-//       </AppShell.Header>
-//       <AppShell.Navbar px="md" py="xl" bg="var(--color-layout)">
-//         <AppShell.Section grow component={ScrollArea} scrollbarSize={1}>
-//           {navLinks
-//             .filter(
-//               (nav) =>
-//                 nav.allowedRoles.includes('all') ||
-//                 nav.allowedRoles.includes(me?.role || ''),
-//             )
-//             .map((navlink, idx) => {
-//               return (
-//                 <Link
-//                   key={idx}
-//                   to={navlink.route}
-//                   className={`${navlink.route === '/settings' ? 'border-t' : ''} flex items-center gap-4 font-medium p-4 mb-4 text-white`}
-//                   activeProps={{
-//                     className: 'activeMenu',
-//                   }}
-//                 >
-//                   {navlink.icon}
-//                   <span>{navlink.label}</span>
-//                 </Link>
-//               )
-//             })}
-//           <p
-//             onClick={handleLogout}
-//             className="flex items-center gap-4 font-medium p-4 mb-4 text-red-500"
-//           >
-//             <IconLogout />
-//             <span>Logout</span>
-//           </p>
-//         </AppShell.Section>
-//         <AppShell.Section className="px-2 pt-4 rounded-lg text-center mb-5 flex items-center justify-center"></AppShell.Section>
-//       </AppShell.Navbar>
-//       <AppShell.Main>{children}</AppShell.Main>
-//     </AppShell>
-//   )
-// }
-
-// export default DashboardLayout
-
 import { navLinks } from '@/components/Navigation/data/navLinks'
 import { AppShell, Avatar, ScrollArea, Burger } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -197,28 +5,76 @@ import { Link, useLocation } from '@tanstack/react-router'
 
 import brandLogo from '@/assets/images/Logo/valmon.svg'
 import bell from '@/assets/icons/notification-bing.svg'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { IconLogout } from '@tabler/icons-react'
 import { storage } from '@/constant/config'
 import { useUser } from '@/services/user.service'
 import Notifications from './Notifications'
 import { useNotifications } from '@/services/notifications.service'
+import {
+  AccessManagementRoleProvider,
+  useAccessManagementRoleContext,
+} from '@/contexts/AccessManagementRole'
+import { useRolePermissions } from '@/services/rolePermissions.service'
 
 type LayoutProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
+/**
+ * 🔹 Root Layout (ONLY wraps with provider)
+ */
+const DashboardLayout = ({ children }: LayoutProps) => {
+  return (
+    <DashboardWithAccess>
+      <DashboardContent>{children}</DashboardContent>
+    </DashboardWithAccess>
+  )
+}
+
+export default DashboardLayout
+
+/**
+ * 🔹 Provider Wrapper (handles fetching + role → permissions)
+ */
+const DashboardWithAccess = ({ children }: { children: ReactNode }) => {
+  const { getMe } = useUser()
+  const { data: me } = getMe()
+
+  const { data: roles } = useRolePermissions().getAllRoles()
+
+  // ⛔ Prevent rendering until data is ready
+  if (!me || !roles) return null
+
+  const normalizedUserRole = me.role?.toLowerCase()
+
+  const userRolePerm =
+    roles.find(
+      (role) =>
+        role.name.split(' ').join('_').toLowerCase() === normalizedUserRole,
+    )?.permissions ?? []
+
+  return (
+    <AccessManagementRoleProvider permissions={userRolePerm}>
+      {children}
+    </AccessManagementRoleProvider>
+  )
+}
+
+/**
+ * 🔹 Actual Layout Content (SAFE to use context here)
+ */
+const DashboardContent = ({ children }: { children: ReactNode }) => {
+  const { canAccess, canAccessAny } = useAccessManagementRoleContext()
+
   const [opened, { toggle }] = useDisclosure()
   const [notificationOpen, setNotificationOpen] = useState(false)
 
-  const { allNotifications } = useNotifications()
-  const { data: notifications } = allNotifications()
-
-  // const [unreadNotifications] = useState([{ id: 1, message: 'Anything goes' }])
-
   const { getMe } = useUser()
   const { data: me } = getMe()
+
+  const { allNotifications } = useNotifications()
+  const { data: notifications } = allNotifications()
 
   const { pathname } = useLocation()
 
@@ -238,11 +94,9 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <AppShell
       padding="md"
-      // header={{ height: 70 }}
       header={{ height: { base: 60, md: 70, lg: 80 } }}
       navbar={{
         width: { base: 240 },
-        // width: { base: 100, md: 200, lg: 250 },
         breakpoint: 'sm',
         collapsed: { mobile: !opened },
       }}
@@ -251,9 +105,8 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       {/* HEADER */}
       <AppShell.Header>
         <nav className="bg-stone-950 w-full h-[101%] flex items-center px-4">
-          {/* Left: Logo + Burger */}
+          {/* Left */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Mobile Burger */}
             <Burger
               opened={opened}
               onClick={toggle}
@@ -262,7 +115,6 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               color="white"
             />
 
-            {/* Logo */}
             <Link to="/summary" className="flex items-center">
               <img src={brandLogo} alt="Valmon Logo" className="h-8 w-auto" />
             </Link>
@@ -273,7 +125,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
             {getRouteName()}
           </div>
 
-          {/* Right Section */}
+          {/* Right */}
           <div className="flex items-center gap-4 ml-auto">
             {/* Notifications */}
             <div className="relative">
@@ -286,12 +138,11 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
                 {notifications && notifications.length > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 text-[10px] bg-red-600 text-white font-semibold rounded-full flex items-center justify-center animate-pulse">
-                    {notifications?.length}
+                    {notifications.length}
                   </span>
                 )}
               </button>
 
-              {/* Dropdown */}
               {notificationOpen && (
                 <div className="absolute right-0 mt-2 w-72 sm:w-80 z-50">
                   <Notifications />
@@ -304,7 +155,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               <Avatar src={''} size="sm" />
             </button>
 
-            {/* Name + Role (hide on extra small screens) */}
+            {/* User Info */}
             <div className="hidden sm:flex items-center gap-3">
               <span className="font-medium text-white">{me?.name}</span>
               <div className="px-2 py-1 rounded-2xl bg-[#E1CD7182] text-white text-xs">
@@ -324,11 +175,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       >
         <AppShell.Section grow component={ScrollArea} scrollbarSize={4}>
           {navLinks
-            .filter(
-              (nav) =>
-                nav.allowedRoles.includes('all') ||
-                nav.allowedRoles.includes(me?.role || ''),
-            )
+            .filter((nav) => canAccessAny(nav.requiredPermissions))
             .map((navlink, idx) => (
               <Link
                 key={idx}
@@ -359,10 +206,8 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
         </AppShell.Section>
       </AppShell.Navbar>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <AppShell.Main className="p-3 sm:p-6">{children}</AppShell.Main>
     </AppShell>
   )
 }
-
-export default DashboardLayout

@@ -17,7 +17,7 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 import profile from '@/assets/icons/cardprofile.svg'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
+import { allowedRoles, userAccess } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
@@ -60,8 +60,18 @@ function Users() {
   const handleView = (userId: Id) => {
     navigate({ to: `/users/${userId}` })
   }
+  const { hasActionAccess } = userAccess('users', 'manage')
 
   const handleDeleteClick = (userId: Id) => {
+    if (!hasActionAccess) {
+      notifications.show({
+        title: 'Access Denied',
+        message:
+          'Yoou do not have access to the action. Please contact support',
+        color: 'red',
+      })
+      return
+    }
     setSelectedUser(userId)
     setDeleteModalOpen(true)
   }

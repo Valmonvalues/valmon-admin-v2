@@ -62,8 +62,6 @@ const AddModal = ({
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { initialData } = useGlobalContext()
 
-  console.log('Initial Data', initialData)
-
   useEffect(() => {
     if (!opened) {
       setFormData({})

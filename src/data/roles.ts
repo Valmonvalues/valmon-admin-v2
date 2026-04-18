@@ -1,35 +1,6 @@
-export const roles = [
-  {
-    name: 'super_admin',
-    label: 'Super Admin',
-    permissions: [],
-  },
-  {
-    name: 'admin',
-    label: 'COO (Chief Operating Officer)',
-    permissions: [],
-  },
-  {
-    name: 'moderator',
-    label: 'Moderator',
-    permissions: [],
-  },
-  //   {
-  //     name: 'moderator',
-  //     label: 'CTO (Chief Technology Officer)',
-  //     permissions: [],
-  //   },
-  //   {
-  //     name: 'moderator',
-  //     label: 'CMO (Chief Marketing Officer)',
-  //     permissions: [],
-  //   },
-  //   {
-  //     name: 'moderator',
-  //     label: 'CSR (Customer Support Representative)',
-  //     permissions: [],
-  //   },
-]
+import { useRolePermissions } from '@/services/rolePermissions.service'
+import { useUser } from '@/services/user.service'
+import type { Permission } from '@/types/rolePermissions.types'
 
 export const allowedRoles = {
   summary: ['all'],
@@ -40,5 +11,63 @@ export const allowedRoles = {
   resolution: ['super_admin', 'admin'],
   categoryRequest: ['super_admin', 'admin'],
   settings: ['all'],
-  account: ['super_admin'],
+  account: ['all'],
+}
+
+export function accessManagement() {
+  const { data: permissions } = useRolePermissions().getAllPermissions()
+
+  const reducedPermissions = permissions?.reduce<Record<string, Permission[]>>(
+    (acc, cur) => {
+      const key = cur?.name.split('_')[1]
+
+      // console.log(acc)
+      if (!acc[key]) {
+        acc[key] = []
+      }
+      acc[key].push(cur)
+
+      return acc
+    },
+    {},
+  )
+  // console.log('permissionNames', reducedPermissions)
+}
+
+export function userAccess(accessName: string, action?: string) {
+  const { data: roles } = useRolePermissions().getAllRoles()
+  const { data: me } = useUser().getMe()
+
+  // console.log(roles)
+
+  const userRolePerm = roles?.find(
+    (role) =>
+      role.name.split(' ').join('_').toLowerCase() === me?.role.toLowerCase(),
+  )?.permissions
+
+  // console.log('userRolePerm', userRolePerm)
+
+  const reducedUserPermissions = userRolePerm?.reduce<
+    Record<string, Permission[]>
+  >((acc, cur) => {
+    const key = cur?.name.split('_')[1]
+
+    if (!acc[key]) {
+      acc[key] = []
+      acc[key].push(cur)
+    }
+
+    // console.log(acc)
+    return acc
+  }, {})
+
+  // console.log('reducedUserPermissions', reducedUserPermissions)
+  return {
+    hasAccess: Object.keys(reducedUserPermissions || {}).includes(accessName),
+    hasActionAccess: action
+      ? reducedUserPermissions?.[accessName]?.find((e) =>
+          e.name.includes(action),
+        )
+      : false,
+  }
 }
