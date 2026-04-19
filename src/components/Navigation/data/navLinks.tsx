@@ -1,4 +1,3 @@
-import { allowedRoles } from '@/data/roles'
 import {
   IconBuildingStore,
   IconCalendarDot,
@@ -16,21 +15,21 @@ export const navLinks = [
     label: 'Summary',
     icon: <IconLayout2 />,
     route: '/summary',
-    allowedRoles: allowedRoles.summary,
+    // allowedRoles: allowedRoles.summary,
     requiredPermissions: ['view_summary', 'manage_summary'],
   },
   {
     label: 'Manage User',
     icon: <IconUser />,
     route: '/users',
-    allowedRoles: allowedRoles.users,
+    // allowedRoles: allowedRoles.users,
     requiredPermissions: ['view_users', 'manage_users'],
   },
   {
     label: 'Skills',
     icon: <IconPaint />,
     route: '/skills',
-    allowedRoles: allowedRoles.skills,
+    // allowedRoles: allowedRoles.skills,
     requiredPermissions: [
       'view_skill_transactions',
       'manage_skill_transactions',
@@ -40,7 +39,7 @@ export const navLinks = [
     label: 'Market Place',
     icon: <IconBuildingStore />,
     route: '/marketPlace',
-    allowedRoles: allowedRoles.marketPlace,
+    // allowedRoles: allowedRoles.marketPlace,
     requiredPermissions: [
       'view_open_listings',
       'manage_open_listings',
@@ -56,14 +55,14 @@ export const navLinks = [
     label: 'Valmon Wallet',
     icon: <IconCoin />,
     route: '/wallet',
-    allowedRoles: allowedRoles.wallet,
+    // allowedRoles: allowedRoles.wallet,
     requiredPermissions: ['view_wallet', 'manage_wallet'],
   },
   {
     label: 'Conflict Resolution',
     icon: <IconCalendarDot />,
     route: '/resolution',
-    allowedRoles: allowedRoles.resolution,
+    // allowedRoles: allowedRoles.resolution,
     requiredPermissions: [
       'view_service_conflicts',
       'manage_service_conflicts',
@@ -75,14 +74,14 @@ export const navLinks = [
     label: 'Category Request',
     icon: <IconCirclePlus />,
     route: '/categoryRequest',
-    allowedRoles: allowedRoles.categoryRequest,
+    // allowedRoles: allowedRoles.categoryRequest,
     requiredPermissions: ['view_category_requests', 'manage_category_requests'],
   },
   {
     label: 'Settings',
     icon: <IconSettings />,
     route: '/settings',
-    allowedRoles: allowedRoles.settings,
+    // allowedRoles: allowedRoles.settings,
     requiredPermissions: [
       'view_platform_rates',
       'manage_platform_rates',
@@ -96,7 +95,7 @@ export const navLinks = [
     label: 'Account Managers',
     icon: <IconMessageUser />,
     route: '/account',
-    allowedRoles: allowedRoles.account,
+    // allowedRoles: allowedRoles.account,
     requiredPermissions: ['view_admin_accounts', 'manage_admin_accounts'],
   },
 ]

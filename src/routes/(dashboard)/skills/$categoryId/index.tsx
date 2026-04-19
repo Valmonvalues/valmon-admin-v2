@@ -8,7 +8,6 @@ import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { capitalizeKey } from '@/utils/helper'
 import { routeGaurd } from '@/middleware/routeGuard'
 import { useGlobalContext } from '@/contexts/GlobalContext'
-import { allowedRoles } from '@/data/roles'
 import useSortedData from '@/hook/sortData'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useHandleDelete } from '@/hook/useHandleDelete'
@@ -22,7 +21,8 @@ import { useState } from 'react'
 
 export const Route = createFileRoute('/(dashboard)/skills/$categoryId/')({
   component: RouteComponent,
-  loader: () => routeGaurd(allowedRoles?.skills),
+  loader: () =>
+    routeGaurd(['view_skill_transactions', 'manage_skill_transactions']),
 })
 
 function RouteComponent() {

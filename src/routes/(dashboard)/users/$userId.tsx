@@ -15,7 +15,6 @@ import ReviewsSection from '@/components/user/ReviewSection'
 import { notifications } from '@mantine/notifications'
 import { useConfirmModal } from '@/providers/ModalProvider'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 import WorkGallery from '@/components/WorkGallery'
 import Services from '@/components/Services'
 import Reviews from '@/components/Reviews'
@@ -23,7 +22,7 @@ import Listings from '@/components/Listings'
 
 export const Route = createFileRoute('/(dashboard)/users/$userId')({
   component: RouteComponent,
-  loader: () => routeGaurd(allowedRoles.users),
+  loader: () => routeGaurd(['view_users', 'manage_users']),
 })
 
 const tabs = [

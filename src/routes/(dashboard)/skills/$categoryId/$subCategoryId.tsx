@@ -16,7 +16,8 @@ export const Route = createFileRoute(
   '/(dashboard)/skills/$categoryId/$subCategoryId',
 )({
   component: RouteComponent,
-  loader: () => routeGaurd(allowedRoles?.skills),
+  loader: () =>
+    routeGaurd(['view_skill_transactions', 'manage_skill_transactions']),
 })
 
 function RouteComponent() {

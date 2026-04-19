@@ -23,16 +23,18 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles, userAccess } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import { useSummary } from '@/services/summary.service'
 import { notifications } from '@mantine/notifications'
+import { useAccessManagement } from '@/hook/useAccessManagement'
+import NoAccess from '@/components/NoAccess'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
-  loader: () => routeGaurd(allowedRoles.skills),
+  loader: () =>
+    routeGaurd(['view_skill_transactions', 'manage_skill_transactions']),
 })
 
 function Skills() {
@@ -48,10 +50,8 @@ function Skills() {
   } = useSkills()
   const { getSummary } = useSummary()
   const { data: summaryData } = getSummary()
-  console.log(summaryData)
 
   const {
-    // selectedId: selectedManager,
     modalOpen: deleteModalOpen,
     setModalOpen: setDeleteModalOpen,
     handleDeleteClick,
@@ -63,7 +63,7 @@ function Skills() {
   })
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const { setOpenFormModal } = useGlobalContext()
-
+  const { canAccess } = useAccessManagement()
   const { data: skillsData, isLoading: skillDataLoader } = listSkills({
     page,
     perpage,
@@ -130,10 +130,8 @@ function Skills() {
     navigate({ to: `/skills/${categoryId}` })
   }
 
-  const { hasActionAccess } = userAccess('skill', 'manage')
-
   const handleAddCategory = async (categoryData: any) => {
-    if (!hasActionAccess) {
+    if (!canAccess('manage_skill_parent_categories')) {
       notifications.show({
         title: 'Access Denied',
         message:
@@ -178,124 +176,136 @@ function Skills() {
         />
       </div>
 
-      {activeTab === 'skill transactions' && (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
-            <StatCard
-              title="Total Transaction"
-              value={transaction.length}
-              color="bg-pink-100"
-              image={profile}
-            />
-            <StatCard
-              title="Transaction Value"
-              value={formatNumber(skillsData?.transaction_value)}
-              color="bg-purple-100"
-              image={cardblack}
-            />
-            <StatCard
-              title="Valmon Earnings"
-              value={formatNumber(skillsData?.valmon_earning)}
-              color="bg-dark-gold"
-              image={cardwhite}
-            />
+      {activeTab === 'skill transactions' ? (
+        canAccess('view_skill_transactions') ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
+              <StatCard
+                title="Total Transaction"
+                value={transaction.length}
+                color="bg-pink-100"
+                image={profile}
+              />
+              <StatCard
+                title="Transaction Value"
+                value={formatNumber(skillsData?.transaction_value)}
+                color="bg-purple-100"
+                image={cardblack}
+              />
+              <StatCard
+                title="Valmon Earnings"
+                value={formatNumber(skillsData?.valmon_earning)}
+                color="bg-dark-gold"
+                image={cardwhite}
+              />
 
-            <StatCard title="Top Categories">
-              <TopCategoriesStat categories={topCategories} />
-            </StatCard>
-          </div>
+              <StatCard title="Top Categories">
+                <TopCategoriesStat categories={topCategories} />
+              </StatCard>
+            </div>
 
+            <div className="">
+              <div className="">
+                <ReusableTable
+                  title="Transactions"
+                  totalCount={transaction.length}
+                  data={sortedTransaction}
+                  columns={transactionColumns({ page })}
+                  isLoading={skillDataLoader}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={sortConfig}
+                  onSort={handleSort}
+                />
+
+                {!skillDataLoader && totalPages > 1 && (
+                  <PaginationControls
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                  />
+                )}
+              </div>
+
+              <ConfirmDeleteModal
+                opened={deleteModalOpen}
+                onCancel={() => setDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Transaction"
+                message="Are you sure you want to delete this user? This action cannot be undone."
+                loading={deleteTransaction.isPending}
+              />
+            </div>
+          </>
+        ) : (
+          <NoAccess />
+        )
+      ) : (
+        ''
+      )}
+
+      {activeTab === 'skill parent' ? (
+        canAccess('view_skill_parent_categories') ? (
           <div className="">
             <div className="">
               <ReusableTable
-                title="Transactions"
-                totalCount={transaction.length}
-                data={sortedTransaction}
-                columns={transactionColumns({ page })}
+                title="Parent Category List"
+                totalCount={categoriesData?.length}
+                data={sortedCategories as any}
+                columns={categoriesColumns({
+                  // handleView,
+                  handleView: (id) => handleView(id),
+                  handleDeleteClick,
+                })}
                 isLoading={skillDataLoader}
                 searchQuery={search}
                 onSearchChange={handleSearch}
-                sortConfig={sortConfig}
-                onSort={handleSort}
+                sortConfig={sortConfigParent}
+                onSort={handleSortParent}
+                headerActions={
+                  <div className="flex items-center gap-3">
+                    <BaseButton
+                      title="Add New"
+                      showPlusIcon={true}
+                      modalTitle="Add Parent Category"
+                      fields={[
+                        { name: 'name', label: 'Name', type: 'text' },
+                        {
+                          name: 'description',
+                          label: 'Description',
+                          type: 'textarea',
+                        },
+                        {
+                          name: 'image',
+                          label: 'Pick a file',
+                          type: 'file',
+                          variant: 'image-upload',
+                        },
+                      ]}
+                      onClick={() => setOpenFormModal(true)}
+                      onSubmit={handleAddCategory}
+                      loading={addCategory.isPending}
+                      className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
+                    />
+                  </div>
+                }
               />
-
-              {!skillDataLoader && totalPages > 1 && (
-                <PaginationControls
-                  currentPage={page}
-                  totalPages={totalPages}
-                  onPageChange={setPage}
-                />
-              )}
             </div>
 
             <ConfirmDeleteModal
               opened={deleteModalOpen}
               onCancel={() => setDeleteModalOpen(false)}
               onConfirm={handleConfirmDelete}
-              title="Delete Transaction"
-              message="Are you sure you want to delete this user? This action cannot be undone."
-              loading={deleteTransaction.isPending}
+              title="Delete Category"
+              message="Are you sure you want to delete this category? This action cannot be undone."
+              loading={deleteParent.isPending}
             />
           </div>
-        </>
-      )}
-
-      {activeTab === 'skill parent' && (
-        <div className="">
-          <div className="">
-            <ReusableTable
-              title="Parent Category List"
-              totalCount={categoriesData?.length}
-              data={sortedCategories as any}
-              columns={categoriesColumns({
-                // handleView,
-                handleView: (id) => handleView(id),
-                handleDeleteClick,
-              })}
-              isLoading={skillDataLoader}
-              searchQuery={search}
-              onSearchChange={handleSearch}
-              sortConfig={sortConfigParent}
-              onSort={handleSortParent}
-              headerActions={
-                <div className="flex items-center gap-3">
-                  <BaseButton
-                    title="Add New"
-                    showPlusIcon={true}
-                    modalTitle="Add Parent Category"
-                    fields={[
-                      { name: 'name', label: 'Name', type: 'text' },
-                      {
-                        name: 'description',
-                        label: 'Description',
-                        type: 'textarea',
-                      },
-                      {
-                        name: 'image',
-                        label: 'Pick a file',
-                        type: 'file',
-                        variant: 'image-upload',
-                      },
-                    ]}
-                    onClick={() => setOpenFormModal(true)}
-                    onSubmit={handleAddCategory}
-                    loading={addCategory.isPending}
-                    className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
-                  />
-                </div>
-              }
-            />
-          </div>
-
-          <ConfirmDeleteModal
-            opened={deleteModalOpen}
-            onCancel={() => setDeleteModalOpen(false)}
-            onConfirm={handleConfirmDelete}
-            title="Delete Category"
-            message="Are you sure you want to delete this category? This action cannot be undone."
-            loading={deleteParent.isPending}
-          />
-        </div>
+        ) : (
+          <NoAccess />
+        )
+      ) : (
+        ''
       )}
     </DashboardLayout>
   )

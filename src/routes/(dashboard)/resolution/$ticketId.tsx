@@ -1,5 +1,4 @@
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useResolution } from '@/services/resolution.service'
 import { Avatar, Badge, Button, Card, Group, Image, Text } from '@mantine/core'
@@ -7,7 +6,13 @@ import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(dashboard)/resolution/$ticketId')({
   component: ChatView,
-  loader: () => routeGaurd(allowedRoles.resolution),
+  loader: () =>
+    routeGaurd([
+      'view_service_conflicts',
+      'manage_service_conflicts',
+      'view_marketplace_conflicts',
+      'manage_marketplace_conflicts',
+    ]),
 })
 
 function ChatView() {

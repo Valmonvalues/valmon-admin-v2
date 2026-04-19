@@ -1,3 +1,6 @@
+import type { Role } from '@/types/rolePermissions.types'
+import { redirect } from '@tanstack/react-router'
+
 export const formatDate = (dateString: string) => {
   if (!dateString) return '-'
   return new Date(dateString)?.toLocaleDateString('en-GB')
@@ -19,4 +22,17 @@ export function capitalizeKey<T extends Record<string, any>, K extends keyof T>(
       [key]: capitalized,
     }
   })
+}
+
+export const computePermissionSet = (userRole?: string, roles?: Role[]) => {
+  const permissions = roles?.find(
+    (role) =>
+      role.name.split(' ').join('_').toLowerCase() === userRole?.toLowerCase(),
+  )?.permissions
+
+  if (!permissions) {
+    throw redirect({ to: '/' })
+  }
+
+  return new Set((permissions ?? []).map((perm) => perm.name))
 }

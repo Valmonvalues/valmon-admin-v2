@@ -1,6 +1,6 @@
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useUser } from '@/services/user.service'
-import { SimpleGrid } from '@mantine/core'
+import { Loader, SimpleGrid } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import StatCard from '@/components/StatCard'
@@ -17,17 +17,21 @@ import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 
 import profile from '@/assets/icons/cardprofile.svg'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles, userAccess } from '@/data/roles'
+import { userAccess } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
+import NoAccess from '@/components/NoAccess'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export const Route = createFileRoute('/(dashboard)/users/')({
   component: Users,
-  loader: () => routeGaurd(allowedRoles.users),
+  loader: () => routeGaurd(['view_users', 'manage_users']),
 })
 
 function Users() {
   const navigate = useNavigate()
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
+  const { canAccess } = useAccessManagement()
+
   const [page, setPage] = useState(1)
   const { listUsers, getUsersSummary, deleteUser } = useUser()
   const { data, isLoading } = listUsers({
@@ -100,61 +104,79 @@ function Users() {
 
   return (
     <DashboardLayout>
-      <div className="">
-        <SimpleGrid cols={3} spacing="lg" className="mb-6 max-w-[900px]">
-          <StatCard
-            title="All Users"
-            value={usersSummary?.total_users}
-            color="bg-pink-100"
-            image={profile}
-          />
-          <StatCard
-            title="Service Providers"
-            value={usersSummary?.service_providers}
-            color="bg-purple-100"
-            image={profile}
-          />
-          <StatCard
-            title="Client"
-            value={usersSummary?.employers}
-            color="bg-green-100"
-            image={profile}
-          />
-        </SimpleGrid>
+      {canAccess('view_users') ? (
+        <>
+          <div className="">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-32">
+                <Loader color="gold" />
+              </div>
+            ) : (
+              <>
+                <SimpleGrid
+                  cols={3}
+                  spacing="lg"
+                  className="mb-6 max-w-[900px]"
+                >
+                  <StatCard
+                    title="All Users"
+                    value={usersSummary?.total_users}
+                    color="bg-pink-100"
+                    image={profile}
+                  />
+                  <StatCard
+                    title="Service Providers"
+                    value={usersSummary?.service_providers}
+                    color="bg-purple-100"
+                    image={profile}
+                  />
+                  <StatCard
+                    title="Client"
+                    value={usersSummary?.employers}
+                    color="bg-green-100"
+                    image={profile}
+                  />
+                </SimpleGrid>
 
-        <ReusableTable
-          title="Customers"
-          totalCount={totalUsers}
-          data={sortedUsers}
-          columns={userColumns({
-            page,
-            handleView,
-            handleDeleteClick,
-          })}
-          isLoading={isLoading}
-          searchQuery={search}
-          onSearchChange={handleSearch}
-          sortConfig={sortConfig}
-          onSort={handleSort}
-        />
+                <ReusableTable
+                  title="Customers"
+                  totalCount={totalUsers}
+                  data={sortedUsers}
+                  columns={userColumns({
+                    page,
+                    handleView,
+                    handleDeleteClick,
+                  })}
+                  isLoading={isLoading}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={sortConfig}
+                  onSort={handleSort}
+                />
+              </>
+            )}
 
-        {!isLoading && totalPages > 1 && (
-          <PaginationControls
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
+            {!isLoading && totalPages > 1 && (
+              <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            )}
+          </div>
+
+          <ConfirmDeleteModal
+            opened={deleteModalOpen}
+            onCancel={() => setDeleteModalOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="Delete User"
+            message="Are you sure you want to delete this user? This action cannot be undone."
+            loading={deleteUser.isPending}
           />
-        )}
-      </div>
-
-      <ConfirmDeleteModal
-        opened={deleteModalOpen}
-        onCancel={() => setDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="Delete User"
-        message="Are you sure you want to delete this user? This action cannot be undone."
-        loading={deleteUser.isPending}
-      />
+        </>
+      ) : (
+        <NoAccess />
+      )}
     </DashboardLayout>
   )
 }

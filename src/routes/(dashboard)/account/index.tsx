@@ -10,23 +10,25 @@ import type { AccountManager } from '@/types/accountManagers.types'
 import type { Id } from '@/types/global.type'
 import { accountManagerColumns } from '@/columns/accountManagersColumns'
 import { useHandleDelete } from '@/hook/useHandleDelete'
-import { allowedRoles } from '@/data/roles'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { perPage as perpage } from '@/constant/config'
 import { capitalizeKey } from '@/utils/helper'
 import { useRolePermissions } from '@/services/rolePermissions.service'
+import { useAccessManagement } from '@/hook/useAccessManagement'
+import NoAccess from '@/components/NoAccess'
 
 export const Route = createFileRoute('/(dashboard)/account/')({
   component: Account,
-  loader: () => routeGaurd(allowedRoles?.marketPlace),
+  loader: () => routeGaurd(['view_admin_accounts', 'manage_admin_accounts']),
 })
 
 function Account() {
   const { openFormModal, setOpenFormModal, initialData, setInitialData } =
     useGlobalContext()
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
+  const { canAccess } = useAccessManagement()
 
   const { listAccountManagers, addManager, updateManager, deleteManager } =
     useAccountManagers()
@@ -142,74 +144,80 @@ function Account() {
 
   return (
     <DashboardLayout>
-      <div className="">
-        <ReusableTable
-          title="Account Managers"
-          // totalCount={totalCategories} // NOT available issues
-          data={sortedManagers}
-          columns={accountManagerColumns({
-            page,
-            handleView,
-            handleEditManager,
-            handleDeleteClick,
-          })}
-          isLoading={managersLoading}
-          searchQuery={search}
-          onSearchChange={handleSearch}
-          sortConfig={managersSortConfig}
-          onSort={handleSort}
-          headerActions={
-            <BaseButton
-              title="Add New"
-              showPlusIcon={true}
-              modalTitle="Add New Manager"
-              opened={openFormModal}
-              onClose={() => setOpenFormModal(false)}
-              onClick={() => {
-                setInitialData(null)
-                setOpenFormModal(true)
-              }}
-              fields={[
-                { name: 'firstName', label: 'First Name', type: 'text' },
-                { name: 'lastName', label: 'Last Name', type: 'text' },
-                { name: 'email', label: 'Email', type: 'email' },
-                {
-                  name: 'role',
-                  label: 'Role',
-                  type: 'select',
-                  options: roles
-                    ?.filter((role) => role?.name !== 'super_admin')
-                    .map((role) => {
-                      return {
-                        value: String(role?.id),
-                        label: role?.name,
-                      }
-                    }),
-                },
-                // { name: 'file', label: 'Upload Photo', type: 'file' },
-                {
-                  name: 'file',
-                  label: 'Upload Photo',
-                  type: 'file',
-                  variant: 'profile_picture-upload',
-                },
-              ]}
-              onSubmit={handleAddManager}
-              loading={addManager?.isPending}
-              className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
+      {canAccess('view_admin_accounts') ? (
+        <>
+          <div className="">
+            <ReusableTable
+              title="Account Managers"
+              // totalCount={totalCategories} // NOT available issues
+              data={sortedManagers}
+              columns={accountManagerColumns({
+                page,
+                handleView,
+                handleEditManager,
+                handleDeleteClick,
+              })}
+              isLoading={managersLoading}
+              searchQuery={search}
+              onSearchChange={handleSearch}
+              sortConfig={managersSortConfig}
+              onSort={handleSort}
+              headerActions={
+                <BaseButton
+                  title="Add New"
+                  showPlusIcon={true}
+                  modalTitle="Add New Manager"
+                  opened={openFormModal}
+                  onClose={() => setOpenFormModal(false)}
+                  onClick={() => {
+                    setInitialData(null)
+                    setOpenFormModal(true)
+                  }}
+                  fields={[
+                    { name: 'firstName', label: 'First Name', type: 'text' },
+                    { name: 'lastName', label: 'Last Name', type: 'text' },
+                    { name: 'email', label: 'Email', type: 'email' },
+                    {
+                      name: 'role',
+                      label: 'Role',
+                      type: 'select',
+                      options: roles
+                        ?.filter((role) => role?.name !== 'super_admin')
+                        .map((role) => {
+                          return {
+                            value: String(role?.id),
+                            label: role?.name,
+                          }
+                        }),
+                    },
+                    // { name: 'file', label: 'Upload Photo', type: 'file' },
+                    {
+                      name: 'file',
+                      label: 'Upload Photo',
+                      type: 'file',
+                      variant: 'profile_picture-upload',
+                    },
+                  ]}
+                  onSubmit={handleAddManager}
+                  loading={addManager?.isPending}
+                  className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
+                />
+              }
             />
-          }
-        />
-      </div>
 
-      <ConfirmDeleteModal
-        opened={deleteModalOpen}
-        onCancel={() => setDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="Delete Admin"
-        message="Are you sure you want to delete this admin? This action cannot be undone."
-        loading={deleteManager?.isPending}
-      />
+            <ConfirmDeleteModal
+              opened={deleteModalOpen}
+              onCancel={() => setDeleteModalOpen(false)}
+              onConfirm={handleConfirmDelete}
+              title="Delete Admin"
+              message="Are you sure you want to delete this admin? This action cannot be undone."
+              loading={deleteManager?.isPending}
+            />
+          </div>
+        </>
+      ) : (
+        <NoAccess />
+      )}
     </DashboardLayout>
   )
 }

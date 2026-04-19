@@ -15,11 +15,12 @@ import { useGlobalContext } from '@/contexts/GlobalContext'
 import BaseButton from '@/components/BaseButton'
 import type { Field } from '@/components/modals/AddModal'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
+import NoAccess from '@/components/NoAccess'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export const Route = createFileRoute('/(dashboard)/wallet/')({
   component: Wallet,
-  loader: () => routeGaurd(allowedRoles?.wallet),
+  loader: () => routeGaurd(['view_wallet', 'manage_wallet']),
 })
 
 function Wallet() {
@@ -29,6 +30,7 @@ function Wallet() {
   const { data: bankNames } = listingBanks() // isLoading: bankNamesloading
   const { mutate: getOtp, isPending: getOtpIsLoading } = sendWithdrawOtp
   const { mutate: withdraw, isPending: withdrawIsLoading } = withdrawal
+  const { canAccess } = useAccessManagement()
 
   const transaction = walletData?.transactions || []
   // console.log(walletData)
@@ -122,190 +124,194 @@ function Wallet() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 md:p-6">
-        {walletDataLoading ? (
-          <div className="flex justify-center items-center h-32">
-            <Loader color="gold" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-            {/* Wallet Balance Card */}
-            <Card
-              shadow="sm"
-              padding="lg"
-              radius="md"
-              // className="bg-gradient-to-r from-yellow-400 to-yellow-200 text-black col-span-2"
-              className="activeMenu col-span-2 flex justify-between"
-            >
-              <div className="flex flex-col justify-between gap-4">
-                <Text fw={600} size="md">
-                  Wallet Balance
-                </Text>
-
-                <div className="flex justify-between items-center">
-                  <Text fw={900} size="" className="!text-3xl mb-4">
-                    {showBalance
-                      ? `NGN ${Number(
-                          walletData?.wallet_balance ?? 0,
-                        )?.toLocaleString('en-NG', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}`
-                      : '••••••••'}
+      {canAccess('view_wallet') ? (
+        <div className="p-4 md:p-6">
+          {walletDataLoading ? (
+            <div className="flex justify-center items-center h-32">
+              <Loader color="gold" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+              {/* Wallet Balance Card */}
+              <Card
+                shadow="sm"
+                padding="lg"
+                radius="md"
+                // className="bg-gradient-to-r from-yellow-400 to-yellow-200 text-black col-span-2"
+                className="activeMenu col-span-2 flex justify-between"
+              >
+                <div className="flex flex-col justify-between gap-4">
+                  <Text fw={600} size="md">
+                    Wallet Balance
                   </Text>
-                  <button
-                    onClick={() => setShowBalance((prev) => !prev)}
-                    className="p-2 rounded-full hover:bg-yellow-200 transition"
-                    aria-label="Toggle balance visibility"
-                  >
-                    {showBalance ? (
-                      <IconEye size={24} color="#333" />
-                    ) : (
-                      <IconEyeOff size={24} color="#333" />
-                    )}
-                  </button>
+
+                  <div className="flex justify-between items-center">
+                    <Text fw={900} size="" className="!text-3xl mb-4">
+                      {showBalance
+                        ? `NGN ${Number(
+                            walletData?.wallet_balance ?? 0,
+                          )?.toLocaleString('en-NG', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}`
+                        : '••••••••'}
+                    </Text>
+                    <button
+                      onClick={() => setShowBalance((prev) => !prev)}
+                      className="p-2 rounded-full hover:bg-yellow-200 transition"
+                      aria-label="Toggle balance visibility"
+                    >
+                      {showBalance ? (
+                        <IconEye size={24} color="#333" />
+                      ) : (
+                        <IconEyeOff size={24} color="#333" />
+                      )}
+                    </button>
+                  </div>
                 </div>
+
+                <BaseButton
+                  title="Withdraw"
+                  color="black"
+                  textColor="white"
+                  fields={withdrawFields}
+                  modalTitle="Withdraw Funds"
+                  // onSubmit={(data) => {
+                  //   console.log('Withdrawal data:', data)
+                  // }}
+                  onSubmit={handleWithdraw}
+                  loading={withdrawIsLoading}
+                  onClick={() => setOpenFormModal(true)}
+                  className="px-4 font-semibold flex items-center gap-2"
+                  src={withdrawLight}
+                />
+              </Card>
+
+              <div className="flex flex-col gap-6 h-full col-span-2">
+                {/* Total Income Card */}
+                <Card
+                  shadow="xs"
+                  padding="lg"
+                  radius="md"
+                  className="bg-white flex justify-between flex-1"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex justify-center items-center rounded-xl bg-green-50">
+                      <Image
+                        radius="md"
+                        w={50}
+                        h={50}
+                        fit="contain"
+                        src={income}
+                        alt={'title'}
+                        p="xs"
+                        // className="w-12 h-12 object-contain self-end"
+                      />
+                    </div>
+                    <div>
+                      <Text fw={600} size="sm" c="dimmed">
+                        Total Income
+                      </Text>
+                      <Text fw={700} size="lg" mt="xs">
+                        {showBalance
+                          ? `NGN ${Number(
+                              walletData?.total_income ?? 0,
+                            )?.toLocaleString('en-NG', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}`
+                          : '••••••••'}
+                      </Text>
+                    </div>
+                  </div>
+                  <Text size="xs" c="green" mt="">
+                    📈 8.5% Up from last week
+                  </Text>
+                </Card>
+
+                {/* Total Withdrawn Card */}
+                <Card
+                  shadow="xs"
+                  padding="lg"
+                  radius="md"
+                  className="bg-white flex justify-between flex-1"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex justify-center items-center rounded-xl bg-red-50">
+                      <Image
+                        radius="md"
+                        w={50}
+                        h={50}
+                        fit="contain"
+                        src={withdrawIcon}
+                        alt={'title'}
+                        p="xs"
+                        // className="w-12 h-12 object-contain self-end"
+                      />
+                    </div>
+
+                    <div className="">
+                      <Text fw={600} size="sm" c="dimmed">
+                        Total Withdrawn
+                      </Text>
+                      <Text fw={700} size="lg" mt="xs">
+                        {showBalance
+                          ? `NGN ${Number(
+                              walletData?.total_withdrawal ?? 0,
+                            )?.toLocaleString('en-NG', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}`
+                          : '••••••••'}
+                      </Text>
+                    </div>
+                  </div>
+                  <Text size="xs" c="green" mt="">
+                    📈 8.5% Up from last week
+                  </Text>
+                </Card>
               </div>
 
-              <BaseButton
-                title="Withdraw"
-                color="black"
-                textColor="white"
-                fields={withdrawFields}
-                modalTitle="Withdraw Funds"
-                // onSubmit={(data) => {
-                //   console.log('Withdrawal data:', data)
-                // }}
-                onSubmit={handleWithdraw}
-                loading={withdrawIsLoading}
-                onClick={() => setOpenFormModal(true)}
-                className="px-4 font-semibold flex items-center gap-2"
-                src={withdrawLight}
-              />
-            </Card>
-
-            <div className="flex flex-col gap-6 h-full col-span-2">
-              {/* Total Income Card */}
+              {/* Select Currency Card */}
               <Card
                 shadow="xs"
                 padding="lg"
                 radius="md"
-                className="bg-white flex justify-between flex-1"
+                className="bg-black-custom flex flex-col justify-center"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex justify-center items-center rounded-xl bg-green-50">
-                    <Image
-                      radius="md"
-                      w={50}
-                      h={50}
-                      fit="contain"
-                      src={income}
-                      alt={'title'}
-                      p="xs"
-                      // className="w-12 h-12 object-contain self-end"
-                    />
-                  </div>
-                  <div>
-                    <Text fw={600} size="sm" c="dimmed">
-                      Total Income
-                    </Text>
-                    <Text fw={700} size="lg" mt="xs">
-                      {showBalance
-                        ? `NGN ${Number(
-                            walletData?.total_income ?? 0,
-                          )?.toLocaleString('en-NG', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}`
-                        : '••••••••'}
-                    </Text>
-                  </div>
-                </div>
-                <Text size="xs" c="green" mt="">
-                  📈 8.5% Up from last week
+                <Text fw={600} size="sm">
+                  Select Currency
                 </Text>
-              </Card>
-
-              {/* Total Withdrawn Card */}
-              <Card
-                shadow="xs"
-                padding="lg"
-                radius="md"
-                className="bg-white flex justify-between flex-1"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex justify-center items-center rounded-xl bg-red-50">
-                    <Image
-                      radius="md"
-                      w={50}
-                      h={50}
-                      fit="contain"
-                      src={withdrawIcon}
-                      alt={'title'}
-                      p="xs"
-                      // className="w-12 h-12 object-contain self-end"
-                    />
-                  </div>
-
-                  <div className="">
-                    <Text fw={600} size="sm" c="dimmed">
-                      Total Withdrawn
-                    </Text>
-                    <Text fw={700} size="lg" mt="xs">
-                      {showBalance
-                        ? `NGN ${Number(
-                            walletData?.total_withdrawal ?? 0,
-                          )?.toLocaleString('en-NG', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}`
-                        : '••••••••'}
-                    </Text>
-                  </div>
-                </div>
-                <Text size="xs" c="green" mt="">
-                  📈 8.5% Up from last week
-                </Text>
+                <Select
+                  data={[
+                    { value: 'NGN', label: '🇳🇬 NGN' },
+                    { value: 'USD', label: '🇺🇸 USD' },
+                    { value: 'EUR', label: '🇪🇺 EUR' },
+                  ]}
+                  defaultValue="NGN"
+                  size="md"
+                  mt="md"
+                  className="bg-black-custom"
+                />
               </Card>
             </div>
-
-            {/* Select Currency Card */}
-            <Card
-              shadow="xs"
-              padding="lg"
-              radius="md"
-              className="bg-black-custom flex flex-col justify-center"
-            >
-              <Text fw={600} size="sm">
-                Select Currency
-              </Text>
-              <Select
-                data={[
-                  { value: 'NGN', label: '🇳🇬 NGN' },
-                  { value: 'USD', label: '🇺🇸 USD' },
-                  { value: 'EUR', label: '🇪🇺 EUR' },
-                ]}
-                defaultValue="NGN"
-                size="md"
-                mt="md"
-                className="bg-black-custom"
-              />
-            </Card>
-          </div>
-        )}
-        <ReusableTable
-          title="Transactions"
-          totalCount={transaction.length}
-          data={sortedTransaction}
-          // columns={walletTransactionColumns({ handleView })}
-          columns={walletTransactionColumns()}
-          isLoading={walletDataLoading}
-          // searchQuery={search}
-          // onSearchChange={setSearch}
-          sortConfig={sortConfig}
-          onSort={handleSort}
-        />
-      </div>
+          )}
+          <ReusableTable
+            title="Transactions"
+            totalCount={transaction.length}
+            data={sortedTransaction}
+            // columns={walletTransactionColumns({ handleView })}
+            columns={walletTransactionColumns()}
+            isLoading={walletDataLoading}
+            // searchQuery={search}
+            // onSearchChange={setSearch}
+            sortConfig={sortConfig}
+            onSort={handleSort}
+          />
+        </div>
+      ) : (
+        <NoAccess />
+      )}
     </DashboardLayout>
   )
 }

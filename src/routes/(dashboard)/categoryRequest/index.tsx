@@ -1,7 +1,6 @@
 import { serviceRequestColumns } from '@/columns/serviceRequestColumns'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 import DashboardLayout from '@/layout/DashboardLayout'
 import { useCategoryRequest } from '@/services/categoryRequest.service'
 import type { CategoryRequest } from '@/types/categoryRequest.types'
@@ -10,16 +9,20 @@ import { useState } from 'react'
 import { Button, Group } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import RejectionModal from '@/components/modals/RejectionModal'
+import NoAccess from '@/components/NoAccess'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export const Route = createFileRoute('/(dashboard)/categoryRequest/')({
   component: CategoryRequest,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () =>
+    routeGaurd(['view_category_requests', 'manage_category_requests']),
 })
 
 function CategoryRequest() {
   const [rejectionModalOpen, setRejectionModalOpen] = useState(false)
   const [selectedRequest, setSelectedRequest] =
     useState<CategoryRequest | null>(null)
+  const { canAccess } = useAccessManagement()
 
   const { listCategoryRequest, actionCategoryRequest } = useCategoryRequest()
   const { data, isLoading: isRequestLoading } = listCategoryRequest()
@@ -230,30 +233,36 @@ function CategoryRequest() {
 
   return (
     <DashboardLayout>
-      <ReusableTable
-        title="Custom Category Request"
-        subtitle="List Of Requested Categories"
-        totalCount={totalListings}
-        data={serviceRequest}
-        columns={serviceRequestColumns({
-          onApprove: handleApprove,
-          onReject: handleOpenRejectionModal, // Use modal for individual rejections
-        })}
-        isLoading={isRequestLoading}
-        sortConfig={requestSortConfig}
-        onSort={handleSort}
-        headerActions={headerActions}
-      />
+      {canAccess('view_category_requests') ? (
+        <>
+          <ReusableTable
+            title="Custom Category Request"
+            subtitle="List Of Requested Categories"
+            totalCount={totalListings}
+            data={serviceRequest}
+            columns={serviceRequestColumns({
+              onApprove: handleApprove,
+              onReject: handleOpenRejectionModal,
+            })}
+            isLoading={isRequestLoading}
+            sortConfig={requestSortConfig}
+            onSort={handleSort}
+            headerActions={headerActions}
+          />
 
-      <RejectionModal
-        opened={rejectionModalOpen}
-        onClose={() => {
-          setRejectionModalOpen(false)
-          setSelectedRequest(null)
-        }}
-        onSubmit={handleRejectWithReason}
-        isSubmitting={actionCategoryRequest.isPending}
-      />
+          <RejectionModal
+            opened={rejectionModalOpen}
+            onClose={() => {
+              setRejectionModalOpen(false)
+              setSelectedRequest(null)
+            }}
+            onSubmit={handleRejectWithReason}
+            isSubmitting={actionCategoryRequest.isPending}
+          />
+        </>
+      ) : (
+        <NoAccess />
+      )}
     </DashboardLayout>
   )
 }

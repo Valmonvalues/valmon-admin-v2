@@ -1,10 +1,15 @@
+import { rolePermissionsApi } from '@/api/rolePermissions.api'
 import { userApi } from '@/api/user.api'
+import { computePermissionSet } from '@/utils/helper'
 import { QueryClient } from '@tanstack/react-query'
 import { redirect } from '@tanstack/react-router'
 
 const queryClient = new QueryClient()
 
-export const routeGaurd = async (allowedRoles: string[]) => {
+// export const routeGaurd = async (allowedRoles: string[]) => {
+export const routeGaurd = async (perms: string[]) => {
+  // const { canAccessAny } = useAccessManagement()
+
   const me = await queryClient.fetchQuery({
     queryKey: ['me'],
     queryFn: userApi.getMe,
@@ -14,14 +19,18 @@ export const routeGaurd = async (allowedRoles: string[]) => {
     throw redirect({ to: '/' })
   }
 
-  if (
-    allowedRoles.includes('all') ||
-    allowedRoles.includes(me.role.toLowerCase())
-  ) {
+  const roles = await queryClient.fetchQuery({
+    queryKey: ['roles'],
+    queryFn: rolePermissionsApi.listAllRoles,
+  })
+
+  const canAccessAny = perms.some((perm) =>
+    computePermissionSet(me?.role, roles).has(perm),
+  )
+
+  if (canAccessAny) {
     return
   } else {
-    throw redirect({ to: '/users' })
+    throw redirect({ to: '/summary' })
   }
-
-  return
 }

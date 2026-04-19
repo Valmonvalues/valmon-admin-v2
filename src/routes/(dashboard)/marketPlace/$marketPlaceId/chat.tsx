@@ -3,13 +3,22 @@ import { Avatar, Badge, Card, Group, Image, Text } from '@mantine/core'
 import DashboardLayout from '@/layout/DashboardLayout'
 // import { useMarketPlaces } from '@/services/marketPlaces.service'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 
 export const Route = createFileRoute(
   '/(dashboard)/marketPlace/$marketPlaceId/chat',
 )({
   component: ChatView,
-  loader: () => routeGaurd(allowedRoles?.marketPlace),
+  loader: () =>
+    routeGaurd([
+      'view_open_listings',
+      'manage_open_listings',
+      'view_awaiting_approval_listings',
+      'manage_awaiting_approval_listings',
+      'view_closed_transactions',
+      'manage_closed_transactions',
+      'view_marketplace_categories',
+      'manage_marketplace_categories',
+    ]),
 })
 
 type Message = {

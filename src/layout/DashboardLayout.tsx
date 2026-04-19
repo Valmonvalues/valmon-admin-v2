@@ -5,74 +5,24 @@ import { Link, useLocation } from '@tanstack/react-router'
 
 import brandLogo from '@/assets/images/Logo/valmon.svg'
 import bell from '@/assets/icons/notification-bing.svg'
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { IconLogout } from '@tabler/icons-react'
 import { storage } from '@/constant/config'
 import { useUser } from '@/services/user.service'
 import Notifications from './Notifications'
 import { useNotifications } from '@/services/notifications.service'
-import {
-  AccessManagementRoleProvider,
-  useAccessManagementRoleContext,
-} from '@/contexts/AccessManagementRole'
-import { useRolePermissions } from '@/services/rolePermissions.service'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 type LayoutProps = {
-  children: ReactNode
+  children: React.ReactNode
 }
 
-/**
- * 🔹 Root Layout (ONLY wraps with provider)
- */
-const DashboardLayout = ({ children }: LayoutProps) => {
-  return (
-    <DashboardWithAccess>
-      <DashboardContent>{children}</DashboardContent>
-    </DashboardWithAccess>
-  )
-}
-
-export default DashboardLayout
-
-/**
- * 🔹 Provider Wrapper (handles fetching + role → permissions)
- */
-const DashboardWithAccess = ({ children }: { children: ReactNode }) => {
-  const { getMe } = useUser()
-  const { data: me } = getMe()
-
-  const { data: roles } = useRolePermissions().getAllRoles()
-
-  // ⛔ Prevent rendering until data is ready
-  if (!me || !roles) return null
-
-  const normalizedUserRole = me.role?.toLowerCase()
-
-  const userRolePerm =
-    roles.find(
-      (role) =>
-        role.name.split(' ').join('_').toLowerCase() === normalizedUserRole,
-    )?.permissions ?? []
-
-  return (
-    <AccessManagementRoleProvider permissions={userRolePerm}>
-      {children}
-    </AccessManagementRoleProvider>
-  )
-}
-
-/**
- * 🔹 Actual Layout Content (SAFE to use context here)
- */
-const DashboardContent = ({ children }: { children: ReactNode }) => {
-  const { canAccess, canAccessAny } = useAccessManagementRoleContext()
-
+const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure()
   const [notificationOpen, setNotificationOpen] = useState(false)
-
+  const { canAccessAny } = useAccessManagement()
   const { getMe } = useUser()
   const { data: me } = getMe()
-
   const { allNotifications } = useNotifications()
   const { data: notifications } = allNotifications()
 
@@ -94,9 +44,11 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
   return (
     <AppShell
       padding="md"
+      // header={{ height: 70 }}
       header={{ height: { base: 60, md: 70, lg: 80 } }}
       navbar={{
         width: { base: 240 },
+        // width: { base: 100, md: 200, lg: 250 },
         breakpoint: 'sm',
         collapsed: { mobile: !opened },
       }}
@@ -105,8 +57,9 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
       {/* HEADER */}
       <AppShell.Header>
         <nav className="bg-stone-950 w-full h-[101%] flex items-center px-4">
-          {/* Left */}
+          {/* Left: Logo + Burger */}
           <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Mobile Burger */}
             <Burger
               opened={opened}
               onClick={toggle}
@@ -115,6 +68,7 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
               color="white"
             />
 
+            {/* Logo */}
             <Link to="/summary" className="flex items-center">
               <img src={brandLogo} alt="Valmon Logo" className="h-8 w-auto" />
             </Link>
@@ -125,7 +79,7 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
             {getRouteName()}
           </div>
 
-          {/* Right */}
+          {/* Right Section */}
           <div className="flex items-center gap-4 ml-auto">
             {/* Notifications */}
             <div className="relative">
@@ -138,11 +92,12 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
 
                 {notifications && notifications.length > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 text-[10px] bg-red-600 text-white font-semibold rounded-full flex items-center justify-center animate-pulse">
-                    {notifications.length}
+                    {notifications?.length}
                   </span>
                 )}
               </button>
 
+              {/* Dropdown */}
               {notificationOpen && (
                 <div className="absolute right-0 mt-2 w-72 sm:w-80 z-50">
                   <Notifications />
@@ -155,7 +110,7 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
               <Avatar src={''} size="sm" />
             </button>
 
-            {/* User Info */}
+            {/* Name + Role (hide on extra small screens) */}
             <div className="hidden sm:flex items-center gap-3">
               <span className="font-medium text-white">{me?.name}</span>
               <div className="px-2 py-1 rounded-2xl bg-[#E1CD7182] text-white text-xs">
@@ -206,8 +161,10 @@ const DashboardContent = ({ children }: { children: ReactNode }) => {
         </AppShell.Section>
       </AppShell.Navbar>
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <AppShell.Main className="p-3 sm:p-6">{children}</AppShell.Main>
     </AppShell>
   )
 }
+
+export default DashboardLayout

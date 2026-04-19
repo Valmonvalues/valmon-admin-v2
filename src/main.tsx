@@ -15,7 +15,6 @@ import reportWebVitals from './reportWebVitals.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfirmModalProvider } from './providers/ModalProvider.tsx'
 import { GlobalProvider } from './contexts/GlobalContext.tsx'
-import { AccessManagementRoleProvider } from './contexts/AccessManagementRole.tsx'
 
 // Create a new router instance
 const router = createRouter({

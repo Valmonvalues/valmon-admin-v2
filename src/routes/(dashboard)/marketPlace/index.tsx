@@ -23,15 +23,26 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
 import { PaginationControls } from '@/components/table/PaginationControls'
+import NoAccess from '@/components/NoAccess'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export type TypeProps = 'open' | 'approval' | 'closed' | 'categories'
 
 export const Route = createFileRoute('/(dashboard)/marketPlace/')({
   component: MarketPlace,
-  loader: () => routeGaurd(allowedRoles.marketPlace),
+  loader: () =>
+    routeGaurd([
+      'view_open_listings',
+      'manage_open_listings',
+      'view_awaiting_approval_listings',
+      'manage_awaiting_approval_listings',
+      'view_closed_transactions',
+      'manage_closed_transactions',
+      'view_marketplace_categories',
+      'manage_marketplace_categories',
+    ]),
 })
 
 function MarketPlace() {
@@ -39,6 +50,10 @@ function MarketPlace() {
 
   const [activeTab, setActiveTab] = useState('open')
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
+  const { handleApprove, handleReject } = useHandleApproveDeny()
+  const { setOpenFormModal } = useGlobalContext()
+  const { canAccess } = useAccessManagement()
+
   const [page, setPage] = useState(1)
   const {
     listingSummary,
@@ -74,9 +89,6 @@ function MarketPlace() {
     mutation: getDeleteMutation(),
     entityName: 'marketplace',
   })
-
-  const { handleApprove, handleReject } = useHandleApproveDeny()
-  const { setOpenFormModal } = useGlobalContext()
 
   const { data: listing, isLoading: listingIsloading } = listingSummary({
     page,
@@ -208,55 +220,56 @@ function MarketPlace() {
           />
         </div>
 
-        {activeTab === 'open' && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
-              <StatCard
-                title="Total Listings"
-                value={totalListings}
-                color="bg-icon-light-blue"
-                image={shop}
-              />
-              <StatCard
-                title="Listed Value"
-                value={formatNumber(listing?.totalListedValue)}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow Value"
-                value={listing?.In_Escrow_Value}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="In-Escrow"
-                value={listing?.In_Escrow_count}
-                color="bg-icon-light-pink"
-                image={convertShape}
-              />
-            </div>
+        {activeTab === 'open' ? (
+          canAccess('view_open_listings') ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
+                <StatCard
+                  title="Total Listings"
+                  value={totalListings}
+                  color="bg-icon-light-blue"
+                  image={shop}
+                />
+                <StatCard
+                  title="Listed Value"
+                  value={formatNumber(listing?.totalListedValue)}
+                  color="bg-green-100"
+                  image={cardblack}
+                />
+                <StatCard
+                  title="In-Escrow Value"
+                  value={listing?.In_Escrow_Value}
+                  color="bg-green-100"
+                  image={cardblack}
+                />
+                <StatCard
+                  title="In-Escrow"
+                  value={listing?.In_Escrow_count}
+                  color="bg-icon-light-pink"
+                  image={convertShape}
+                />
+              </div>
 
-            <ReusableTable<ListingItem>
-              title="Product List"
-              totalCount={totalListings}
-              data={sortedListings}
-              columns={listingColumns({
-                page,
-                // handleView,
-                handleView: (id) => handleView(id),
-                handleDeleteClick,
-                buttonLayout: 'menu', // Menu style
-                showActions: ['view', 'delete'],
-              })}
-              isLoading={listingIsloading}
-              searchQuery={search}
-              onSearchChange={handleSearch}
-              sortConfig={sortConfig}
-              onSort={handleSort}
-            />
+              <ReusableTable<ListingItem>
+                title="Product List"
+                totalCount={totalListings}
+                data={sortedListings}
+                columns={listingColumns({
+                  page,
+                  // handleView,
+                  handleView: (id) => handleView(id),
+                  handleDeleteClick,
+                  buttonLayout: 'menu', // Menu style
+                  showActions: ['view', 'delete'],
+                })}
+                isLoading={listingIsloading}
+                searchQuery={search}
+                onSearchChange={handleSearch}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+              />
 
-            {/* {!listingIsloading && totalListingPages > 1 && (
+              {/* {!listingIsloading && totalListingPages > 1 && (
               <PaginationControls
                 currentPage={page}
                 totalPages={totalListingPages}
@@ -264,164 +277,190 @@ function MarketPlace() {
               />
             )} */}
 
-            <ConfirmDeleteModal
-              opened={deleteModalOpen}
-              onCancel={() => setDeleteModalOpen(false)}
-              onConfirm={handleConfirmDelete}
-              title="Delete Transaction"
-              message="Are you sure you want to delete this user? This action cannot be undone."
-              loading={deleteProduct.isPending}
-            />
-          </>
+              <ConfirmDeleteModal
+                opened={deleteModalOpen}
+                onCancel={() => setDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Transaction"
+                message="Are you sure you want to delete this user? This action cannot be undone."
+                loading={deleteProduct.isPending}
+              />
+            </>
+          ) : (
+            <NoAccess />
+          )
+        ) : (
+          ''
         )}
-        {activeTab === 'approval' && (
-          <>
-            <div className="">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] mb-6">
+
+        {activeTab === 'approval' ? (
+          canAccess('view_awaiting_approval_listings') ? (
+            <>
+              <div className="">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] mb-6">
+                  <StatCard
+                    title="Total Awaiting"
+                    value={totalApprovals}
+                    color="bg-icon-light-blue"
+                    image={shop}
+                  />
+                  <StatCard
+                    title="Awaiting Value"
+                    value={`NGN ${formatNumber(approval?.awaiting_value)}`}
+                    color="bg-green-100"
+                    image={cardblack}
+                  />
+                </div>
+
+                <ReusableTable<ListingItem>
+                  title="Awaiting Approval"
+                  totalCount={totalApprovals}
+                  data={sortedApprovals}
+                  columns={listingColumns({
+                    page,
+                    handleView: (id) => handleView(id),
+                    handleApprove,
+                    handleReject,
+                    buttonLayout: 'horizontal',
+                    showActions: ['approve', 'reject', 'view'],
+                  })}
+                  isLoading={approvalIsloading}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={sortConfig}
+                  onSort={handleSort}
+                />
+
+                {!approvalIsloading && totalApprovalPages > 1 && (
+                  <PaginationControls
+                    currentPage={page}
+                    totalPages={totalApprovalPages}
+                    onPageChange={setPage}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <NoAccess />
+          )
+        ) : (
+          ''
+        )}
+
+        {activeTab === 'closed' ? (
+          canAccess('view_closed_transactions') ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
                 <StatCard
-                  title="Total Awaiting"
-                  value={totalApprovals}
+                  title="Total Transaction"
+                  value={0}
                   color="bg-icon-light-blue"
                   image={shop}
                 />
                 <StatCard
-                  title="Awaiting Value"
-                  value={`NGN ${formatNumber(approval?.awaiting_value)}`}
+                  title="Transaction Value"
+                  value={formatNumber(0)}
+                  color="bg-green-100"
+                  image={cardblack}
+                />
+                <StatCard
+                  title="Deleted Listings"
+                  value={0}
                   color="bg-green-100"
                   image={cardblack}
                 />
               </div>
 
               <ReusableTable<ListingItem>
-                title="Awaiting Approval"
-                totalCount={totalApprovals}
-                data={sortedApprovals}
+                title="Closed Transaction"
+                totalCount={totalClosed}
+                data={sortedClosed}
                 columns={listingColumns({
                   page,
                   handleView: (id) => handleView(id),
-                  handleApprove,
-                  handleReject,
-                  buttonLayout: 'horizontal',
-                  showActions: ['approve', 'reject', 'view'],
+                  handleDeleteClick,
+                  buttonLayout: 'menu',
+                  showActions: ['view', 'delete'],
                 })}
-                isLoading={approvalIsloading}
+                isLoading={closedIsloading}
                 searchQuery={search}
                 onSearchChange={handleSearch}
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
 
-              {!approvalIsloading && totalApprovalPages > 1 && (
-                <PaginationControls
-                  currentPage={page}
-                  totalPages={totalApprovalPages}
-                  onPageChange={setPage}
+              <ConfirmDeleteModal
+                opened={deleteModalOpen}
+                onCancel={() => setDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Transaction"
+                message="Are you sure you want to delete this transaction? This action cannot be undone."
+                // loading={deleteClosed.isPending}
+              />
+            </>
+          ) : (
+            <NoAccess />
+          )
+        ) : (
+          ''
+        )}
+
+        {activeTab === 'categories' ? (
+          canAccess('view_marketplace_categories') ? (
+            <>
+              <div className="">
+                <ReusableTable<CategoryItem>
+                  title="Categories"
+                  // totalCount={totalCategories} // NOT available issues
+                  totalCount={allCategoriesListing.length} // NOT available issues
+                  data={sortedCategories}
+                  columns={categoryColumns({
+                    page,
+                    handleView: (id) => handleView(id),
+                    handleDeleteClick,
+                  })}
+                  isLoading={categoriesIsloading}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={categorySortConfig}
+                  // onSort={handleSort}
+                  onSort={(key) =>
+                    setCategorySortConfig((prev) => ({
+                      key,
+                      direction:
+                        prev.key === key && prev.direction === 'asc'
+                          ? 'desc'
+                          : 'asc',
+                    }))
+                  }
+                  headerActions={
+                    <BaseButton
+                      title="Add New"
+                      showPlusIcon={true}
+                      modalTitle="Add Category"
+                      fields={[{ name: 'name', label: 'Name', type: 'text' }]}
+                      onClick={() => setOpenFormModal(true)}
+                      onSubmit={handleAddCategory}
+                      className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
+                    />
+                  }
                 />
-              )}
-            </div>
-          </>
-        )}
-        {activeTab === 'closed' && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1000px] mb-6">
-              <StatCard
-                title="Total Transaction"
-                value={0}
-                color="bg-icon-light-blue"
-                image={shop}
-              />
-              <StatCard
-                title="Transaction Value"
-                value={formatNumber(0)}
-                color="bg-green-100"
-                image={cardblack}
-              />
-              <StatCard
-                title="Deleted Listings"
-                value={0}
-                color="bg-green-100"
-                image={cardblack}
-              />
-            </div>
+              </div>
 
-            <ReusableTable<ListingItem>
-              title="Closed Transaction"
-              totalCount={totalClosed}
-              data={sortedClosed}
-              columns={listingColumns({
-                page,
-                handleView: (id) => handleView(id),
-                handleDeleteClick,
-                buttonLayout: 'menu',
-                showActions: ['view', 'delete'],
-              })}
-              isLoading={closedIsloading}
-              searchQuery={search}
-              onSearchChange={handleSearch}
-              sortConfig={sortConfig}
-              onSort={handleSort}
-            />
-
-            <ConfirmDeleteModal
-              opened={deleteModalOpen}
-              onCancel={() => setDeleteModalOpen(false)}
-              onConfirm={handleConfirmDelete}
-              title="Delete Transaction"
-              message="Are you sure you want to delete this transaction? This action cannot be undone."
-              // loading={deleteClosed.isPending}
-            />
-          </>
-        )}
-        {activeTab === 'categories' && (
-          <>
-            <div className="">
-              <ReusableTable<CategoryItem>
-                title="Categories"
-                // totalCount={totalCategories} // NOT available issues
-                totalCount={allCategoriesListing.length} // NOT available issues
-                data={sortedCategories}
-                columns={categoryColumns({
-                  page,
-                  handleView: (id) => handleView(id),
-                  handleDeleteClick,
-                })}
-                isLoading={categoriesIsloading}
-                searchQuery={search}
-                onSearchChange={handleSearch}
-                sortConfig={categorySortConfig}
-                // onSort={handleSort}
-                onSort={(key) =>
-                  setCategorySortConfig((prev) => ({
-                    key,
-                    direction:
-                      prev.key === key && prev.direction === 'asc'
-                        ? 'desc'
-                        : 'asc',
-                  }))
-                }
-                headerActions={
-                  <BaseButton
-                    title="Add New"
-                    showPlusIcon={true}
-                    modalTitle="Add Category"
-                    fields={[{ name: 'name', label: 'Name', type: 'text' }]}
-                    onClick={() => setOpenFormModal(true)}
-                    onSubmit={handleAddCategory}
-                    className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
-                  />
-                }
+              <ConfirmDeleteModal
+                opened={deleteModalOpen}
+                onCancel={() => setDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Categories"
+                message="Are you sure you want to delete this user? This action cannot be undone."
+                loading={deleteCategories.isPending}
               />
-            </div>
-
-            <ConfirmDeleteModal
-              opened={deleteModalOpen}
-              onCancel={() => setDeleteModalOpen(false)}
-              onConfirm={handleConfirmDelete}
-              title="Delete Categories"
-              message="Are you sure you want to delete this user? This action cannot be undone."
-              loading={deleteCategories.isPending}
-            />
-          </>
+            </>
+          ) : (
+            <NoAccess />
+          )
+        ) : (
+          ''
         )}
       </div>
     </DashboardLayout>

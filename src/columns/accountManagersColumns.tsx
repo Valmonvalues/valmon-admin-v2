@@ -93,12 +93,12 @@ export const accountManagerColumns = ({
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item
+          {/* <Menu.Item
             leftSection={<IconEye size={16} />}
             onClick={() => handleView(manager.id)}
           >
             View
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             leftSection={<IconEye size={16} />}
             onClick={() => handleEditManager(manager)}

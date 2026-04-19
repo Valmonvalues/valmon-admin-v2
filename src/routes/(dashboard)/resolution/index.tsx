@@ -13,20 +13,29 @@ import { SimpleGrid } from '@mantine/core'
 import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { allowedRoles } from '@/data/roles'
 import { capitalizeKey } from '@/utils/helper'
 import { resolutionMarketplaceColumns } from '@/columns/resolutionMarketPlaceColumns'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { PaginationControls } from '@/components/table/PaginationControls'
+import { useAccessManagement } from '@/hook/useAccessManagement'
+import NoAccess from '@/components/NoAccess'
 
 export const Route = createFileRoute('/(dashboard)/resolution/')({
   component: Resolution,
-  loader: () => routeGaurd(allowedRoles.resolution),
+  loader: () =>
+    routeGaurd([
+      'view_service_conflicts',
+      'manage_service_conflicts',
+      'view_marketplace_conflicts',
+      'manage_marketplace_conflicts',
+    ]),
 })
 
 function Resolution() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('services')
+  const { canAccess } = useAccessManagement()
+
   const [page, setPage] = useState(1)
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const { listingServices, listingMarketPlace } = useResolution()
@@ -86,110 +95,122 @@ function Resolution() {
         />
       </div>
 
-      {activeTab === 'services' && (
-        <>
-          <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
-            <StatCard
-              title="All Reports"
-              value={services.length}
-              // value={ticketCountServices}
-              color="bg-pink-100"
-              image={''}
-            />
-            <StatCard
-              title="Resolved Reports"
-              value={formatNumber(resolvedTicketCountServices)}
-              color="bg-purple-100"
-              image={''}
-            />
-            <StatCard
-              title="Total Value"
-              value={formatNumber(totalValueServices)}
-              color="bg-dark-gold"
-              image={''}
-            />
-            <StatCard
-              title="Resolved Value"
-              value={formatNumber(resolvedTicketValueServices)}
-              color="bg-green-100"
-              image={''}
-            />
-          </SimpleGrid>
-
-          <div className="">
-            <div className="">
-              <ReusableTable
-                title="Report"
-                totalCount={services.length}
-                data={sortedTServices}
-                columns={resolutionServicesColumns({
-                  page,
-                  handleView,
-                  // handleDeleteClick,
-                })}
-                isLoading={servicesLoading}
-                searchQuery={search}
-                onSearchChange={handleSearch}
-                sortConfig={sortConfig}
-                onSort={handleSort}
+      {activeTab === 'services' ? (
+        canAccess('view_service_conflicts') ? (
+          <>
+            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
+              <StatCard
+                title="All Reports"
+                value={services.length}
+                // value={ticketCountServices}
+                color="bg-pink-100"
+                image={''}
               />
+              <StatCard
+                title="Resolved Reports"
+                value={formatNumber(resolvedTicketCountServices)}
+                color="bg-purple-100"
+                image={''}
+              />
+              <StatCard
+                title="Total Value"
+                value={formatNumber(totalValueServices)}
+                color="bg-dark-gold"
+                image={''}
+              />
+              <StatCard
+                title="Resolved Value"
+                value={formatNumber(resolvedTicketValueServices)}
+                color="bg-green-100"
+                image={''}
+              />
+            </SimpleGrid>
+
+            <div className="">
+              <div className="">
+                <ReusableTable
+                  title="Report"
+                  totalCount={services.length}
+                  data={sortedTServices}
+                  columns={resolutionServicesColumns({
+                    page,
+                    handleView,
+                    // handleDeleteClick,
+                  })}
+                  isLoading={servicesLoading}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={sortConfig}
+                  onSort={handleSort}
+                />
+              </div>
             </div>
-          </div>
-        </>
+          </>
+        ) : (
+          <NoAccess />
+        )
+      ) : (
+        ''
       )}
 
-      {activeTab === 'market-place' && (
-        <>
-          <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
-            <StatCard
-              title="All Reports"
-              value={marketplace.length}
-              color="bg-pink-100"
-              image={''}
-            />
-            <StatCard
-              title="Resolved Reports"
-              value={formatNumber(0)}
-              color="bg-purple-100"
-              image={''}
-            />
-            <StatCard
-              title="Total Value"
-              value={formatNumber(0)}
-              color="bg-dark-gold"
-              image={''}
-            />
-            <StatCard title="Resolved Value" />
-          </SimpleGrid>
-
-          <div className="">
-            <div className="">
-              <ReusableTable
-                title="Report"
-                totalCount={marketplace.length}
-                data={sortedMarketplace}
-                columns={resolutionMarketplaceColumns({
-                  page,
-                  handleView,
-                  // handleDeleteClick,
-                })}
-                isLoading={marketPlaceLoading}
-                searchQuery={search}
-                onSearchChange={handleSearch}
-                sortConfig={sortConfig}
-                onSort={handleSort}
+      {activeTab === 'market-place' ? (
+        canAccess('view_marketplace_conflicts') ? (
+          <>
+            <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
+              <StatCard
+                title="All Reports"
+                value={marketplace.length}
+                color="bg-pink-100"
+                image={''}
               />
+              <StatCard
+                title="Resolved Reports"
+                value={formatNumber(0)}
+                color="bg-purple-100"
+                image={''}
+              />
+              <StatCard
+                title="Total Value"
+                value={formatNumber(0)}
+                color="bg-dark-gold"
+                image={''}
+              />
+              <StatCard title="Resolved Value" />
+            </SimpleGrid>
 
-              {!marketPlaceLoading && totalMarketPlacePages > 1 && (
-                <PaginationControls
-                  currentPage={page}
-                  totalPages={totalMarketPlacePages}
-                  onPageChange={setPage}
+            <div className="">
+              <div className="">
+                <ReusableTable
+                  title="Report"
+                  totalCount={marketplace.length}
+                  data={sortedMarketplace}
+                  columns={resolutionMarketplaceColumns({
+                    page,
+                    handleView,
+                    // handleDeleteClick,
+                  })}
+                  isLoading={marketPlaceLoading}
+                  searchQuery={search}
+                  onSearchChange={handleSearch}
+                  sortConfig={sortConfig}
+                  onSort={handleSort}
                 />
-              )}
+
+                {!marketPlaceLoading && totalMarketPlacePages > 1 && (
+                  <PaginationControls
+                    currentPage={page}
+                    totalPages={totalMarketPlacePages}
+                    onPageChange={setPage}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-        </>
+          </>
+        ) : (
+          <NoAccess />
+        )
+      ) : (
+        ''
       )}
     </DashboardLayout>
   )
