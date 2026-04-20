@@ -23,13 +23,13 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useDebouncedSearch } from '@/hook/useDebouncedSearch'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { capitalizeKey } from '@/utils/helper'
+import { accessBlocker, capitalizeKey } from '@/utils/helper'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import { useSummary } from '@/services/summary.service'
-import { notifications } from '@mantine/notifications'
 import { useAccessManagement } from '@/hook/useAccessManagement'
 import NoAccess from '@/components/NoAccess'
+import { Text } from '@mantine/core'
 
 export const Route = createFileRoute('/(dashboard)/skills/')({
   component: Skills,
@@ -131,15 +131,6 @@ function Skills() {
   }
 
   const handleAddCategory = async (categoryData: any) => {
-    if (!canAccess('manage_skill_parent_categories')) {
-      notifications.show({
-        title: 'Access Denied',
-        message:
-          'Yoou do not have access to the action. Please contact support',
-        color: 'red',
-      })
-      return
-    }
     try {
       const formData = new FormData()
       formData.append('name', categoryData.name)
@@ -157,6 +148,24 @@ function Skills() {
     } catch (error) {
       // Error is already handled in the mutation
       console.error('Error adding category:', error)
+    }
+  }
+
+  const handleOpenAddCat = () => {
+    // Check access before proceeding
+    const hasAccess = accessBlocker(canAccess, 'manage_skill_parent_categories')
+
+    // If access is granted, open the modal
+    if (hasAccess) {
+      setOpenFormModal(true)
+    }
+  }
+
+  const handleOpenDeleteClick = (id: Id) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_skill_parent_categories')
+
+    if (hasAccess) {
+      handleDeleteClick(id)
     }
   }
 
@@ -253,9 +262,8 @@ function Skills() {
                 totalCount={categoriesData?.length}
                 data={sortedCategories as any}
                 columns={categoriesColumns({
-                  // handleView,
-                  handleView: (id) => handleView(id),
-                  handleDeleteClick,
+                  handleView,
+                  handleDeleteClick: handleOpenDeleteClick,
                 })}
                 isLoading={skillDataLoader}
                 searchQuery={search}
@@ -282,7 +290,7 @@ function Skills() {
                           variant: 'image-upload',
                         },
                       ]}
-                      onClick={() => setOpenFormModal(true)}
+                      onClick={handleOpenAddCat}
                       onSubmit={handleAddCategory}
                       loading={addCategory.isPending}
                       className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
@@ -291,6 +299,12 @@ function Skills() {
                 }
               />
             </div>
+
+            {!canAccess('manage_skill_parent_categories') && (
+              <Text size="xs" c="dimmed" mt="sm">
+                You have view-only access to skill parent category.
+              </Text>
+            )}
 
             <ConfirmDeleteModal
               opened={deleteModalOpen}

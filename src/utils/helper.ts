@@ -1,4 +1,5 @@
 import type { Role } from '@/types/rolePermissions.types'
+import { notifications } from '@mantine/notifications'
 import { redirect } from '@tanstack/react-router'
 
 export const formatDate = (dateString: string) => {
@@ -35,4 +36,20 @@ export const computePermissionSet = (userRole?: string, roles?: Role[]) => {
   }
 
   return new Set((permissions ?? []).map((perm) => perm.name))
+}
+
+export const accessBlocker = (
+  canAccess: (perm: string) => boolean,
+  permission: string,
+  message = 'You do not have access to the action. Please contact support',
+) => {
+  if (!canAccess(permission)) {
+    notifications.show({
+      title: 'Access Denied',
+      message: message,
+      color: 'red',
+    })
+    return false // Denied access, return false
+  }
+  return true // Access granted, return true
 }

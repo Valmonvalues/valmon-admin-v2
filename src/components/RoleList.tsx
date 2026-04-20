@@ -15,6 +15,7 @@ interface RoleListProps {
   selectedRoleId: Id | null
   setSelectedRoleId: (id: Id) => void
   onAddRole: () => void
+  canManage: boolean
 }
 
 function RoleList({
@@ -22,6 +23,7 @@ function RoleList({
   selectedRoleId,
   setSelectedRoleId,
   onAddRole,
+  canManage,
 }: RoleListProps) {
   return (
     <div className="w-[300px] bg-white rounded-xl p-4 shadow-sm">
@@ -58,7 +60,9 @@ function RoleList({
                   <Text size="xs">{role.users_count ?? 0}</Text>
                 </Group>
               </Group>
-              <Text fw={500}>{role.description}</Text>
+              <Text fw={400} c="dimmed">
+                {role.description}
+              </Text>
             </div>
           ))}
 
@@ -67,6 +71,7 @@ function RoleList({
           className="px-4 py-2 w-auto mt-2"
           outline
           onClick={onAddRole}
+          disabled={!canManage}
         />
       </Stack>
     </div>

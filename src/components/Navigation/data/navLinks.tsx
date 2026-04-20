@@ -33,6 +33,8 @@ export const navLinks = [
     requiredPermissions: [
       'view_skill_transactions',
       'manage_skill_transactions',
+      'view_skill_parent_categories',
+      'manage_skill_parent_categories',
     ],
   },
   {

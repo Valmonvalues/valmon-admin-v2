@@ -6,11 +6,12 @@ import { useCategoryRequest } from '@/services/categoryRequest.service'
 import type { CategoryRequest } from '@/types/categoryRequest.types'
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Button, Group } from '@mantine/core'
+import { Button, Group, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import RejectionModal from '@/components/modals/RejectionModal'
 import NoAccess from '@/components/NoAccess'
 import { useAccessManagement } from '@/hook/useAccessManagement'
+import { accessBlocker } from '@/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/categoryRequest/')({
   component: CategoryRequest,
@@ -43,6 +44,12 @@ function CategoryRequest() {
   }
 
   const handleApprove = (request: CategoryRequest) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_category_requests')
+
+    if (!hasAccess) {
+      return
+    }
+
     actionCategoryRequest.mutate(
       {
         request_ids: [request.id],
@@ -69,8 +76,12 @@ function CategoryRequest() {
   }
 
   const handleOpenRejectionModal = (request: CategoryRequest) => {
-    setSelectedRequest(request)
-    setRejectionModalOpen(true)
+    const hasAccess = accessBlocker(canAccess, 'manage_category_requests')
+
+    if (hasAccess) {
+      setSelectedRequest(request)
+      setRejectionModalOpen(true)
+    }
   }
 
   const handleRejectWithReason = (reason: string) => {
@@ -132,78 +143,86 @@ function CategoryRequest() {
   // }
 
   const handleApproveAll = () => {
-    if (serviceRequest.length === 0) {
-      notifications.show({
-        title: 'Warning',
-        message: 'No requests to approve',
-        color: 'yellow',
-      })
-      return
+    const hasAccess = accessBlocker(canAccess, 'manage_category_requests')
+
+    if (hasAccess) {
+      if (serviceRequest.length === 0) {
+        notifications.show({
+          title: 'Warning',
+          message: 'No requests to approve',
+          color: 'yellow',
+        })
+        return
+      }
+
+      const requestIds = serviceRequest.map((req: any) => req.id)
+
+      actionCategoryRequest.mutate(
+        {
+          request_ids: requestIds,
+          action: 'approve',
+        },
+        {
+          onSuccess: () => {
+            notifications.show({
+              title: 'Success',
+              message: `${requestIds.length} category request${requestIds.length > 1 ? 's' : ''} approved successfully`,
+              color: 'green',
+            })
+          },
+          onError: (error: any) => {
+            notifications.show({
+              title: 'Error',
+              message:
+                error?.response?.data?.message || 'Failed to approve requests',
+              color: 'red',
+            })
+          },
+        },
+      )
     }
-
-    const requestIds = serviceRequest.map((req: any) => req.id)
-
-    actionCategoryRequest.mutate(
-      {
-        request_ids: requestIds,
-        action: 'approve',
-      },
-      {
-        onSuccess: () => {
-          notifications.show({
-            title: 'Success',
-            message: `${requestIds.length} category request${requestIds.length > 1 ? 's' : ''} approved successfully`,
-            color: 'green',
-          })
-        },
-        onError: (error: any) => {
-          notifications.show({
-            title: 'Error',
-            message:
-              error?.response?.data?.message || 'Failed to approve requests',
-            color: 'red',
-          })
-        },
-      },
-    )
   }
 
   const handleRejectAll = () => {
-    if (serviceRequest.length === 0) {
-      notifications.show({
-        title: 'Warning',
-        message: 'No requests to reject',
-        color: 'yellow',
-      })
-      return
+    const hasAccess = accessBlocker(canAccess, 'manage_category_requests')
+
+    if (hasAccess) {
+      if (serviceRequest.length === 0) {
+        notifications.show({
+          title: 'Warning',
+          message: 'No requests to reject',
+          color: 'yellow',
+        })
+        return
+      }
+
+      const requestIds = serviceRequest.map((req: any) => req.id)
+
+      actionCategoryRequest.mutate(
+        {
+          request_ids: requestIds,
+          action: 'reject',
+          reason: 'Bulk rejection by admin', // Default reason for bulk reject
+        },
+        {
+          onSuccess: () => {
+            notifications.show({
+              title: 'Success',
+              message: `${requestIds.length} category request${requestIds.length > 1 ? 's' : ''} rejected successfully`,
+              color: 'orange',
+            })
+          },
+          onError: (error: any) => {
+            notifications.show({
+              title: 'Error',
+              message:
+                error?.response?.data?.message || 'Failed to reject requests',
+              color: 'red',
+            })
+          },
+        },
+      )
     }
-
-    const requestIds = serviceRequest.map((req: any) => req.id)
-
-    actionCategoryRequest.mutate(
-      {
-        request_ids: requestIds,
-        action: 'reject',
-        reason: 'Bulk rejection by admin', // Default reason for bulk reject
-      },
-      {
-        onSuccess: () => {
-          notifications.show({
-            title: 'Success',
-            message: `${requestIds.length} category request${requestIds.length > 1 ? 's' : ''} rejected successfully`,
-            color: 'orange',
-          })
-        },
-        onError: (error: any) => {
-          notifications.show({
-            title: 'Error',
-            message:
-              error?.response?.data?.message || 'Failed to reject requests',
-            color: 'red',
-          })
-        },
-      },
-    )
   }
 
   const headerActions = (
@@ -249,6 +268,12 @@ function CategoryRequest() {
             onSort={handleSort}
             headerActions={headerActions}
           />
+
+          {!canAccess('manage_category_requests') && (
+            <Text size="xs" c="dimmed" mt="sm">
+              You have view-only access to category request.
+            </Text>
+          )}
 
           <RejectionModal
             opened={rejectionModalOpen}

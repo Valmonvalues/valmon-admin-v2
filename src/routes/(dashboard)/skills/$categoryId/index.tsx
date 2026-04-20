@@ -5,7 +5,7 @@ import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'
 import StatCard from '@/components/StatCard'
 import { ReusableTable } from '@/components/table/ReusableTable'
 import TopCategoriesStat from '@/components/TopCategoriesStat'
-import { capitalizeKey } from '@/utils/helper'
+import { accessBlocker, capitalizeKey } from '@/utils/helper'
 import { routeGaurd } from '@/middleware/routeGuard'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import useSortedData from '@/hook/sortData'
@@ -18,6 +18,7 @@ import type { SubCategory } from '@/types/skills.types'
 import { formatNumber } from '@/utils/formatters'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export const Route = createFileRoute('/(dashboard)/skills/$categoryId/')({
   component: RouteComponent,
@@ -28,6 +29,7 @@ export const Route = createFileRoute('/(dashboard)/skills/$categoryId/')({
 function RouteComponent() {
   const { categoryId } = Route.useParams()
   const navigate = useNavigate()
+  const { canAccess } = useAccessManagement()
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
 
   const {
@@ -42,8 +44,6 @@ function RouteComponent() {
     parentSubCategoryResponse?.all_sub_categories ?? []
 
   const TopSubCategory = parentSubCategoryResponse?.top_sub_categories ?? []
-
-  // console.log(parentSubCategoryResponse)
 
   const {
     modalOpen: deleteModalOpen,
@@ -111,13 +111,33 @@ function RouteComponent() {
     }
   }
 
+  const handleOpenAddCat = () => {
+    const hasAccess = accessBlocker(canAccess, 'manage_skill_parent_categories')
+
+    if (hasAccess) {
+      setOpenFormModal(true)
+    }
+  }
+
+  const handleOpenDeleteClick = (id: Id) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_skill_parent_categories')
+
+    if (hasAccess) {
+      handleDeleteClick(id)
+    }
+  }
+
   const handleView = (subCategoryId: Id) => {
     navigate({ to: `/skills/${categoryId}/${subCategoryId}` })
   }
 
   const handleEditSubCategory = (data: SubCategory) => {
-    setOpenFormModal(true)
-    setInitialData(data)
+    const hasAccess = accessBlocker(canAccess, 'manage_skill_parent_categories')
+
+    if (hasAccess) {
+      setOpenFormModal(true)
+      setInitialData(data)
+    }
   }
 
   return (
@@ -163,7 +183,7 @@ function RouteComponent() {
             // page,
             handleView,
             handleEditSubCategory,
-            handleDeleteClick,
+            handleDeleteClick: handleOpenDeleteClick,
           })}
           isLoading={isLoading}
           searchQuery={search}
@@ -184,7 +204,7 @@ function RouteComponent() {
                     type: 'textarea',
                   },
                 ]}
-                onClick={() => setOpenFormModal(true)}
+                onClick={handleOpenAddCat}
                 onSubmit={handleAddCategory}
                 loading={addSubCategory.isPending || editSubCategory.isPending}
                 className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"

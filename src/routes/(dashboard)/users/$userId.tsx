@@ -19,6 +19,7 @@ import WorkGallery from '@/components/WorkGallery'
 import Services from '@/components/Services'
 import Reviews from '@/components/Reviews'
 import Listings from '@/components/Listings'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 export const Route = createFileRoute('/(dashboard)/users/$userId')({
   component: RouteComponent,
@@ -41,8 +42,7 @@ function RouteComponent() {
   const { userId } = Route.useParams()
   const { data: user } = getUser(userId)
   const { showConfirmModal } = useConfirmModal()
-
-  console.log(user)
+  const { canAccess } = useAccessManagement()
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -83,7 +83,19 @@ function RouteComponent() {
     }
   }
 
+  const hasActionAccess = canAccess('manage_users')
+
   const handleDelete = async () => {
+    if (!hasActionAccess) {
+      notifications.show({
+        title: 'Access Denied',
+        message:
+          'You do not have access to this action. Please contact support',
+        color: 'red',
+      })
+      return
+    }
+
     const res = await showConfirmModal({
       title: 'Delete User',
       message: 'Are you sure you want to delete this user?',
@@ -113,6 +125,16 @@ function RouteComponent() {
 
   const isActive = user?.account_status === 'ACTIVE'
   const manageUser = async () => {
+    if (!hasActionAccess) {
+      notifications.show({
+        title: 'Access Denied',
+        message:
+          'You do not have access to this action. Please contact support',
+        color: 'red',
+      })
+      return
+    }
+
     const action = isActive ? 'deactivate' : 'activate'
     const actionTitle = isActive ? 'Deactivate User' : 'Activate User'
     const actionMessage = `Are you sure you want to ${action} this user?`

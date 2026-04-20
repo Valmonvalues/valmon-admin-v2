@@ -23,10 +23,11 @@ import { useHandleDelete } from '@/hook/useHandleDelete'
 import { useHandleApproveDeny } from '@/hook/useHandleApproveDeny'
 import { useGlobalContext } from '@/contexts/GlobalContext'
 import { routeGaurd } from '@/middleware/routeGuard'
-import { capitalizeKey } from '@/utils/helper'
+import { accessBlocker, capitalizeKey } from '@/utils/helper'
 import { PaginationControls } from '@/components/table/PaginationControls'
 import NoAccess from '@/components/NoAccess'
 import { useAccessManagement } from '@/hook/useAccessManagement'
+import { Text } from '@mantine/core'
 
 export type TypeProps = 'open' | 'approval' | 'closed' | 'categories'
 
@@ -201,6 +202,66 @@ function MarketPlace() {
     }
   }
 
+  const handleOpenAddCat = () => {
+    const hasAccess = accessBlocker(canAccess, 'manage_marketplace_categories')
+
+    if (hasAccess) {
+      setOpenFormModal(true)
+    }
+  }
+
+  const handleDeleteClickCategories = (id: Id) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_marketplace_categories')
+
+    if (hasAccess) {
+      handleDeleteClick(id)
+    }
+  }
+  const handleOpenDeleteClickClosed = (id: Id) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_closed_transactions')
+
+    if (hasAccess) {
+      handleDeleteClick(id)
+    }
+  }
+  const handleOpenDeleteClickOpen = (id: Id) => {
+    const hasAccess = accessBlocker(canAccess, 'manage_open_listings')
+
+    if (hasAccess) {
+      handleDeleteClick(id)
+    }
+  }
+  const handleOpenApprove = (id: Id) => {
+    const hasAccess = accessBlocker(
+      canAccess,
+      'manage_awaiting_approval_listings',
+    )
+
+    if (hasAccess) {
+      handleApprove(id)
+    }
+  }
+  const handleOpenReject = (id: Id) => {
+    const hasAccess = accessBlocker(
+      canAccess,
+      'manage_awaiting_approval_listings',
+    )
+
+    if (hasAccess) {
+      handleReject(id)
+    }
+  }
+  const handleOpenView = (id: Id) => {
+    const hasAccess = accessBlocker(
+      canAccess,
+      'manage_awaiting_approval_listings',
+    )
+
+    if (hasAccess) {
+      handleView(id)
+    }
+  }
+
   return (
     <DashboardLayout>
       <div>
@@ -258,7 +319,7 @@ function MarketPlace() {
                   page,
                   // handleView,
                   handleView: (id) => handleView(id),
-                  handleDeleteClick,
+                  handleDeleteClick: handleOpenDeleteClickOpen,
                   buttonLayout: 'menu', // Menu style
                   showActions: ['view', 'delete'],
                 })}
@@ -276,6 +337,12 @@ function MarketPlace() {
                 onPageChange={setPage}
               />
             )} */}
+
+              {!canAccess('manage_open_listings') && (
+                <Text size="xs" c="dimmed" mt="sm">
+                  You have view-only access to market place.
+                </Text>
+              )}
 
               <ConfirmDeleteModal
                 opened={deleteModalOpen}
@@ -318,9 +385,9 @@ function MarketPlace() {
                   data={sortedApprovals}
                   columns={listingColumns({
                     page,
-                    handleView: (id) => handleView(id),
-                    handleApprove,
-                    handleReject,
+                    handleView: handleOpenView,
+                    handleApprove: handleOpenApprove,
+                    handleReject: handleOpenReject,
                     buttonLayout: 'horizontal',
                     showActions: ['approve', 'reject', 'view'],
                   })}
@@ -337,6 +404,12 @@ function MarketPlace() {
                     totalPages={totalApprovalPages}
                     onPageChange={setPage}
                   />
+                )}
+
+                {!canAccess('manage_awaiting_approval_listings') && (
+                  <Text size="xs" c="dimmed" mt="sm">
+                    You have view-only access to market place.
+                  </Text>
                 )}
               </div>
             </>
@@ -377,8 +450,8 @@ function MarketPlace() {
                 data={sortedClosed}
                 columns={listingColumns({
                   page,
-                  handleView: (id) => handleView(id),
-                  handleDeleteClick,
+                  handleView,
+                  handleDeleteClick: handleOpenDeleteClickClosed,
                   buttonLayout: 'menu',
                   showActions: ['view', 'delete'],
                 })}
@@ -388,6 +461,12 @@ function MarketPlace() {
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
+
+              {!canAccess('manage_closed_transactions') && (
+                <Text size="xs" c="dimmed" mt="sm">
+                  You have view-only access to market place.
+                </Text>
+              )}
 
               <ConfirmDeleteModal
                 opened={deleteModalOpen}
@@ -416,8 +495,8 @@ function MarketPlace() {
                   data={sortedCategories}
                   columns={categoryColumns({
                     page,
-                    handleView: (id) => handleView(id),
-                    handleDeleteClick,
+                    handleView,
+                    handleDeleteClick: handleDeleteClickCategories,
                   })}
                   isLoading={categoriesIsloading}
                   searchQuery={search}
@@ -439,13 +518,19 @@ function MarketPlace() {
                       showPlusIcon={true}
                       modalTitle="Add Category"
                       fields={[{ name: 'name', label: 'Name', type: 'text' }]}
-                      onClick={() => setOpenFormModal(true)}
+                      onClick={handleOpenAddCat}
                       onSubmit={handleAddCategory}
                       className="bg-dark-gold hover:bg-bright-gold text-white w-auto px-6 py-2 rounded-md transition-colors duration-200 shadow-none border-0"
                     />
                   }
                 />
               </div>
+
+              {!canAccess('manage_marketplace_categories') && (
+                <Text size="xs" c="dimmed" mt="sm">
+                  You have view-only access to market place.
+                </Text>
+              )}
 
               <ConfirmDeleteModal
                 opened={deleteModalOpen}

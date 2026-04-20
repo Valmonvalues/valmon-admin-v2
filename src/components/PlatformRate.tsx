@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useSettings } from '@/services/settings.service'
-import { Box, Center, Group, Loader, Slider, Text, Button } from '@mantine/core'
+import { useAccessManagement } from '@/hook/useAccessManagement'
+import {
+  Box,
+  Center,
+  Group,
+  Loader,
+  Slider,
+  Text,
+  Button,
+  NumberInput,
+} from '@mantine/core'
 
 function PlatformRate() {
   const { getPlatformRate, setPlatformRate } = useSettings()
   const { data, isLoading } = getPlatformRate()
   const { mutate, isPending } = setPlatformRate
+  const { canAccess } = useAccessManagement()
+  const canManage = canAccess('manage_platform_rates')
 
   const [skillRange, setSkillRange] = useState<number>(0)
   const [salesRange, setSalesRange] = useState<number>(0)
@@ -18,7 +30,14 @@ function PlatformRate() {
     { value: 100, label: '100%' },
   ]
 
+  const clampValue = (value: number) => {
+    if (Number.isNaN(value)) return 0
+    return Math.min(100, Math.max(0, value))
+  }
+
   const handleSave = () => {
+    if (!canManage) return
+
     mutate({
       charge_percentage: skillRange,
       sale_percentage: salesRange,
@@ -50,15 +69,48 @@ function PlatformRate() {
           <div className="pb-5">
             <Group justify="space-between">
               <Text fw={700}>Skill Charge Percentage</Text>
-              <Text fw={700} c="var(--color-dark-gold)">
+              {/* <Text fw={700} c="var(--color-dark-gold)">
                 {skillRange}%
-              </Text>
+              </Text> */}
+
+              <NumberInput
+                value={skillRange}
+                onChange={(value) => {
+                  if (!canManage) return
+                  const numericValue =
+                    typeof value === 'number' ? value : Number(value)
+                  setSkillRange(clampValue(numericValue))
+                }}
+                min={0}
+                max={100}
+                step={0.1}
+                decimalScale={1}
+                suffix="%"
+                hideControls
+                clampBehavior="strict"
+                disabled={isPending}
+                variant="unstyled"
+                styles={{
+                  input: {
+                    textAlign: 'right',
+                    fontWeight: 700,
+                    color: 'var(--color-dark-gold)',
+                    width: `${String(skillRange).length + 4}ch`,
+                  },
+                }}
+              />
             </Group>
             <Slider
-              color="var(--color-bright-gold)"
+              color="var(--color-dark-gold)"
               value={skillRange}
-              onChange={setSkillRange}
+              // onChange={setSkillRange}
+              onChange={(val) => {
+                if (!canManage) return
+                setSkillRange(val)
+              }}
               step={0.1}
+              min={0}
+              max={100}
               marks={marks}
               disabled={isPending}
             />
@@ -66,24 +118,62 @@ function PlatformRate() {
           <div className="py-6 sm:py-10">
             <Group justify="space-between">
               <Text fw={700}>Listing Sale Percentage</Text>
-              <Text fw={700} c="var(--color-dark-gold)">
-                {salesRange}%
-              </Text>
+
+              <NumberInput
+                value={salesRange}
+                onChange={(value) => {
+                  if (!canManage) return
+
+                  const numericValue =
+                    typeof value === 'number' ? value : Number(value)
+                  setSalesRange(clampValue(numericValue))
+                }}
+                min={0}
+                max={100}
+                step={25}
+                suffix="%"
+                hideControls
+                clampBehavior="strict"
+                disabled={isPending}
+                variant="unstyled"
+                styles={{
+                  input: {
+                    textAlign: 'right',
+                    fontWeight: 700,
+                    color: 'var(--color-dark-gold)',
+                    width: `${String(skillRange).length + 4}ch`,
+                  },
+                }}
+              />
             </Group>
             <Slider
-              color="var(--color-bright-gold)"
+              color="var(--color-dark-gold)"
               value={salesRange}
-              onChange={setSalesRange}
+              // onChange={setSalesRange}
+              onChange={(val) => {
+                if (!canManage) return
+                setSalesRange(val)
+              }}
               step={25}
+              min={0}
+              max={100}
               marks={marks}
               disabled={isPending}
             />
           </div>
+
+          {!canManage && (
+            <Text size="xs" c="dimmed" mt={10}>
+              You have view-only access to platform rates.
+            </Text>
+          )}
+
           <Button
             fullWidth
             color="dark"
             mt={30}
             loading={isPending}
+            disabled={!canManage}
             onClick={handleSave}
           >
             Save Changes

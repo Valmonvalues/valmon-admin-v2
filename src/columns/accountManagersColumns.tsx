@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { Avatar, Badge, Menu, ActionIcon } from '@mantine/core'
-// IconEye,
 import { IconDotsVertical, IconEye, IconTrash } from '@tabler/icons-react'
 import type { ColumnDef } from '@/components/table/ReusableTable'
 import { perPage } from '@/constant/config'
@@ -11,13 +10,15 @@ interface AccountManagerColumnHandlers {
   handleView: (id: number) => void
   handleEditManager: (manager: AccountManager) => void
   handleDeleteClick: (id: number) => void
+  // canManage: boolean
 }
 
 export const accountManagerColumns = ({
   page,
-  handleView,
+  // handleView,
   handleEditManager,
   handleDeleteClick,
+  // canManage,
 }: AccountManagerColumnHandlers): ColumnDef<AccountManager>[] => [
   {
     key: 'sn',
@@ -101,6 +102,7 @@ export const accountManagerColumns = ({
           </Menu.Item> */}
           <Menu.Item
             leftSection={<IconEye size={16} />}
+            // disabled={!canManage}
             onClick={() => handleEditManager(manager)}
           >
             Edit
@@ -108,6 +110,7 @@ export const accountManagerColumns = ({
           <Menu.Item
             color="red"
             leftSection={<IconTrash size={16} />}
+            // disabled={!canManage}
             onClick={() => handleDeleteClick(manager.id)}
           >
             Delete

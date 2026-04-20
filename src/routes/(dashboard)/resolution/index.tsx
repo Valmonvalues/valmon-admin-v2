@@ -9,7 +9,7 @@ import type { Id } from '@/types/global.type'
 import { resolutionServicesColumns } from '@/columns/resolutionServicesColumns'
 import { perPage as perpage } from '@/constant/config'
 import TabHeader from '@/components/TabHeader'
-import { SimpleGrid } from '@mantine/core'
+import { SimpleGrid, Text } from '@mantine/core'
 import StatCard from '@/components/StatCard'
 import { formatNumber } from '@/utils/formatters'
 import { routeGaurd } from '@/middleware/routeGuard'
@@ -53,8 +53,6 @@ function Resolution() {
   const resolvedTicketCountServices = serviceData?.summary?.resolvedTicketCount
   const resolvedTicketValueServices = serviceData?.summary?.resolvedTicketValue
 
-  // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  // const [selectedService, setSelectedService] = useState<null | Id>(null)
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Ticket
     direction: 'asc' | 'desc'
@@ -127,23 +125,27 @@ function Resolution() {
             </SimpleGrid>
 
             <div className="">
-              <div className="">
-                <ReusableTable
-                  title="Report"
-                  totalCount={services.length}
-                  data={sortedTServices}
-                  columns={resolutionServicesColumns({
-                    page,
-                    handleView,
-                    // handleDeleteClick,
-                  })}
-                  isLoading={servicesLoading}
-                  searchQuery={search}
-                  onSearchChange={handleSearch}
-                  sortConfig={sortConfig}
-                  onSort={handleSort}
-                />
-              </div>
+              <ReusableTable
+                title="Report"
+                totalCount={services.length}
+                data={sortedTServices}
+                columns={resolutionServicesColumns({
+                  page,
+                  handleView,
+                  // handleDeleteClick,
+                })}
+                isLoading={servicesLoading}
+                searchQuery={search}
+                onSearchChange={handleSearch}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+              />
+
+              {!canAccess('manage_service_conflicts') && (
+                <Text size="xs" c="dimmed" mt="sm">
+                  You have view-only access to conflict resolution.
+                </Text>
+              )}
             </div>
           </>
         ) : (
@@ -179,31 +181,35 @@ function Resolution() {
             </SimpleGrid>
 
             <div className="">
-              <div className="">
-                <ReusableTable
-                  title="Report"
-                  totalCount={marketplace.length}
-                  data={sortedMarketplace}
-                  columns={resolutionMarketplaceColumns({
-                    page,
-                    handleView,
-                    // handleDeleteClick,
-                  })}
-                  isLoading={marketPlaceLoading}
-                  searchQuery={search}
-                  onSearchChange={handleSearch}
-                  sortConfig={sortConfig}
-                  onSort={handleSort}
-                />
+              <ReusableTable
+                title="Report"
+                totalCount={marketplace.length}
+                data={sortedMarketplace}
+                columns={resolutionMarketplaceColumns({
+                  page,
+                  handleView,
+                  // handleDeleteClick,
+                })}
+                isLoading={marketPlaceLoading}
+                searchQuery={search}
+                onSearchChange={handleSearch}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+              />
 
-                {!marketPlaceLoading && totalMarketPlacePages > 1 && (
-                  <PaginationControls
-                    currentPage={page}
-                    totalPages={totalMarketPlacePages}
-                    onPageChange={setPage}
-                  />
-                )}
-              </div>
+              {!marketPlaceLoading && totalMarketPlacePages > 1 && (
+                <PaginationControls
+                  currentPage={page}
+                  totalPages={totalMarketPlacePages}
+                  onPageChange={setPage}
+                />
+              )}
+
+              {!canAccess('manage_marketplace_conflicts') && (
+                <Text size="xs" c="dimmed" mt="sm">
+                  You have view-only access to conflict resolution.
+                </Text>
+              )}
             </div>
           </>
         ) : (

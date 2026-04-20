@@ -17,6 +17,7 @@ import type { Field } from '@/components/modals/AddModal'
 import { routeGaurd } from '@/middleware/routeGuard'
 import NoAccess from '@/components/NoAccess'
 import { useAccessManagement } from '@/hook/useAccessManagement'
+import { accessBlocker } from '@/utils/helper'
 
 export const Route = createFileRoute('/(dashboard)/wallet/')({
   component: Wallet,
@@ -122,6 +123,14 @@ function Wallet() {
     [bankNames, getOtp],
   )
 
+  const handleOpenAddCat = () => {
+    const hasAccess = accessBlocker(canAccess, 'manage_wallet')
+
+    if (hasAccess) {
+      setOpenFormModal(true)
+    }
+  }
+
   return (
     <DashboardLayout>
       {canAccess('view_wallet') ? (
@@ -176,12 +185,9 @@ function Wallet() {
                   textColor="white"
                   fields={withdrawFields}
                   modalTitle="Withdraw Funds"
-                  // onSubmit={(data) => {
-                  //   console.log('Withdrawal data:', data)
-                  // }}
                   onSubmit={handleWithdraw}
                   loading={withdrawIsLoading}
-                  onClick={() => setOpenFormModal(true)}
+                  onClick={handleOpenAddCat}
                   className="px-4 font-semibold flex items-center gap-2"
                   src={withdrawLight}
                 />

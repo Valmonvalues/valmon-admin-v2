@@ -6,10 +6,10 @@ import RoleList from './RoleList'
 import RoleDetails from './RoleDetails'
 
 import { useRolePermissions } from '@/services/rolePermissions.service'
-import { useUser } from '@/services/user.service'
+// import { useUser } from '@/services/user.service'
 import { useHandleDelete } from '@/hook/useHandleDelete'
 import type { Id } from '@/types/global.type'
-import { accessManagement } from '@/data/roles'
+import { useAccessManagement } from '@/hook/useAccessManagement'
 
 function RoleManagement() {
   const [selectedRoleId, setSelectedRoleId] = useState<Id>(1)
@@ -23,11 +23,12 @@ function RoleManagement() {
     deleteRole,
   } = useRolePermissions()
 
-  const { getMe } = useUser()
+  // const { getMe } = useUser()
 
-  accessManagement()
+  const { canAccess } = useAccessManagement()
+  const canManage = canAccess('manage_admin_roles')
 
-  const { data: me } = getMe()
+  // const { data: me } = getMe()
   const { data: roles } = getAllRoles()
   const { data: permissions } = getAllPermissions()
   const { data: roleById } = getRoleById(selectedRoleId)
@@ -72,6 +73,8 @@ function RoleManagement() {
   }, [roleById])
 
   const togglePermission = (id: number) => {
+    if (!canManage) return
+
     setRolePerm((prev) => {
       const next = new Set(prev)
 
@@ -86,12 +89,16 @@ function RoleManagement() {
   }
 
   const handleAddRole = () => {
+    if (!canManage) return
+
     setSelectedRoleId('')
     roleForm.reset()
     setRolePerm(new Set())
   }
 
   const handleSaveAddRole = () => {
+    if (!canManage) return
+
     const validation = roleForm.validate()
     if (validation.hasErrors) return
 
@@ -165,6 +172,8 @@ function RoleManagement() {
   })
 
   const handleDelete = () => {
+    if (!canManage) return
+
     if (!selectedRoleId) return
 
     if (roleById?.name === 'Super Admin') {
@@ -179,9 +188,12 @@ function RoleManagement() {
     handleDeleteClick(selectedRoleId)
   }
 
-  const isSuperAdminUser = me?.role === 'super_admin'
+  // const isSuperAdminUser = me?.role === 'super_admin'
+  // const isSuperAdminRole = roleById?.name === 'Super Admin'
+  // const shouldDisable = !isSuperAdminUser || isSuperAdminRole
+
   const isSuperAdminRole = roleById?.name === 'Super Admin'
-  const shouldDisable = !isSuperAdminUser || isSuperAdminRole
+  const shouldDisable = !canManage || isSuperAdminRole
 
   return (
     <div className="flex gap-6 w-full">
@@ -190,6 +202,7 @@ function RoleManagement() {
         selectedRoleId={selectedRoleId}
         setSelectedRoleId={setSelectedRoleId}
         onAddRole={handleAddRole}
+        canManage={canManage}
       />
 
       <RoleDetails
@@ -207,7 +220,8 @@ function RoleManagement() {
         onDelete={handleDelete}
         onConfirmDelete={handleConfirmDelete}
         onTogglePermission={togglePermission}
-        me={me}
+        // me={me}
+        canManage={canManage}
       />
     </div>
   )

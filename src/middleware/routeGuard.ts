@@ -6,10 +6,7 @@ import { redirect } from '@tanstack/react-router'
 
 const queryClient = new QueryClient()
 
-// export const routeGaurd = async (allowedRoles: string[]) => {
 export const routeGaurd = async (perms: string[]) => {
-  // const { canAccessAny } = useAccessManagement()
-
   const me = await queryClient.fetchQuery({
     queryKey: ['me'],
     queryFn: userApi.getMe,

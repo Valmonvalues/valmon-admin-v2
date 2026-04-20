@@ -1,5 +1,3 @@
-// src/api/apiClient.ts
-// import { storage, API } from '@/constant/config'
 import { API, API_BASE, storage } from '@/constant/config'
 import axios from 'axios'
 

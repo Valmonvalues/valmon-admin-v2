@@ -29,14 +29,15 @@ interface RoleDetailsProps {
   isSavingRole: boolean
   isDeleting: boolean
   modalOpen: boolean
+  canManage: boolean
   setModalOpen: (value: boolean) => void
   onSave: () => void
   onDelete: () => void
   onConfirmDelete: () => void
   onTogglePermission: (id: number) => void
-  me?: {
-    role?: string
-  }
+  // me?: {
+  //   role?: string
+  // }
 }
 
 function RoleDetails({
@@ -49,6 +50,8 @@ function RoleDetails({
   isSavingRole,
   isDeleting,
   modalOpen,
+  canManage,
+
   setModalOpen,
   onSave,
   onDelete,
@@ -75,7 +78,7 @@ function RoleDetails({
             color="#ef4444"
             className="px-4 py-2 w-auto"
             onClick={onDelete}
-            disabled={!selectedRoleId}
+            disabled={!canManage || !selectedRoleId}
           />
 
           <ConfirmDeleteModal
@@ -92,6 +95,7 @@ function RoleDetails({
             className="px-4 py-2 background w-auto"
             onClick={onSave}
             loading={isSavingRole}
+            disabled={!canManage}
           />
         </Group>
       </Group>
@@ -177,6 +181,20 @@ function RoleDetails({
                 onChange={() => {
                   if (shouldDisable) return
                   onTogglePermission(perm.id)
+                }}
+                styles={{
+                  input: {
+                    cursor: shouldDisable ? 'not-allowed' : 'pointer',
+                    opacity: 1,
+                  },
+                  track: {
+                    cursor: shouldDisable ? 'not-allowed' : 'pointer',
+                    opacity: 1,
+                  },
+                  thumb: {
+                    cursor: shouldDisable ? 'not-allowed' : 'pointer',
+                    opacity: 1,
+                  },
                 }}
               />
             </Group>

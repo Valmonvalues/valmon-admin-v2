@@ -1,3 +1,4 @@
+import { useAccessManagement } from '@/hook/useAccessManagement'
 import { useSettings } from '@/services/settings.service'
 import {
   Box,
@@ -19,6 +20,9 @@ type NotificationKey =
 
 function NotificationSettings() {
   const { getNotificationSettings, updateNotificationSettings } = useSettings()
+  const { canAccess } = useAccessManagement()
+
+  const canManage = canAccess('manage_notification_settings')
 
   const { data: notifData, isLoading: notifDataLoading } =
     getNotificationSettings()
@@ -46,6 +50,8 @@ function NotificationSettings() {
   ]
 
   const handleNotificationUpdate = () => {
+    if (!canManage) return
+
     updateNotification(notificationSettings)
   }
 
@@ -76,25 +82,50 @@ function NotificationSettings() {
                 <Text c="gray" size="sm">
                   {item.label}
                 </Text>
+
                 <Switch
                   color="var(--color-dark-gold)"
                   checked={notificationSettings[item.key]}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (!canManage) return
+
                     setNotificationSettings((prev) => ({
                       ...prev,
                       [item.key]: e.target?.checked,
                     }))
-                  }
+                  }}
                   disabled={updating}
+                  styles={{
+                    input: {
+                      cursor: canManage ? 'pointer' : 'not-allowed',
+                      opacity: 1,
+                    },
+                    track: {
+                      cursor: canManage ? 'pointer' : 'not-allowed',
+                      opacity: 1,
+                    },
+                    thumb: {
+                      cursor: canManage ? 'pointer' : 'not-allowed',
+                      opacity: 1,
+                    },
+                  }}
                 />
               </Group>
             ))}
+
+            {!canManage && (
+              <Text size="xs" c="dimmed">
+                You have view-only access to notification settings.
+              </Text>
+            )}
+
             <Button
               type="submit"
               color="dark"
               radius="md"
               fullWidth
               loading={updating}
+              disabled={!canManage}
               // onClick={handleNotificationUpdate}
               mt="md"
             >

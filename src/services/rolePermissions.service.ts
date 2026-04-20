@@ -59,11 +59,3 @@ export const useRolePermissions = () => {
     deleteRole,
   }
 }
-
-// const isCreating = !selectedRoleId || selectedRoleId === 0
-
-// if (isCreating) {
-//   createNewRole(payload)
-// } else {
-//   updateRole(payload) // future
-// }
