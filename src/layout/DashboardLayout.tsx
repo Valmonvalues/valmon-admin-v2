@@ -107,7 +107,14 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Avatar */}
             <button className="rounded-full bg-gray-800 p-[2px]">
-              <Avatar src={''} size="sm" />
+              <Avatar
+                src={
+                  me?.role?.toLowerCase() === 'super_admin'
+                    ? '/favicon.ico'
+                    : me?.profile_pic
+                }
+                size="sm"
+              />
             </button>
 
             {/* Name + Role (hide on extra small screens) */}
