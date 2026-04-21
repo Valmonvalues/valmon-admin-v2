@@ -6,6 +6,7 @@ import { Link, useLocation } from '@tanstack/react-router'
 import brandLogo from '@/assets/images/Logo/valmon.svg'
 import bell from '@/assets/icons/notification-bing.svg'
 import { useState } from 'react'
+import { useClickOutside } from '@mantine/hooks'
 import { IconLogout } from '@tabler/icons-react'
 import { storage } from '@/constant/config'
 import { useUser } from '@/services/user.service'
@@ -20,11 +21,17 @@ type LayoutProps = {
 const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure()
   const [notificationOpen, setNotificationOpen] = useState(false)
+  const [notifModalOpen, setNotifModalOpen] = useState(false)
   const { canAccessAny } = useAccessManagement()
   const { getMe } = useUser()
   const { data: me } = getMe()
-  const { allNotifications } = useNotifications()
-  const { data: notifications } = allNotifications()
+  const { unreadNotifications } = useNotifications()
+  const unreadQ = unreadNotifications()
+  const { data: unread } = unreadQ
+
+  const clickRef = useClickOutside(() => {
+    if (!notifModalOpen) setNotificationOpen(false)
+  })
 
   const { pathname } = useLocation()
 
@@ -82,17 +89,17 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
           {/* Right Section */}
           <div className="flex items-center gap-4 ml-auto">
             {/* Notifications */}
-            <div className="relative">
+            <div ref={clickRef} className="relative">
               <button
                 type="button"
                 className="relative rounded-full bg-gray-800 p-2 text-gray-400 hover:text-white"
-                onClick={() => setNotificationOpen(!notificationOpen)}
+                onClick={() => setNotificationOpen((prev) => !prev)}
               >
                 <img src={bell} alt="bell icon" className="h-5 w-5" />
 
-                {notifications && notifications.length > 0 && (
+                {unread && unread.length > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 text-[10px] bg-red-600 text-white font-semibold rounded-full flex items-center justify-center animate-pulse">
-                    {notifications?.length}
+                    {unread.length}
                   </span>
                 )}
               </button>
@@ -100,7 +107,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               {/* Dropdown */}
               {notificationOpen && (
                 <div className="absolute right-0 mt-2 w-72 sm:w-80 z-50">
-                  <Notifications />
+                  <Notifications onModalToggle={setNotifModalOpen} />
                 </div>
               )}
             </div>
@@ -110,7 +117,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
               <Avatar
                 src={
                   me?.role?.toLowerCase() === 'super_admin'
-                    ? '/favicon.ico'
+                    ? '/favicon.icon'
                     : me?.profile_pic
                 }
                 size="sm"
