@@ -39,10 +39,10 @@ const Notifications = ({ onModalToggle }: NotificationsProps) => {
     setModalOpen(true)
   }
 
-  const closeModal = () => {
-    setModalOpen(false)
-    setSelectedNote(null)
-  }
+  // const closeModal = () => {
+  //   setModalOpen(false)
+  //   setSelectedNote(null)
+  // }
 
   const handleMarkRead = async () => {
     if (!selectedNote) return
