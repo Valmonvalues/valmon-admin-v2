@@ -27,8 +27,7 @@ export interface Field {
     | 'button'
     | 'otp'
     | 'number'
-  // inputMode?: 'text' | 'email' | 'search' | 'none' | 'tel' | 'url' | 'numeric' | 'decimal'
-
+  readOnly?: boolean
   placeholder?: string
   options?: { label: string; value: string }[]
   variant?: 'default' | 'image-upload' | 'profile_picture-upload'
@@ -55,6 +54,7 @@ const AddModal = ({
   title,
   fields,
   onSubmit,
+  // initialData,
   loading = false,
   submitLabel = 'Save',
 }: AddModalProps) => {
@@ -215,7 +215,11 @@ const AddModal = ({
                 label={field.label}
                 placeholder={field.placeholder}
                 value={formData[field.name] || ''}
-                onChange={(e) => handleChange(field.name, e.target.value)}
+                onChange={(e) => {
+                  if (field.readOnly) return
+                  handleChange(field.name, e.target.value)
+                }}
+                readOnly={field.readOnly}
                 radius="md"
                 size="md"
                 classNames={{

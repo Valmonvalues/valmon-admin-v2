@@ -21,7 +21,11 @@ export const accountManagersApi = {
     id: Id,
     updatedData: FormData,
   ): Promise<AccountManager> =>
-    await apiClient.post(`/update-admin/${id}`, updatedData),
+    await apiClient.post(`/update-admin/${id}`, updatedData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
 
   deleteManager: async (id: Id) =>
     await apiClient.delete(`/delete-admin/${id}`),

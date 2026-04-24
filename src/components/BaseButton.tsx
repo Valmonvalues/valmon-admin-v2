@@ -18,6 +18,7 @@ interface BaseButtonProps {
   onSubmit?: (data: Record<string, any>) => void
   onClose?: () => void
   // initialData?: {} | null
+  initialData?: Record<string, any> | null
   opened?: boolean
   disabled?: boolean
 }

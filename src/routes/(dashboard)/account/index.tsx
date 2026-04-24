@@ -81,6 +81,13 @@ function Account() {
     }))
   }
 
+  const normalizeRole = (roleName = '') =>
+    roleName
+      .toString()
+      .toLowerCase()
+      .replace(/[\s_-]+/g, ' ')
+      .trim()
+
   const handleView = (listingId: Id) => {
     // navigate({ to: `/${}` })
     console.log('View listing:', listingId)
@@ -138,17 +145,20 @@ function Account() {
     const hasAccess = accessBlocker(canAccess, 'manage_admin_accounts')
     if (!hasAccess) return
 
+    // console.log(admin)
+    // return
+
     try {
       // setLoading(true)
 
       const selectedRole = roles?.find((e) => e.id === Number(admin.role))
-
+      console.log(selectedRole)
       if (!selectedRole) return
 
       const formData = new FormData()
       formData.append('first_name', admin?.firstName)
       formData.append('last_name', admin?.lastName)
-      formData.append('email', admin?.email)
+      // formData.append('email', admin?.email)
       formData.append('role_id', admin?.role)
 
       if (admin.file instanceof File) {
@@ -156,18 +166,22 @@ function Account() {
       }
 
       if (!initialData?.id) {
+        formData.append('email', admin?.email)
         formData.append('role', selectedRole?.name)
 
         await addManager.mutateAsync(formData)
       }
 
       if (initialData?.id) {
+        console.log(formData)
+
         await updateManager.mutateAsync({
           id: initialData.id,
           updatedData: formData,
         })
       }
 
+      setInitialData(null)
       setOpenFormModal(false)
     } catch (error) {
       console.error('Error adding manager:', error)
@@ -215,13 +229,20 @@ function Account() {
               fields={[
                 { name: 'firstName', label: 'First Name', type: 'text' },
                 { name: 'lastName', label: 'Last Name', type: 'text' },
-                { name: 'email', label: 'Email', type: 'email' },
+                {
+                  name: 'email',
+                  label: 'Email',
+                  type: 'email',
+                  readOnly: !!initialData?.id,
+                },
                 {
                   name: 'role',
                   label: 'Role',
                   type: 'select',
                   options: roles
-                    ?.filter((role) => role?.name !== 'super_admin')
+                    ?.filter(
+                      (role) => normalizeRole(role?.name) !== 'super admin',
+                    )
                     .map((role) => ({
                       value: String(role?.id),
                       label: role?.name,
