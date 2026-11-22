@@ -2,12 +2,29 @@ import { resolution } from '@/api/resolution.api'
 import type { Id, Params } from '@/types/global.type'
 import type {
   Message,
+  ResolutionAction,
   SendMessagePayload,
   TicketDetail,
   TicketsResponse,
 } from '@/types/resolution.types'
 import { notifications } from '@mantine/notifications'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
+const ticketKey = (id: Id) => ['resolution-ticket', String(id)]
+const messagesKey = (conversationId: Id) => [
+  'resolution-messages',
+  String(conversationId),
+]
+
+// How often an open ticket/chat re-checks for replies from the parties.
+const POLL_MS = 15_000
+
+const showError = (fallback: string) => (error: any) =>
+  notifications.show({
+    title: 'Error',
+    message: error?.message || fallback,
+    color: 'red',
+  })
 
 export const useResolution = () => {
   const queryClient = useQueryClient()
@@ -28,52 +45,92 @@ export const useResolution = () => {
 
   const ticketsById = (id: Id) => {
     return useQuery<TicketDetail>({
-      queryKey: ['services', id],
+      queryKey: ticketKey(id),
       queryFn: () => resolution.getTicketId(id),
       enabled: !!id,
+      // Keeps each party's last message / unread state fresh in the sidebar.
+      refetchInterval: POLL_MS,
     })
   }
 
-  const listMessages = (id: Id) => {
+  const listMessages = (conversationId?: Id | null) => {
     return useQuery<Message[]>({
-      queryKey: ['services', id, 'messages'],
-      queryFn: () => resolution.getMessages(id),
-      enabled: !!id,
+      queryKey: messagesKey(conversationId ?? ''),
+      queryFn: () => resolution.getMessages(conversationId as Id),
+      enabled: !!conversationId,
+      refetchInterval: POLL_MS,
     })
   }
 
-  const sendMessage = (id: Id) => {
+  /**
+   * Sends to a party: into their existing conversation, or — if the admin
+   * hasn't contacted them yet — as the first message, which creates it.
+   */
+  const sendToParty = (ticketId: Id) => {
     return useMutation({
-      mutationFn: (payload: SendMessagePayload) =>
-        resolution.sendMessage(id, payload),
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['services', id, 'messages'],
-        })
+      mutationFn: ({
+        conversationId,
+        participantId,
+        payload,
+      }: {
+        conversationId?: Id | null
+        participantId: Id
+        payload: SendMessagePayload
+      }) =>
+        conversationId
+          ? resolution.sendMessage(conversationId, payload)
+          : resolution.sendFirstMessage(ticketId, participantId, payload),
+      onSuccess: (_, { conversationId }) => {
+        if (conversationId) {
+          queryClient.invalidateQueries({
+            queryKey: messagesKey(conversationId),
+          })
+        }
+        queryClient.invalidateQueries({ queryKey: ticketKey(ticketId) })
       },
-      onError: (error: any) => {
-        notifications.show({
-          title: 'Error',
-          message: error?.message || 'Failed to send message',
-          color: 'red',
-        })
-      },
+      onError: showError('Failed to send message'),
     })
   }
 
-  const createConversation = (ticketId: Id) => {
+  const markRead = (ticketId: Id) => {
     return useMutation({
-      mutationFn: () => resolution.createConversation(ticketId),
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['services', ticketId] })
+      mutationFn: (conversationId: Id) => resolution.markRead(conversationId),
+      onSuccess: (_, conversationId) => {
+        queryClient.invalidateQueries({ queryKey: messagesKey(conversationId) })
+        queryClient.invalidateQueries({ queryKey: ticketKey(ticketId) })
       },
-      onError: (error: any) => {
+      // Silent: failing to mark read shouldn't interrupt the admin.
+    })
+  }
+
+  const resolveTicket = (ticketId: Id, isMarketplace: boolean) => {
+    return useMutation({
+      mutationFn: ({
+        action,
+        decision,
+      }: {
+        action: ResolutionAction
+        decision: string
+      }) => {
+        if (action === 'pay') {
+          return resolution.payProvider(ticketId, isMarketplace, decision)
+        }
+        if (action === 'refund') {
+          return resolution.refundClient(ticketId, isMarketplace, decision)
+        }
+        return resolution.resolve(ticketId, decision)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ticketKey(ticketId) })
+        queryClient.invalidateQueries({ queryKey: ['services'] })
+        queryClient.invalidateQueries({ queryKey: ['marketplace'] })
         notifications.show({
-          title: 'Error',
-          message: error?.message || 'Failed to start conversation',
-          color: 'red',
+          title: 'Dispute resolved',
+          message: 'Both parties have been notified of the decision.',
+          color: 'green',
         })
       },
+      onError: showError('Failed to resolve dispute'),
     })
   }
 
@@ -82,7 +139,8 @@ export const useResolution = () => {
     listingMarketPlace,
     ticketsById,
     listMessages,
-    sendMessage,
-    createConversation,
+    sendToParty,
+    markRead,
+    resolveTicket,
   }
 }
