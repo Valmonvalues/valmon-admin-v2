@@ -39,16 +39,20 @@ function Resolution() {
   const [page, setPage] = useState(1)
   const { search, debouncedSearch, handleSearch } = useDebouncedSearch()
   const { listingServices, listingMarketPlace } = useResolution()
-  const { data: serviceData, isLoading: servicesLoading } = listingServices()
+  const listParams = { page, perpage, search: debouncedSearch || undefined }
+  const { data: serviceData, isLoading: servicesLoading } =
+    listingServices(listParams)
   const { data: marketplaceData, isLoading: marketPlaceLoading } =
-    listingMarketPlace({ page, perpage, search: debouncedSearch || undefined })
+    listingMarketPlace(listParams)
   const marketplace = marketplaceData?.tickets || []
   const totalMarketPlace = marketplaceData?.pagination?.total_items ?? 0
   const totalMarketPlacePages = Math.ceil(totalMarketPlace / perpage)
   // const totalMarketPlacePages = marketplaceData?.pagination?.total_pages ?? 0
 
   const services = serviceData?.tickets || []
-  // const ticketCountServices = serviceData?.summary?.ticketCount
+  const totalServices = serviceData?.pagination?.total_items ?? 0
+  const totalServicesPages = Math.ceil(totalServices / perpage)
+  const ticketCountServices = serviceData?.summary?.ticketCount
   const totalValueServices = serviceData?.summary?.ticketsAmount
   const resolvedTicketCountServices = serviceData?.summary?.resolvedTicketCount
   const resolvedTicketValueServices = serviceData?.summary?.resolvedTicketValue
@@ -75,9 +79,13 @@ function Resolution() {
     }))
   }
 
+  const handleSearchChange = (value: string) => {
+    handleSearch(value)
+    setPage(1)
+  }
+
   const handleView = (id: Id) => {
     navigate({ to: `/resolution/${id}` })
-    console.log(id)
   }
 
   return (
@@ -85,7 +93,10 @@ function Resolution() {
       <div className="mb-4">
         <TabHeader
           activeTab={activeTab}
-          onChange={setActiveTab}
+          onChange={(tab) => {
+            setActiveTab(tab)
+            setPage(1)
+          }}
           tabs={[
             { id: 'services', label: 'Services' },
             { id: 'market-place', label: 'Market Place' },
@@ -99,8 +110,7 @@ function Resolution() {
             <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
               <StatCard
                 title="All Reports"
-                value={services.length}
-                // value={ticketCountServices}
+                value={formatNumber(ticketCountServices ?? totalServices)}
                 color="bg-pink-100"
                 image={''}
               />
@@ -127,7 +137,7 @@ function Resolution() {
             <div className="">
               <ReusableTable
                 title="Report"
-                totalCount={services.length}
+                totalCount={totalServices}
                 data={sortedTServices}
                 columns={resolutionServicesColumns({
                   page,
@@ -136,10 +146,18 @@ function Resolution() {
                 })}
                 isLoading={servicesLoading}
                 searchQuery={search}
-                onSearchChange={handleSearch}
+                onSearchChange={handleSearchChange}
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />
+
+              {!servicesLoading && totalServicesPages > 1 && (
+                <PaginationControls
+                  currentPage={page}
+                  totalPages={totalServicesPages}
+                  onPageChange={setPage}
+                />
+              )}
 
               {!canAccess('manage_service_conflicts') && (
                 <Text size="xs" c="dimmed" mt="sm">
@@ -161,29 +179,40 @@ function Resolution() {
             <SimpleGrid cols={4} spacing="lg" className="mb-6 max-w-[1000px]">
               <StatCard
                 title="All Reports"
-                value={marketplace.length}
+                value={formatNumber(
+                  marketplaceData?.summary?.ticketCount ?? totalMarketPlace,
+                )}
                 color="bg-pink-100"
                 image={''}
               />
               <StatCard
                 title="Resolved Reports"
-                value={formatNumber(0)}
+                value={formatNumber(
+                  marketplaceData?.summary?.resolvedTicketCount ?? 0,
+                )}
                 color="bg-purple-100"
                 image={''}
               />
               <StatCard
                 title="Total Value"
-                value={formatNumber(0)}
+                value={formatNumber(marketplaceData?.summary?.ticketsAmount ?? 0)}
                 color="bg-dark-gold"
                 image={''}
               />
-              <StatCard title="Resolved Value" />
+              <StatCard
+                title="Resolved Value"
+                value={formatNumber(
+                  marketplaceData?.summary?.resolvedTicketValue ?? 0,
+                )}
+                color="bg-green-100"
+                image={''}
+              />
             </SimpleGrid>
 
             <div className="">
               <ReusableTable
                 title="Report"
-                totalCount={marketplace.length}
+                totalCount={totalMarketPlace}
                 data={sortedMarketplace}
                 columns={resolutionMarketplaceColumns({
                   page,
@@ -192,7 +221,7 @@ function Resolution() {
                 })}
                 isLoading={marketPlaceLoading}
                 searchQuery={search}
-                onSearchChange={handleSearch}
+                onSearchChange={handleSearchChange}
                 sortConfig={sortConfig}
                 onSort={handleSort}
               />

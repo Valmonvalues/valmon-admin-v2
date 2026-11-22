@@ -52,8 +52,8 @@ export interface TicketParticipant {
 }
 
 // Shared shape of the job/order attached to a ticket — the transaction the
-// conflict is about. Its conversation_id is the group chat between the
-// complainer, the reported user, and the admin.
+// conflict is about. Its conversation_id is the parties' ORIGINAL chat with
+// each other, not a resolution chat (see TicketDetail.conversations).
 export interface TicketTransaction {
   id: number
   conversation_id: number
@@ -88,6 +88,30 @@ export interface TicketDetail {
   reported_user: TicketParticipant
   job: TicketTransaction | null
   order: TicketTransaction | null
+  resolution_decision: string | null
+  resolved_at: string | null
+  /**
+   * One private conversation per party (admin ⇄ that party), created by the
+   * admin's first message to them. A party without one hasn't been
+   * contacted yet.
+   */
+  conversations: TicketConversation[]
+}
+
+/** Admin ⇄ one party. `user_id` is the party; there is no recipient. */
+export interface TicketConversation {
+  id: number
+  user_id: number
+  recipient_id: null
+  ticket_id: number
+  admin_id: number
+  last_message_id: number | null
+  last_message: Message | null
+  /** Unread messages in BOTH directions, so not "unread from the party". */
+  unread_count: number
+  created_at: string
+  updated_at: string
+  user: MessageUser & { account_type?: string }
 }
 
 export interface MessageUser {
@@ -114,7 +138,8 @@ export interface Negotiation {
 export interface Message {
   id: number
   conversation_id: number
-  user_id: number
+  /** null for messages sent by an admin (admins aren't in the users table). */
+  user_id: number | null
   type: 'text' | 'image' | 'audio' | 'video' | 'document' | 'negotiation'
   content: string | null
   is_read: number
@@ -125,7 +150,7 @@ export interface Message {
   created_at: string
   updated_at: string
   negotiation_id: number | null
-  user: MessageUser
+  user: MessageUser | null
   negotiation: Negotiation | null
 }
 
@@ -134,3 +159,7 @@ export interface SendMessagePayload {
   type?: 'text' | 'image' | 'audio' | 'video' | 'document'
   file?: File
 }
+
+/** The three ways an admin can close a ticket. */
+export type ResolutionAction = 'pay' | 'refund' | 'close'
+
