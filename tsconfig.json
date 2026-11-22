@@ -4,8 +4,8 @@
     "**/*.tsx",
     "eslint.config.js",
     "prettier.config.js",
-    "vite.config.js",
-    "src/components/utils/routeGuard.tss"
+    "vite.config.js"
+    // "src/components/utils/routeGuard.ts"
   ],
 
   "compilerOptions": {
@@ -28,7 +28,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

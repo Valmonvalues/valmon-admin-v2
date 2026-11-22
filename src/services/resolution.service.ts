@@ -1,10 +1,16 @@
 import { resolution } from '@/api/resolution.api'
 import type { Id, Params } from '@/types/global.type'
-import type { TicketsResponse } from '@/types/resolution.types'
-import { useQuery } from '@tanstack/react-query'
+import type {
+  Message,
+  SendMessagePayload,
+  TicketDetail,
+  TicketsResponse,
+} from '@/types/resolution.types'
+import { notifications } from '@mantine/notifications'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useResolution = () => {
-  //   const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
   const listingServices = (params?: Params) => {
     return useQuery<TicketsResponse>({
@@ -21,16 +27,53 @@ export const useResolution = () => {
   }
 
   const ticketsById = (id: Id) => {
-    return useQuery({
+    return useQuery<TicketDetail>({
       queryKey: ['services', id],
       queryFn: () => resolution.getTicketId(id),
+      enabled: !!id,
     })
   }
 
   const listMessages = (id: Id) => {
-    return useQuery({
+    return useQuery<Message[]>({
       queryKey: ['services', id, 'messages'],
       queryFn: () => resolution.getMessages(id),
+      enabled: !!id,
+    })
+  }
+
+  const sendMessage = (id: Id) => {
+    return useMutation({
+      mutationFn: (payload: SendMessagePayload) =>
+        resolution.sendMessage(id, payload),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['services', id, 'messages'],
+        })
+      },
+      onError: (error: any) => {
+        notifications.show({
+          title: 'Error',
+          message: error?.message || 'Failed to send message',
+          color: 'red',
+        })
+      },
+    })
+  }
+
+  const createConversation = (ticketId: Id) => {
+    return useMutation({
+      mutationFn: () => resolution.createConversation(ticketId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['services', ticketId] })
+      },
+      onError: (error: any) => {
+        notifications.show({
+          title: 'Error',
+          message: error?.message || 'Failed to start conversation',
+          color: 'red',
+        })
+      },
     })
   }
 
@@ -39,5 +82,7 @@ export const useResolution = () => {
     listingMarketPlace,
     ticketsById,
     listMessages,
+    sendMessage,
+    createConversation,
   }
 }

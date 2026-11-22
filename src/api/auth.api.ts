@@ -12,6 +12,4 @@ export const authApi = {
 
   register: async (payload: RegisterPayload): Promise<RegisterResponse> =>
     await apiClient.post('/auth/register', payload),
-
-  // logout: async () =>
 }

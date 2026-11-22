@@ -4,7 +4,7 @@ import axios from 'axios'
 export type ApiType = 'admin' | 'client'
 
 const createApiClient = (baseURL: string) => {
-  console.log(baseURL)
+  // console.log(baseURL)
   const client = axios.create({
     baseURL,
     headers: {
